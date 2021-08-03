@@ -19,8 +19,8 @@ public class UsersDAO {
 
 	private HashMap<String, User> users = new HashMap<String, User>();
 	private ArrayList<User> userList = new ArrayList<User>();
-	//private String path = "C:\\Users\\Nikola\\Desktop\\Veb projekat\\PocetniREST\\WebContent";
-	private String path = ".\\Veb projekat\\PocetniREST\\WebContent";
+	private String path = "C:\\Users\\Nikola\\Desktop\\Web-projekat\\Veb projekat\\PocetniREST\\WebContent";
+	//private String path = ".\\Veb projekat\\PocetniREST\\WebContent";
 	
 	public UsersDAO() {
 		BufferedReader in = null;

@@ -1,4 +1,4 @@
-Vue.component("register", {
+Vue.component("register-app", {
 	data: function() {
 		return {
 			newUser: {}
@@ -8,9 +8,13 @@ Vue.component("register", {
     <div>
         <form id='register-form' @submit="register(newUser)" method='post'>
             <input type="text" v-model="newUser.userName" placeholder="Username" required>
+			<br><br>
             <input type="text" v-model="newUser.name" placeholder="Name">
+			<br><br>
             <input type="text" v-model="newUser.surname" placeholder="Surname">
+			<br><br>
             <input type="password" v-model="newUser.password" placeholder="Password" required>
+			<br><br>
             <button type='submit'> REGISTER </button>
         </form>
     </div>

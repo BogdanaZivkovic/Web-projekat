@@ -1,4 +1,4 @@
-const Register = {template: '<register></register>'}
+const Register = {template: '<register-app></register-app>'}
 
 const router = new VueRouter({
 	  mode: 'hash',
