@@ -15,6 +15,16 @@ Vue.component("register-app", {
 			<br><br>
             <input type="password" v-model="newUser.password" placeholder="Password" required>
 			<br><br>
+			<label>Gender:</label>
+			<select v-model="newUser.gender">
+		    <option disabled value="">Please select one</option>
+		    <option>Male</option>
+		    <option>Female</option>
+			</select>
+			<br><br>
+			<label for="start">Date of birth:</label>
+			<input type="date" v-model="newUser.dateOfBirth" min="1950-01-01" max="2020-01-01">		
+			<br><br>	
             <button type='submit'> REGISTER </button>
         </form>
     </div>
@@ -27,8 +37,8 @@ Vue.component("register-app", {
 				"password":''+newUser.password, 
 				"name":''+newUser.name, 
 				"surname":''+newUser.surname, 
-				"gender":"MALE", 
-				"dateOfBirth":"Unknown", 
+				"gender":''+newUser.gender, 
+				"dateOfBirth":''+newUser.dateOfBirth, 
 				"role":"GUEST"
 			})
 			.then(response => (toast('User' + newUser.userName + "registered.")))
