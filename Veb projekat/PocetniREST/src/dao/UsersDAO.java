@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -121,5 +120,9 @@ public class UsersDAO {
 		users.put(user.getUserName(), user);
 		userList.add(user);
 		saveUsers();
+	}
+	
+	public User getUserByUsername(String username) {
+		return users.get(username);
 	}
 }
