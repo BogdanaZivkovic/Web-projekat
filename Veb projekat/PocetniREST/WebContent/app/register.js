@@ -1,7 +1,14 @@
 Vue.component("register-app", {
 	data: function() {
 		return {
-			newUser: {}
+			newUser: {
+				userName: "",
+				password: "",
+				name: "",
+				surname: "",
+				gender: "",
+				dateOfBirth: ""
+			}
 		}
 	},
 	template: `
@@ -39,14 +46,11 @@ Vue.component("register-app", {
 				"surname":''+newUser.surname, 
 				"gender":''+newUser.gender, 
 				"dateOfBirth":''+newUser.dateOfBirth, 
-				"role":"GUEST"
+				"role":"CUSTOMER"
 			})
-			.then(response => (toast('User' + newUser.userName + "registered.")))
+			.then(response => {
+				location.href = response.data;
+			})
 		}
-	},
-	mounted () {
-		axios
-			.get('rest/users/getNewUser')
-			.then(response => (this.newUser = response.data))
 	},
 });

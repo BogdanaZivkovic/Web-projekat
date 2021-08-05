@@ -1,7 +1,10 @@
 Vue.component("login-app", {
 	data: function () {
 		return {
-			newUser: {}
+			newUser: {
+				userName: "",
+				password: ""
+			}
 		}
 	},
 	template: `
@@ -25,12 +28,9 @@ Vue.component("login-app", {
 				"userName":''+newUser.userName, 
 				"password":''+newUser.password
 			})
-			.then(response => (toast('User' + newUser.userName + "logged in.")))
+			.then(response => {
+				location.href = response.data;
+			})
 		}
-	},
-	mounted () {
-		axios
-			.get('rest/users/getNewUser')
-			.then(response => (this.newUser = response.data))
 	},
 });
