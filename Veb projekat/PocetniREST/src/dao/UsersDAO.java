@@ -17,7 +17,6 @@ import beans.User;
 public class UsersDAO {
 
 	private HashMap<String, User> users = new HashMap<String, User>();
-	private ArrayList<User> userList = new ArrayList<User>();
 	private String path = "C:\\Users\\Nikola\\Desktop\\Web-projekat\\Veb projekat\\PocetniREST\\WebContent";
 	//private String path = ".\\Veb projekat\\PocetniREST\\WebContent";
 	
@@ -61,7 +60,6 @@ public class UsersDAO {
 				}
 				User user = new User(userName, password, name, surname, gender, dateOfBirth, role);
 				users.put(userName, user);
-				userList.add(user);
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -112,13 +110,9 @@ public class UsersDAO {
 		return users.get(id);
 	}
 	
-	public ArrayList<User> getUserList() {
-		return userList;
-	}
 	
 	public void addUser(User user) {
 		users.put(user.getUserName(), user);
-		userList.add(user);
 		saveUsers();
 	}
 	

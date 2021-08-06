@@ -51,11 +51,14 @@ public class UserService {
 		User user = getUsers().getUserByUsername(dto.userName);	
 		if(user == null || !user.getPassword().equals(dto.password))
 		{
-			System.out.println("bad-o");
+			System.out.println("bad");
 			return Response.status(Response.Status.BAD_REQUEST).entity("Password or username are incorrect, try again")
 					.build();
 		}
-		System.out.println("good-o");
+		
+		request.getSession().setAttribute("loggedUser", user);
+		
+		System.out.println("good");
 		if (user.getRole().equals("CUSTOMER"))
 			return Response.status(Response.Status.ACCEPTED).entity("/PocetniREST/customerView.html").build();
 		else if (user.getRole().equals("MANAGER"))
