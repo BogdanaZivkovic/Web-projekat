@@ -7,7 +7,6 @@ import java.io.FileReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.StringTokenizer;
@@ -17,13 +16,13 @@ import beans.User;
 public class UsersDAO {
 
 	private HashMap<String, User> users = new HashMap<String, User>();
-	private String path = "C:\\Users\\Nikola\\Desktop\\Web-projekat\\Veb projekat\\PocetniREST\\WebContent";
-	//private String path = ".\\Veb projekat\\PocetniREST\\WebContent";
+	//private String path = "C:\\Users\\Nikola\\Desktop\\Web-projekat\\Veb projekat\\PocetniREST\\WebContent";
+	private String path = System.getProperty("catalina.base") + File.separator + "data" + File.separator + "users.txt";
 	
 	public UsersDAO() {
 		BufferedReader in = null;
 		try {
-			File file = new File(path + "/users.txt");
+			File file = new File(path);
 			System.out.println(file.getCanonicalPath());
 			in = new BufferedReader(new FileReader(file));
 			readUsers(in);
@@ -69,7 +68,7 @@ public class UsersDAO {
 	public void saveUsers() {
 		BufferedWriter out = null;
 		try {
-			out = Files.newBufferedWriter(Paths.get(path + "/users.txt"), StandardCharsets.UTF_8);
+			out = Files.newBufferedWriter(Paths.get(path), StandardCharsets.UTF_8);
 			for (User user : users.values()) {
 				out.write(writeUser(user));
 				out.newLine();

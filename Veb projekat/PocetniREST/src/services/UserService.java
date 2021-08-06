@@ -1,5 +1,7 @@
 package services;
 
+import java.util.Collection;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -69,6 +71,17 @@ public class UserService {
 			return Response.status(Response.Status.ACCEPTED).entity("/PocetniREST/delivererView.html").build();
 		else
 			return Response.status(Response.Status.ACCEPTED).entity("/PocetniREST/").build();
+	}
+	
+	@GET
+	@Path("/getAllUsers")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllUsers() {
+		Collection<User> users = getUsers().getValues();
+		return Response
+				.status(Response.Status.ACCEPTED).entity("SUCCESS")
+				.entity(users)
+				.build();
 	}
 	
 	private UsersDAO getUsers() {
