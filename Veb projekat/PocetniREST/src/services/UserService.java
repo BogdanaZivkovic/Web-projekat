@@ -40,8 +40,7 @@ public class UserService {
 		
 		users.addUser(user);
 		System.out.println(user.getUserName());
-		//return Response.status(Response.Status.ACCEPTED).entity("/PocetniREST/#/login").build();
-		return Response.status(Response.Status.ACCEPTED).entity("/PocetniREST/#/login").build();
+		return Response.status(Response.Status.ACCEPTED).entity("/PocetniREST/").build();
 	}
 	
 	@POST
@@ -66,7 +65,7 @@ public class UserService {
 		else if (user.getRole().equals("DELIVERER"))
 			return Response.status(Response.Status.ACCEPTED).entity("/PocetniREST/delivererView.html").build();
 		else
-			return Response.status(Response.Status.ACCEPTED).entity("/PocetniREST/#/login").build();
+			return Response.status(Response.Status.ACCEPTED).entity("/PocetniREST/").build();
 	}
 	
 	private UsersDAO getUsers() {
