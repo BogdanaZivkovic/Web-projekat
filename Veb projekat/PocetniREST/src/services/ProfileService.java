@@ -40,6 +40,7 @@ public class ProfileService {
 	public Response updateUser(User user) {
 		UsersDAO users = getUsers();
 		users.addUser(user);
+		request.getSession().setAttribute("loggedUser", user);
 		return Response
 				.status(Response.Status.ACCEPTED).entity("SUCCESS")
 				.build();

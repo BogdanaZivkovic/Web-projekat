@@ -1,4 +1,4 @@
-Vue.component("profile-admin", {
+Vue.component("edit-user", {
 	data: function() {
 		return {
 			user: {}
@@ -41,6 +41,7 @@ Vue.component("profile-admin", {
 				"dateOfBirth":''+user.dateOfBirth, 
 				"role":''+user.role
 			})
+			.then(response => (this.init()))
 		}
 	},
 	mounted() {
