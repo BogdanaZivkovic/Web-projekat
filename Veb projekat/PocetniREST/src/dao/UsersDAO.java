@@ -18,7 +18,7 @@ public class UsersDAO {
 	private HashMap<String, User> users = new HashMap<String, User>();
 	//private String path = "C:\\Users\\Nikola\\Desktop\\Web-projekat\\Veb projekat\\PocetniREST\\WebContent";
 	private String path = System.getProperty("catalina.base") + File.separator + "data" + File.separator + "users.txt";
-	
+
 	public UsersDAO() {
 		BufferedReader in = null;
 		try {
@@ -38,7 +38,7 @@ public class UsersDAO {
 			}
 		}
 	}
-	
+
 	private void readUsers(BufferedReader in) {
 		String line, userName = "", password = "", name = "", surname = "", gender = "", dateOfBirth = "", role = "";
 		StringTokenizer st;
@@ -64,7 +64,7 @@ public class UsersDAO {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	public void saveUsers() {
 		BufferedWriter out = null;
 		try {
@@ -84,12 +84,12 @@ public class UsersDAO {
 				}
 			}
 		}
-		
+
 	}
 
 	private String writeUser(User user) {
 		StringBuilder sb = new StringBuilder();
-		
+
 		sb.append(user.getUserName() + ";");
 		sb.append(user.getPassword() + ";");
 		sb.append(user.getName() + ";");
@@ -97,24 +97,24 @@ public class UsersDAO {
 		sb.append(user.getGender() + ";");
 		sb.append(user.getDateOfBirth() + ";");
 		sb.append(user.getRole() + ";");
-		
+
 		return sb.toString();
 	}
-	
+
 	public Collection<User> getValues() {
 		return users.values();
 	}
-	
+
 	public User getUser(String id) {
 		return users.get(id);
 	}
-	
-	
+
+
 	public void addUser(User user) {
 		users.put(user.getUserName(), user);
 		saveUsers();
 	}
-	
+
 	public User getUserByUsername(String username) {
 		return users.get(username);
 	}

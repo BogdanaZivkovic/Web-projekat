@@ -1,2 +1,3 @@
-test;test;test;test;Male;1970-11-11;CUSTOMER;
+test;test;test;test;Male;1970-11-11;DELIVERER;
 Fat Bastard;algoflogen1;Nikola;Ivanovic;Male;1999-12-17;ADMINISTRATOR;
+tetris;test;test;test;Male;1970-11-11;MANAGER;
