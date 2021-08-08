@@ -6,19 +6,24 @@ Vue.component("all-restaurants-app", {
 	},
 	template: `
 	<div>
-		<table>
-			<tr>
-				<th> Name </th>
-				<th> Type </th>
-				<th> Status </th>
-			</tr>
-			<tr v-for="restaurant in restaurants">
-				<td> {{restaurant.name}} </td>
-				<td> {{restaurant.type}} </td>
-				<td> {{restaurant.status}} </td>
-			</tr>
-		</table>
-	</div>
+		<ul>
+			<li v-for ="restaurant in restaurants">
+				<table>
+					<tr>
+						<td> Name of restaurant: </td>
+						<td> {{restaurant.name}} </td>
+					</tr>
+					<tr>
+						<td> Restaurant type: </td>
+						<td> {{restaurant.type}} </td>
+					</tr>
+					<tr>
+						<td> Restaurant status: </td>
+						<td> {{restaurant.status}} </td>
+					</tr>
+				</table>
+			</li>
+		</ul>
 	`,
 	mounted () {
 		axios
