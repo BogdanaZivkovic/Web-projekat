@@ -4,13 +4,13 @@ public class Location {
 	
 	private String latitude;
 	private String longitude;
-	private String address;
+	private Address address;
 	
 	public Location() {
 		
 	}
 	
-	public Location(String latitude, String longitude, String address) {
+	public Location(String latitude, String longitude, Address address) {
 		super();
 		this.latitude = latitude;
 		this.longitude = longitude;
@@ -20,10 +20,10 @@ public class Location {
 	public String getLatitude() {
 		return latitude;
 	}
-	public String getAddress() {
+	public Address getAddress() {
 		return address;
 	}
-	public void setAddress(String address) {
+	public void setAddress(Address address) {
 		this.address = address;
 	}
 	public void setLatitude(String latitude) {
