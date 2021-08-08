@@ -1,13 +1,25 @@
 Vue.component("all-restaurants-app", {
 	data: function() {
 		return {
-			restaurants: []
+			searchFields: {
+				name: '',
+				type: ''
+			},
+			restaurants: [],
+			searchVisible: true
 		}
 	},
 	template: `
 	<div>
+		<div v-if="searchVisible">
+			<form method='post'>
+				<input type="text" v-model="searchFields.name" placeholder="Naziv"></input>
+				<br><br>
+			</form>
+		</div>
+		
 		<ul>
-			<li v-for ="restaurant in restaurants">
+			<li v-for ="restaurant in filteredRestaurants">
 				<table>
 					<tr>
 						<td> Name of restaurant: </td>
@@ -25,9 +37,23 @@ Vue.component("all-restaurants-app", {
 			</li>
 		</ul>
 	`,
+	methods: {
+		matchesSearch: function (restaurant) {
+			if(!restaurant.name.match(this.searchFields.name))
+				return false;
+			return true;
+		}
+	},
 	mounted () {
 		axios
           .get('rest/restaurants/getAllRestaurants')
           .then(response => (this.restaurants = response.data))
+	},
+	computed: {
+		filteredRestaurants: function() {
+			return this.restaurants.filter((restaurant) => {
+				return this.matchesSearch(restaurant);
+			});
+		}
 	},
 });
