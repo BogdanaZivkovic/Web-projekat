@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.StringTokenizer;
 
 import beans.User;
+import dto.UserDTO;
 
 public class UsersDAO {
 
@@ -110,12 +111,23 @@ public class UsersDAO {
 	}
 
 
-	public void addUser(User user) {
+	public void addUser(UserDTO dto) {
+		User user = new User(dto.userName, dto.password, dto.name, dto.surname, dto.gender, dto.dateOfBirth, dto.role);
 		users.put(user.getUserName(), user);
 		saveUsers();
 	}
 
 	public User getUserByUsername(String username) {
 		return users.get(username);
+	}
+	
+	public void updateUser(UserDTO dto) {
+		User user = getUserByUsername(dto.userName);
+		user.setPassword(dto.password);
+		user.setName(dto.name);
+		user.setSurname(dto.surname);
+		user.setGender(dto.gender);
+		user.setDateOfBirth(dto.dateOfBirth);
+		user.setRole(dto.role);
 	}
 }

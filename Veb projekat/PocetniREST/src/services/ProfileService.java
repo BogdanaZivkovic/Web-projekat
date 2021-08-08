@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response;
 
 import beans.User;
 import dao.UsersDAO;
+import dto.UserDTO;
 
 @Path("/profile")
 public class ProfileService {
@@ -37,9 +38,10 @@ public class ProfileService {
 	@Path("/update")
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateUser(User user) {
+	public Response updateUser(UserDTO dto) {
 		UsersDAO users = getUsers();
-		users.addUser(user);
+		users.updateUser(dto);
+		User user = users.getUserByUsername(dto.userName);
 		request.getSession().setAttribute("loggedUser", user);
 		return Response
 				.status(Response.Status.ACCEPTED).entity("SUCCESS")

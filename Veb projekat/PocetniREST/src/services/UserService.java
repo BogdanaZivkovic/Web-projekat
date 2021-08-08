@@ -16,6 +16,7 @@ import javax.ws.rs.core.Response;
 import beans.User;
 import dao.UsersDAO;
 import dto.LoginDTO;
+import dto.UserDTO;
 
 @Path("/users")
 public class UserService {
@@ -29,19 +30,18 @@ public class UserService {
 	@Path("/registration")
 	@Produces(MediaType.TEXT_HTML)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response registerUser(User user)
+	public Response registerUser(UserDTO dto)
 	{
 		UsersDAO users = getUsers();
 		
-		if(users.getUserByUsername(user.getUserName()) != null)
+		if(users.getUserByUsername(dto.userName) != null)
 		{
 			System.out.println("korisnik vec postoji");
 			return Response.status(Response.Status.BAD_REQUEST)
 					.entity("Username taken. Please try another one").build();
 		}
-		
-		users.addUser(user);
-		System.out.println(user.getUserName());
+		users.addUser(dto);
+		System.out.println(dto.userName);
 		return Response.status(Response.Status.ACCEPTED).entity("/PocetniREST/").build();
 	}
 	
