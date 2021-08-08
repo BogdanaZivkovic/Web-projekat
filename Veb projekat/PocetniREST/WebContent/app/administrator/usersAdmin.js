@@ -6,6 +6,7 @@ Vue.component("users-admin", {
 	},
 	template: `
 	<div>
+		<button @click="$router.push('/adduseradmin')"> ADD </button>
 		<table>
 			<tr>
 				<th> Usermame </th>
