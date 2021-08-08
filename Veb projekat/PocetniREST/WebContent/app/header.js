@@ -5,6 +5,7 @@ Vue.component("header-app", {
 			<ul>
 				<li> <router-link to="/register" exact> Register </router-link> </li>
 				<li><router-link to="/login" exact> Login </router-link></li>
+				<li><router-link to="/restaurants" exact> Restaurants </router-link></li>
 			</ul>
 		</nav>
 	</div>
