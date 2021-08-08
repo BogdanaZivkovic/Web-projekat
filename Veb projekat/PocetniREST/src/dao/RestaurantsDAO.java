@@ -7,13 +7,12 @@ import java.io.FileReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
 import beans.Restaurant;
-import beans.User;
+import dto.RestaurantDTO;
 
 public class RestaurantsDAO {
 
@@ -104,7 +103,8 @@ public class RestaurantsDAO {
 	}
 	
 	
-	public void addRestaurant(Restaurant restaurant) {
+	public void addRestaurant(RestaurantDTO dto) {
+		Restaurant restaurant = new Restaurant(dto.name, dto.type, dto.status);
 		restaurants.put(restaurant.getName(), restaurant);
 		saveRestaurants();
 	}

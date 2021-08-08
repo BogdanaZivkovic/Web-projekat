@@ -14,10 +14,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import beans.Restaurant;
-import beans.User;
 import dao.RestaurantsDAO;
-import dao.UsersDAO;
-import dto.LoginDTO;
+import dto.RestaurantDTO;
 
 @Path("/restaurants")
 public class RestaurantService {
@@ -32,19 +30,19 @@ public class RestaurantService {
 	@Path("/create")
 	@Produces(MediaType.TEXT_HTML)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createRestaurant(Restaurant restaurant)
+	public Response createRestaurant(RestaurantDTO dto)
 	{
 		RestaurantsDAO restaurants = getRestaurants();
 		
-		if(restaurants.getRestaurantByName(restaurant.getName()) != null)
+		if(restaurants.getRestaurantByName(dto.name) != null)
 		{
 			System.out.println("restoran sa istim nazivom vec postoji");
 			return Response.status(Response.Status.BAD_REQUEST)
 					.entity("Username taken. Please try another one").build();
 		}
 		
-		restaurants.addRestaurant(restaurant);
-		System.out.println(restaurant.getName());
+		restaurants.addRestaurant(dto);
+		System.out.println(dto.name);
 		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
 	}
 	
