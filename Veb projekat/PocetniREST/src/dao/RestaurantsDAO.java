@@ -18,12 +18,13 @@ import beans.User;
 public class RestaurantsDAO {
 
 	private HashMap<String, Restaurant> restaurants = new HashMap<String, Restaurant>();
-	private String path = "C:\\Users\\User\\Desktop\\Web-projekat\\Veb projekat\\PocetniREST\\WebContent";
+	//private String path = "C:\\Users\\User\\Desktop\\Web-projekat\\Veb projekat\\PocetniREST\\WebContent";	
+	private String path = System.getProperty("catalina.base") + File.separator + "data" + File.separator + "restaurants.txt";
 	
 	public RestaurantsDAO() {
 		BufferedReader in = null;
 		try {
-			File file = new File(path + "/restaurants.txt");
+			File file = new File(path);
 			System.out.println(file.getCanonicalPath());
 			in = new BufferedReader(new FileReader(file));
 			readRestaurants(in);
@@ -66,7 +67,7 @@ public class RestaurantsDAO {
 	public void saveRestaurants() {
 		BufferedWriter out = null;
 		try {
-			out = Files.newBufferedWriter(Paths.get(path + "/restaurants.txt"), StandardCharsets.UTF_8);
+			out = Files.newBufferedWriter(Paths.get(path), StandardCharsets.UTF_8);
 			for (Restaurant restaurant : restaurants.values()) {
 				out.write(writeRestaurant(restaurant));
 				out.newLine();
