@@ -5,7 +5,7 @@ const router = new VueRouter({
 	mode: 'hash',
 	  routes: [
 		{ path: '/', component: ProfileManager},
-		{path: '/restaurantManager', component: ViewRestaurantManager}
+		{path: '/restaurantmanager', component: ViewRestaurantManager}
 	]
 });
 
