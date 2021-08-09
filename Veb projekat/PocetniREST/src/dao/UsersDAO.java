@@ -13,6 +13,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import beans.Restaurant;
 import beans.User;
 import dto.UserDTO;
 
@@ -154,7 +155,7 @@ public class UsersDAO {
 	public User getUserByUsername(String username) {
 		return users.get(username);
 	}
-	
+
 	public void updateUser(UserDTO dto) {
 		User user = getUserByUsername(dto.userName);
 		user.setPassword(dto.password);

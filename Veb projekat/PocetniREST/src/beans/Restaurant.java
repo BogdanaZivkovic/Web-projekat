@@ -1,22 +1,24 @@
 package beans;
 
 public class Restaurant {
-	
+
 	private String name;
 	private String type;
 	private String status;
 	private Location location;
-	
+	private String managerUsername;
+
 	public Restaurant() {
-		
+
 	}
-	
-	public Restaurant(String name, String type, String status, Location location) {
+
+	public Restaurant(String name, String type, String status, Location location, String managerUsername) {
 		super();
 		this.name = name;
 		this.type = type;
 		this.status = status;
 		this.location = location;
+		this.managerUsername = managerUsername;
 	}
 
 	public String getName() {
@@ -50,5 +52,12 @@ public class Restaurant {
 	public void setLocation(Location location) {
 		this.location = location;
 	}
-	
+
+	public String getManagerUsername() {
+		return managerUsername;
+	}
+
+	public void setManagerUsername(String managerUsername) {
+		this.managerUsername = managerUsername;
+	}
 }

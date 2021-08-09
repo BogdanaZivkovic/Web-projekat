@@ -13,6 +13,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import beans.Location;
 import beans.Restaurant;
 import dto.RestaurantDTO;
 
@@ -20,7 +21,7 @@ public class RestaurantsDAO {
 
 	private HashMap<String, Restaurant> restaurants = new HashMap<String, Restaurant>();
 	private String path = System.getProperty("catalina.base") + File.separator + "data" + File.separator + "restaurants.json";
-	
+
 	public RestaurantsDAO() {
 		/*BufferedReader in = null;
 		try {
@@ -41,7 +42,7 @@ public class RestaurantsDAO {
 		}*/
 		readRestaurants();
 	}
-	
+
 	private void readRestaurants() {
 		/*String line, name = "", type = "", status = "";
 		StringTokenizer st;
@@ -55,8 +56,9 @@ public class RestaurantsDAO {
 					name = st.nextToken().trim();
 					type = st.nextToken().trim();
 					status = st.nextToken().trim();
+					managerUsername = st.nextToken().trim();
 				}
-				Restaurant restaurant = new Restaurant(name, type, status);
+				Restaurant restaurant = new Restaurant(name, type, status, managerUsername);
 				restaurants.put(name, restaurant);
 			}
 		} catch (Exception ex) {
@@ -84,8 +86,8 @@ public class RestaurantsDAO {
 			restaurants.put(r.getName(), r);
 		}
 	}
-	
-	
+
+
 	public void saveRestaurants() {
 		/*BufferedWriter out = null;
 		try {
@@ -118,33 +120,34 @@ public class RestaurantsDAO {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/*private String writeRestaurant(Restaurant restaurant) {
 		StringBuilder sb = new StringBuilder();
-		
+
 		sb.append(restaurant.getName() + ";");
 		sb.append(restaurant.getType() + ";");
 		sb.append(restaurant.getStatus() + ";");
-		
+		sb.append(restaurant.getManagerUsername() + ";");
+
 		return sb.toString();
 	}*/
-	
+
 	public Collection<Restaurant> getValues() {
 		return restaurants.values();
 	}
-	
+
 	public Restaurant getRestaurant(String id) {
 		return restaurants.get(id);
 	}
-	
-	
+
+
 	public void addRestaurant(RestaurantDTO dto) {
 		//PROMENITI
-		Restaurant restaurant = new Restaurant(dto.name, dto.type, dto.status, null);
+		Restaurant restaurant = new Restaurant(dto.name, dto.type, dto.status, null, dto.managerUsername);
 		restaurants.put(restaurant.getName(), restaurant);
 		saveRestaurants();
 	}
-	
+
 	public Restaurant getRestaurantByName(String name) {
 		return restaurants.get(name);
 	}
