@@ -5,17 +5,19 @@ public class Restaurant {
 	private String name;
 	private String type;
 	private String status;
+	private String managerUsername;
 	
 	
 	public Restaurant() {
 		
 	}
 	
-	public Restaurant(String name, String type, String status) {
+	public Restaurant(String name, String type, String status, String managerUsername) {
 		super();
 		this.name = name;
 		this.type = type;
 		this.status = status;
+		this.managerUsername = managerUsername;
 	}
 
 	public String getName() {
@@ -41,6 +43,12 @@ public class Restaurant {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
-	
+
+	public String getManagerUsername() {
+		return managerUsername;
+	}
+
+	public void setManagerUsername(String managerUsername) {
+		this.managerUsername = managerUsername;
+	}
 }

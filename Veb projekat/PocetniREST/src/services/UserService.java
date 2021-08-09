@@ -1,6 +1,8 @@
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +16,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import beans.User;
+import beans.Restaurant;
+import dao.RestaurantsDAO;
 import dao.UsersDAO;
 import dto.LoginDTO;
 import dto.UserDTO;
@@ -84,6 +88,44 @@ public class UserService {
 				.build();
 	}
 	
+	@GET
+	@Path("/getAvailableManagers")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getManagers() {
+		Collection<User> users = getUsers().getValues();
+		Collection<Restaurant> restaurants = getRestaurants().getValues();
+		ArrayList<User> managers = new ArrayList<User>();
+		ArrayList<User> filteredManagers = new ArrayList<User>();
+		
+		for (User user : users) {
+			if(user.getRole().equals("MANAGER")) {
+				managers.add(user);
+			}
+		}
+		
+		int count = 0; 
+		
+		for (User manager : managers) {
+			for (Restaurant restaurant : restaurants) {
+				if(restaurant.getManagerUsername().compareTo(manager.getUserName())==0) {
+					count = 1;
+				}
+			}
+			
+			if(count==0) {
+				filteredManagers.add(manager);
+			}
+			else {
+				count = 0;
+			}
+		}
+		
+		return Response
+				.status(Response.Status.ACCEPTED).entity("SUCCESS")
+				.entity(filteredManagers)
+				.build();			
+	}
+	
 	private UsersDAO getUsers() {
 		UsersDAO users = (UsersDAO) ctx.getAttribute("users");
 		
@@ -94,5 +136,17 @@ public class UserService {
 		}
 
 		return users;
+	}
+	
+	private RestaurantsDAO getRestaurants() {
+		RestaurantsDAO restaurants = (RestaurantsDAO) ctx.getAttribute("restaurants");
+		
+		if (restaurants == null) {
+			restaurants = new RestaurantsDAO();
+			ctx.setAttribute("restaurants", restaurants);
+
+		}
+
+		return restaurants;
 	}
 }

@@ -11,13 +11,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
+import beans.Restaurant;
 import beans.User;
 import dto.UserDTO;
 
 public class UsersDAO {
 
 	private HashMap<String, User> users = new HashMap<String, User>();
-	//private String path = "C:\\Users\\Nikola\\Desktop\\Web-projekat\\Veb projekat\\PocetniREST\\WebContent";
 	private String path = System.getProperty("catalina.base") + File.separator + "data" + File.separator + "users.txt";
 
 	public UsersDAO() {

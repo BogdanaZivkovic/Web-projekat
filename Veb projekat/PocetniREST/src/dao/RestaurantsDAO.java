@@ -11,13 +11,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
+import beans.Location;
 import beans.Restaurant;
 import dto.RestaurantDTO;
 
 public class RestaurantsDAO {
 
 	private HashMap<String, Restaurant> restaurants = new HashMap<String, Restaurant>();
-	//private String path = "C:\\Users\\User\\Desktop\\Web-projekat\\Veb projekat\\PocetniREST\\WebContent";	
 	private String path = System.getProperty("catalina.base") + File.separator + "data" + File.separator + "restaurants.txt";
 	
 	public RestaurantsDAO() {
@@ -41,7 +41,7 @@ public class RestaurantsDAO {
 	}
 	
 	private void readRestaurants(BufferedReader in) {
-		String line, name = "", type = "", status = "";
+		String line, name = "", type = "", status = "", managerUsername = "";
 		StringTokenizer st;
 		try {
 			while ((line = in.readLine()) != null) {
@@ -53,8 +53,9 @@ public class RestaurantsDAO {
 					name = st.nextToken().trim();
 					type = st.nextToken().trim();
 					status = st.nextToken().trim();
+					managerUsername = st.nextToken().trim();	
 				}
-				Restaurant restaurant = new Restaurant(name, type, status);
+				Restaurant restaurant = new Restaurant(name, type, status, managerUsername);
 				restaurants.put(name, restaurant);
 			}
 		} catch (Exception ex) {
@@ -90,6 +91,7 @@ public class RestaurantsDAO {
 		sb.append(restaurant.getName() + ";");
 		sb.append(restaurant.getType() + ";");
 		sb.append(restaurant.getStatus() + ";");
+		sb.append(restaurant.getManagerUsername() + ";");
 		
 		return sb.toString();
 	}
@@ -104,7 +106,7 @@ public class RestaurantsDAO {
 	
 	
 	public void addRestaurant(RestaurantDTO dto) {
-		Restaurant restaurant = new Restaurant(dto.name, dto.type, dto.status);
+		Restaurant restaurant = new Restaurant(dto.name, dto.type, dto.status, dto.managerUsername);
 		restaurants.put(restaurant.getName(), restaurant);
 		saveRestaurants();
 	}
