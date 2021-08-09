@@ -16,9 +16,6 @@ Vue.component("login-app", {
 			<br><br>
             <button type='submit'> LOGIN </button>
         </form>
-		<p>
-			<a href="#/register">Register</a>
-		</p>
     </div>
     `,
 	methods: {
