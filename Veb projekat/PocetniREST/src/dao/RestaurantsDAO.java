@@ -1,15 +1,17 @@
 package dao;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.StringTokenizer;
+import java.util.List;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import beans.Restaurant;
 import dto.RestaurantDTO;
@@ -17,11 +19,10 @@ import dto.RestaurantDTO;
 public class RestaurantsDAO {
 
 	private HashMap<String, Restaurant> restaurants = new HashMap<String, Restaurant>();
-	//private String path = "C:\\Users\\User\\Desktop\\Web-projekat\\Veb projekat\\PocetniREST\\WebContent";	
-	private String path = System.getProperty("catalina.base") + File.separator + "data" + File.separator + "restaurants.txt";
+	private String path = System.getProperty("catalina.base") + File.separator + "data" + File.separator + "restaurants.json";
 	
 	public RestaurantsDAO() {
-		BufferedReader in = null;
+		/*BufferedReader in = null;
 		try {
 			File file = new File(path);
 			System.out.println(file.getCanonicalPath());
@@ -37,11 +38,12 @@ public class RestaurantsDAO {
 				}
 				catch (Exception e) { }
 			}
-		}
+		}*/
+		readRestaurants();
 	}
 	
-	private void readRestaurants(BufferedReader in) {
-		String line, name = "", type = "", status = "";
+	private void readRestaurants() {
+		/*String line, name = "", type = "", status = "";
 		StringTokenizer st;
 		try {
 			while ((line = in.readLine()) != null) {
@@ -59,12 +61,33 @@ public class RestaurantsDAO {
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
+		}*/
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		File file = new File(this.path);
+
+		List<Restaurant> loadedRestaurants = new ArrayList<Restaurant>();
+		try {
+
+			loadedRestaurants = objectMapper.readValue(file, new TypeReference<List<Restaurant>>() {
+			});
+
+		} catch (JsonParseException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		for (Restaurant r : loadedRestaurants) {
+			restaurants.put(r.getName(), r);
 		}
 	}
 	
 	
 	public void saveRestaurants() {
-		BufferedWriter out = null;
+		/*BufferedWriter out = null;
 		try {
 			out = Files.newBufferedWriter(Paths.get(path), StandardCharsets.UTF_8);
 			for (Restaurant restaurant : restaurants.values()) {
@@ -81,10 +104,22 @@ public class RestaurantsDAO {
 				} catch (Exception e) {
 				}
 			}
-		}		
+		}*/
+		List<Restaurant> allRestaurants = new ArrayList<Restaurant>();
+		for (Restaurant r : getValues()) {
+			allRestaurants.add(r);
+		}
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		try {
+			objectMapper.writeValue(new FileOutputStream(this.path), allRestaurants);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
-	private String writeRestaurant(Restaurant restaurant) {
+	/*private String writeRestaurant(Restaurant restaurant) {
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append(restaurant.getName() + ";");
@@ -92,7 +127,7 @@ public class RestaurantsDAO {
 		sb.append(restaurant.getStatus() + ";");
 		
 		return sb.toString();
-	}
+	}*/
 	
 	public Collection<Restaurant> getValues() {
 		return restaurants.values();
@@ -104,7 +139,8 @@ public class RestaurantsDAO {
 	
 	
 	public void addRestaurant(RestaurantDTO dto) {
-		Restaurant restaurant = new Restaurant(dto.name, dto.type, dto.status);
+		//PROMENITI
+		Restaurant restaurant = new Restaurant(dto.name, dto.type, dto.status, null);
 		restaurants.put(restaurant.getName(), restaurant);
 		saveRestaurants();
 	}

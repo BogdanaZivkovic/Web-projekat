@@ -1,15 +1,17 @@
 package dao;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.StringTokenizer;
+import java.util.List;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import beans.User;
 import dto.UserDTO;
@@ -17,11 +19,10 @@ import dto.UserDTO;
 public class UsersDAO {
 
 	private HashMap<String, User> users = new HashMap<String, User>();
-	//private String path = "C:\\Users\\Nikola\\Desktop\\Web-projekat\\Veb projekat\\PocetniREST\\WebContent";
-	private String path = System.getProperty("catalina.base") + File.separator + "data" + File.separator + "users.txt";
+	private String path = System.getProperty("catalina.base") + File.separator + "data" + File.separator + "users.json";
 
 	public UsersDAO() {
-		BufferedReader in = null;
+		/*BufferedReader in = null;
 		try {
 			File file = new File(path);
 			System.out.println(file.getCanonicalPath());
@@ -37,11 +38,12 @@ public class UsersDAO {
 				}
 				catch (Exception e) { }
 			}
-		}
+		}*/
+		readUsers();
 	}
 
-	private void readUsers(BufferedReader in) {
-		String line, userName = "", password = "", name = "", surname = "", gender = "", dateOfBirth = "", role = "";
+	private void readUsers() {
+		/*String line, userName = "", password = "", name = "", surname = "", gender = "", dateOfBirth = "", role = "";
 		StringTokenizer st;
 		try {
 			while ((line = in.readLine()) != null) {
@@ -63,11 +65,32 @@ public class UsersDAO {
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
+		}*/
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		File file = new File(this.path);
+
+		List<User> loadedUsers = new ArrayList<User>();
+		try {
+
+			loadedUsers = objectMapper.readValue(file, new TypeReference<List<User>>() {
+			});
+
+		} catch (JsonParseException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		for (User u : loadedUsers) {
+			users.put(u.getUserName(), u);
 		}
 	}
 
 	public void saveUsers() {
-		BufferedWriter out = null;
+		/*BufferedWriter out = null;
 		try {
 			out = Files.newBufferedWriter(Paths.get(path), StandardCharsets.UTF_8);
 			for (User user : users.values()) {
@@ -84,11 +107,22 @@ public class UsersDAO {
 				} catch (Exception e) {
 				}
 			}
+		}*/
+		List<User> allUsers = new ArrayList<User>();
+		for (User u : getValues()) {
+			allUsers.add(u);
 		}
 
+		ObjectMapper objectMapper = new ObjectMapper();
+		try {
+			objectMapper.writeValue(new FileOutputStream(this.path), allUsers);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
-	private String writeUser(User user) {
+	/*private String writeUser(User user) {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append(user.getUserName() + ";");
@@ -100,7 +134,7 @@ public class UsersDAO {
 		sb.append(user.getRole() + ";");
 
 		return sb.toString();
-	}
+	}*/
 
 	public Collection<User> getValues() {
 		return users.values();

@@ -5,17 +5,18 @@ public class Restaurant {
 	private String name;
 	private String type;
 	private String status;
-	
+	private Location location;
 	
 	public Restaurant() {
 		
 	}
 	
-	public Restaurant(String name, String type, String status) {
+	public Restaurant(String name, String type, String status, Location location) {
 		super();
 		this.name = name;
 		this.type = type;
 		this.status = status;
+		this.location = location;
 	}
 
 	public String getName() {
@@ -41,6 +42,13 @@ public class Restaurant {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
+
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
+	}
 	
 }
