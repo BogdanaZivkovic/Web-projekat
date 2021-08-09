@@ -6,18 +6,22 @@ Vue.component("all-restaurants-app", {
 				type: ''
 			},
 			restaurants: [],
-			searchVisible: true
+			searchVisible: false
 		}
 	},
 	template: `
 	<div>
-		<button @click="sortAlphanumeric"> Sort alphanumeric </button>
-		<button @click="sortAlphanumericReverse"> Sort alphanumeric reverse </button>
+		<button @click="searchVisible=!searchVisible">Search</button>
+		<br><br>
 		<div v-if="searchVisible">
 			<form method='post'>
 				<input type="text" v-model="searchFields.name" placeholder="Naziv"></input>
 				<br><br>
 			</form>
+			<button @click="sortAlphanumeric"> Sort alphanumeric </button>
+			<br><br>
+			<button @click="sortAlphanumericReverse"> Sort alphanumeric reverse </button>
+			<br><br>
 		</div>
 		
 		<ul>
