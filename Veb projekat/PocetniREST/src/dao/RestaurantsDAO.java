@@ -13,7 +13,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import beans.Location;
 import beans.Restaurant;
 import dto.RestaurantDTO;
 
@@ -150,6 +149,13 @@ public class RestaurantsDAO {
 
 	public Restaurant getRestaurantByName(String name) {
 		return restaurants.get(name);
+	}
+	
+	public Restaurant getRestaurantByManager(String managerUsername) {
+		for (Restaurant restaurant : restaurants.values())
+			if(restaurant.getManagerUsername().equals(managerUsername))
+				return restaurant;
+		return null;
 	}
 
 }

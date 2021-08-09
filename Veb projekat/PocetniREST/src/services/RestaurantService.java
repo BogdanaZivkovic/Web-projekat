@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import beans.Restaurant;
+import beans.User;
 import dao.RestaurantsDAO;
 import dto.RestaurantDTO;
 
@@ -54,6 +55,19 @@ public class RestaurantService {
 		return Response
 				.status(Response.Status.ACCEPTED).entity("SUCCESS")
 				.entity(restaurants)
+				.build();
+	}
+	
+	@GET
+	@Path("getMyRestaurant")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getMyRestaurant() {
+		User user = (User) request.getSession().getAttribute("loggedUser");
+		RestaurantsDAO restaurants = getRestaurants();
+		Restaurant restaurant =  restaurants.getRestaurantByManager(user.getUserName());
+		return Response
+				.status(Response.Status.ACCEPTED).entity("SUCCESS")
+				.entity(restaurant)
 				.build();
 	}
 	
