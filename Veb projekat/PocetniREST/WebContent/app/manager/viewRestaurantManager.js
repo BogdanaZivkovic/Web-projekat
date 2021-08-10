@@ -27,6 +27,7 @@ Vue.component("view-restaurant-manager", {
 					<td v-else>-</td>
 				</tr>
 			</table>
+			<button @click="$router.push('/additem')"> New item </button>
 		</div>
 		<h3 v-else>You are not assigned to a restaurant</h3>
 	</div>

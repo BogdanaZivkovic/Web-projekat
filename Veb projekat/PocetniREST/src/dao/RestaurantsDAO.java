@@ -157,5 +157,9 @@ public class RestaurantsDAO {
 				return restaurant;
 		return null;
 	}
-
+	
+	public void updateRestaurant(Restaurant restaurant) {
+		restaurants.put(restaurant.getName(), restaurant);
+		saveRestaurants();
+	}
 }

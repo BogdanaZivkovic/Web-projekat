@@ -72,4 +72,8 @@ public class Restaurant {
 	public void setItemIDs(ArrayList<Integer> itemIDs) {
 		this.itemIDs = itemIDs;
 	}
+	
+	public void addItemID(int itemID) {
+		itemIDs.add(itemID);
+	}
 }
