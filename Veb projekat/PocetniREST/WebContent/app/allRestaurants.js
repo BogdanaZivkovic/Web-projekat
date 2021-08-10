@@ -40,6 +40,7 @@ Vue.component("all-restaurants-app", {
 						<td> {{restaurant.status}} </td>
 					</tr>
 				</table>
+				<button @click= "viewRestaurant(restaurant)" > View </button>
 			</li>
 		</ul>
 	`,
@@ -80,7 +81,14 @@ Vue.component("all-restaurants-app", {
       		} else {
           		return aA > bA ? -1 : 1;
       		}
-    	}
+    	},
+		viewRestaurant: function (restaurant) {
+			let data = restaurant;
+      		this.$router.push({
+        		name: "viewRestaurant", //use name for router push
+       			params: { data }
+      		});
+		}
 	},
 	mounted () {
 		axios
