@@ -3,7 +3,7 @@ package beans;
 public class Item {
 	private int ID;
 	private String name;
-	private String price;
+	private double price;
 	private String type;
 	private String restaurantName;
 	private String quantity;
@@ -13,7 +13,7 @@ public class Item {
 		
 	}
 	
-	public Item(int ID, String name, String price, String type, String restaurantName, String quantity, String description) {
+	public Item(int ID, String name, double price, String type, String restaurantName, String quantity, String description) {
 		this.ID = ID;
 		this.name = name;
 		this.price = price;
@@ -39,11 +39,11 @@ public class Item {
 		this.name = name;
 	}
 
-	public String getPrice() {
+	public double getPrice() {
 		return price;
 	}
 
-	public void setPrice(String price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 
