@@ -22,6 +22,13 @@ Vue.component("restaurants-admin", {
 						<td> Restaurant status: </td>
 						<td> {{restaurant.status}} </td>
 					</tr>
+					<tr>
+						<td> Restaurant address: </td>
+						<td> {{restaurant.location.address.city}} </td>
+						<td> {{restaurant.location.address.street}} </td>
+						<td> {{restaurant.location.address.number}} </td>
+						<td> {{restaurant.location.address.zipCode}} </td>
+					</tr>
 				</table>
 			</li>
 		</ul>

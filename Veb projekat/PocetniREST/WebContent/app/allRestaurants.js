@@ -39,6 +39,13 @@ Vue.component("all-restaurants-app", {
 						<td> Restaurant status: </td>
 						<td> {{restaurant.status}} </td>
 					</tr>
+					<tr>
+						<td> Restaurant address: </td>
+						<td> {{restaurant.location.address.city}} </td>
+						<td> {{restaurant.location.address.street}} </td>
+						<td> {{restaurant.location.address.number}} </td>
+						<td> {{restaurant.location.address.zipCode}} </td>
+					</tr>
 				</table>
 			</li>
 		</ul>
@@ -85,7 +92,11 @@ Vue.component("all-restaurants-app", {
 	mounted () {
 		axios
           .get('rest/restaurants/getAllRestaurants')
-          .then(response => (this.restaurants = response.data))
+          .then(response => {
+				this.restaurants = response.data
+				this.restaurants.sort((a, b) => (a.status > b.status) ? -1 : 1);
+				})
+
 	},
 	computed: {
 		filteredRestaurants: function() {
