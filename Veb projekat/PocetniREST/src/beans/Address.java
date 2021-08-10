@@ -1,16 +1,16 @@
 package beans;
 
 public class Address {
+	private String city;
 	private String street;
 	private String number;
-	private String city;
 	private String zipCode;
 	
 	public Address() {
 		
 	}
 	
-	public Address(String street, String number, String city, String zipCode) {
+	public Address(String city, String street, String number, String zipCode) {
 		super();
 		this.street = street;
 		this.number = number;

@@ -8,8 +8,8 @@ Vue.component("restaurant-admin", {
 				status: "",
 				managerUsername: "",
 				city:"",
-				number:"",
 				street:"",
+				number:"",
 				zipCode:""
 			},
 			newUser: {
