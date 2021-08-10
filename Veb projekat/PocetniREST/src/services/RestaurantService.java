@@ -1,5 +1,6 @@
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.servlet.ServletContext;
@@ -13,6 +14,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import beans.Item;
 import beans.Restaurant;
 import beans.User;
 import dao.ItemsDAO;
@@ -84,6 +86,15 @@ public class RestaurantService {
 		activeRestaurant.addItemID(itemID);
 		getRestaurants().updateRestaurant(activeRestaurant);
 		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
+	}
+	
+	@GET
+	@Path("getItems")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getItemsForRestaurant() {
+		Restaurant activeRestaurant = (Restaurant) request.getSession().getAttribute("activeRestaurant");
+		Collection<Item> items = getItems().getItemsForRestaurant(activeRestaurant.getName());
+		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").entity(items).build();
 	}
 	
 	private RestaurantsDAO getRestaurants() {

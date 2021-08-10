@@ -78,4 +78,14 @@ public class ItemsDAO {
 		saveItems();
 		return item.getID();
 	}
+	
+	public Collection<Item> getItemsForRestaurant(String restaurantName) {
+		Collection<Item> items = new ArrayList<Item>();
+		for (Item i : getValues()) {
+			if(i.getRestaurantName().equals(restaurantName)) {
+				items.add(i);
+			}
+		}
+		return items;
+	}
 }

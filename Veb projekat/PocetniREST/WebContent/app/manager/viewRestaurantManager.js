@@ -1,7 +1,8 @@
 Vue.component("view-restaurant-manager", {
 	data: function() {
 		return {
-			restaurant: {}
+			restaurant: {},
+			items: []
 		}
 	},
 	template:`
@@ -28,6 +29,32 @@ Vue.component("view-restaurant-manager", {
 				</tr>
 			</table>
 			<button @click="$router.push('/additem')"> New item </button>
+			<ul>
+				<li v-for="item in items">
+					<table>
+						<tr>
+							<td> Name: </td>
+							<td> {{item.name}} </td>
+						</tr>
+						<tr>
+							<td> Price: </td>
+							<td> {{item.price}} </td>
+						</tr>
+						<tr>
+							<td> Type: </td>
+							<td> {{item.type}} </td>
+						</tr>
+						<tr>
+							<td> Quantity: </td>
+							<td> {{item.quantity}} </td>
+						</tr>
+						<tr>
+							<td> Description: </td>
+							<td> {{item.description}} </td>
+						</tr>
+					</table>
+				</li>
+			</ul>
 		</div>
 		<h3 v-else>You are not assigned to a restaurant</h3>
 	</div>
@@ -35,6 +62,11 @@ Vue.component("view-restaurant-manager", {
 	mounted() {
 		axios
 			.get('rest/restaurants/getMyRestaurant')
-			.then(response => this.restaurant = response.data)
+			.then(response => {
+				this.restaurant = response.data
+				axios
+					.get('rest/restaurants/getItems')
+					.then(response => this.items = response.data)	
+			})
 	}
 });
