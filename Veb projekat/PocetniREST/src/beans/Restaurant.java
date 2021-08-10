@@ -1,5 +1,7 @@
 package beans;
 
+import java.util.ArrayList;
+
 public class Restaurant {
 
 	private String name;
@@ -7,7 +9,8 @@ public class Restaurant {
 	private String status;
 	private Location location;
 	private String managerUsername;
-
+	private ArrayList<Integer> itemIDs;
+	
 	public Restaurant() {
 
 	}
@@ -19,6 +22,7 @@ public class Restaurant {
 		this.status = status;
 		this.location = location;
 		this.managerUsername = managerUsername;
+		this.itemIDs = new ArrayList<Integer>();
 	}
 
 	public String getName() {
@@ -59,5 +63,13 @@ public class Restaurant {
 
 	public void setManagerUsername(String managerUsername) {
 		this.managerUsername = managerUsername;
+	}
+
+	public ArrayList<Integer> getItemIDs() {
+		return itemIDs;
+	}
+
+	public void setItemIDs(ArrayList<Integer> itemIDs) {
+		this.itemIDs = itemIDs;
 	}
 }

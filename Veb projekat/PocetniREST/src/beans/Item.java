@@ -1,6 +1,7 @@
 package beans;
 
 public class Item {
+	private int ID;
 	private String name;
 	private String price;
 	private String type;
@@ -12,13 +13,22 @@ public class Item {
 		
 	}
 	
-	public Item(String name, String price, String type, String restaurantName, String quantity, String description) {
+	public Item(int ID, String name, String price, String type, String restaurantName, String quantity, String description) {
+		this.ID = ID;
 		this.name = name;
 		this.price = price;
 		this.type = type;
 		this.restaurantName = restaurantName;
 		this.quantity = quantity;
 		this.description = description;
+	}
+	
+	public int getID() {
+		return ID;
+	}
+
+	public void setID(int iD) {
+		ID = iD;
 	}
 
 	public String getName() {
