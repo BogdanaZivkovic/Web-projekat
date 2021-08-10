@@ -5,6 +5,7 @@ Vue.component("add-item-manager", {
 				name: "",
 				price: "",
 				type: "",
+				restaurantName: "",
 				quantity: "",
 				description: ""
 			}
@@ -35,14 +36,18 @@ Vue.component("add-item-manager", {
 	methods: {
 		addItem : function (item) {
 			axios
-			.post('rest/restaurants/addItem', {
+			.post('rest/items/addItem', {
 				"name":''+item.name, 
 				"price":''+item.price, 
 				"type":''+item.type, 
 				"quantity":''+item.quantity, 
+				"restaurantName":''+item.restaurantName,
 				"description":''+item.description
 			})
 			this.$router.push('/restaurantmanager');
 		}
+	},
+	mounted () {
+		this.item.restaurantName = this.$route.params.data;
 	}
 });

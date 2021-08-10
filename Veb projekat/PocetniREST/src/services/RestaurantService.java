@@ -69,32 +69,10 @@ public class RestaurantService {
 		User user = (User) request.getSession().getAttribute("loggedUser");
 		RestaurantsDAO restaurants = getRestaurants();
 		Restaurant restaurant =  restaurants.getRestaurantByManager(user.getUserName());
-		request.getSession().setAttribute("activeRestaurant", restaurant);
 		return Response
 				.status(Response.Status.ACCEPTED).entity("SUCCESS")
 				.entity(restaurant)
 				.build();
-	}
-	
-	@POST
-	@Path("addItem")
-	@Produces(MediaType.TEXT_HTML)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addItem(ItemDTO dto) {
-		Restaurant activeRestaurant = (Restaurant) request.getSession().getAttribute("activeRestaurant");
-		int itemID = getItems().addItem(dto, activeRestaurant.getName());
-		activeRestaurant.addItemID(itemID);
-		getRestaurants().updateRestaurant(activeRestaurant);
-		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
-	}
-	
-	@GET
-	@Path("getItems")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getItemsForRestaurant() {
-		Restaurant activeRestaurant = (Restaurant) request.getSession().getAttribute("activeRestaurant");
-		Collection<Item> items = getItems().getItemsForRestaurant(activeRestaurant.getName());
-		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").entity(items).build();
 	}
 	
 	private RestaurantsDAO getRestaurants() {

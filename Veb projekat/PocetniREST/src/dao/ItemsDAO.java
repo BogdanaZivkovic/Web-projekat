@@ -72,8 +72,8 @@ public class ItemsDAO {
 		return items.get(id);
 	}
 
-	public int addItem(ItemDTO dto, String restaurantName) {
-		Item item = new Item(items.size(), dto.name, dto.price, dto.type, restaurantName, dto.quantity, dto.description);
+	public int addItem(ItemDTO dto) {
+		Item item = new Item(items.size(), dto.name, dto.price, dto.type, dto.restaurantName, dto.quantity, dto.description);
 		items.put(item.getID(), item);
 		saveItems();
 		return item.getID();

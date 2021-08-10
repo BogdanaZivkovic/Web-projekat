@@ -4,7 +4,9 @@ import java.util.Collection;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
@@ -13,6 +15,8 @@ import javax.ws.rs.core.Response;
 
 import beans.Item;
 import dao.ItemsDAO;
+import dao.RestaurantsDAO;
+import dto.ItemDTO;
 
 @Path("/items")
 public class ItemService {
@@ -32,6 +36,16 @@ public class ItemService {
 				.build();
 	}
 	
+	@POST
+	@Path("addItem")
+	@Produces(MediaType.TEXT_HTML)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response addItem(ItemDTO dto) {
+		int itemID = getItems().addItem(dto);
+		getRestaurants().addItem(dto.restaurantName, itemID);
+		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
+	}
+	
 	private ItemsDAO getItems() {
 		ItemsDAO items = (ItemsDAO) ctx.getAttribute("items");
 		
@@ -42,5 +56,17 @@ public class ItemService {
 		}
 
 		return items;
+	}
+	
+	private RestaurantsDAO getRestaurants() {
+		RestaurantsDAO restaurants = (RestaurantsDAO) ctx.getAttribute("restaurants");
+		
+		if (restaurants == null) {
+			restaurants = new RestaurantsDAO();
+			ctx.setAttribute("restaurants", restaurants);
+
+		}
+
+		return restaurants;
 	}
 }

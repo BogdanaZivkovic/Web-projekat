@@ -9,7 +9,7 @@ const router = new VueRouter({
 		{ path: '/', component: ProfileManager},
 		{path: '/restaurantmanager', component: ViewRestaurantManager},
 		{path: '/allrestaurantsmanager', component: RestaurantsManager},
-		{path: '/additem', component: AddItemManager}
+		{path: '/additem', name:'addItem', component: AddItemManager}
 	]
 });
 

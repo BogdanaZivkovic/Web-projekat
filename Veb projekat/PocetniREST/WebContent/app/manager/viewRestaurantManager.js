@@ -28,7 +28,7 @@ Vue.component("view-restaurant-manager", {
 					<td v-else>-</td>
 				</tr>
 			</table>
-			<button @click="$router.push('/additem')"> New item </button>
+			<button @click="newItem"> New item </button>
 			<ul>
 				<li v-for="item in items">
 					<table>
@@ -59,14 +59,29 @@ Vue.component("view-restaurant-manager", {
 		<h3 v-else>You are not assigned to a restaurant</h3>
 	</div>
 	`,
+	methods: {
+		newItem: function () {
+			let data = this.restaurant.name;
+      		this.$router.push({
+        		name: "addItem", //use name for router push
+       			params: { data }
+      		});
+		}
+	},
 	mounted() {
 		axios
 			.get('rest/restaurants/getMyRestaurant')
 			.then(response => {
 				this.restaurant = response.data
 				axios
-					.get('rest/restaurants/getItems')
-					.then(response => this.items = response.data)	
+					.get('rest/items/getAllItems')
+					.then(response => {
+						response.data.forEach(el => {
+							if (el.restaurantName == this.restaurant.name) {
+								this.items.push(el);
+							}
+						})
+					})	
 			})
 	}
 });

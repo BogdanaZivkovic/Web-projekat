@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import beans.Address;
 import beans.Location;
 import beans.Restaurant;
+import dto.ItemDTO;
 import dto.RestaurantDTO;
 
 public class RestaurantsDAO {
@@ -160,8 +161,9 @@ public class RestaurantsDAO {
 		return null;
 	}
 	
-	public void updateRestaurant(Restaurant restaurant) {
-		restaurants.put(restaurant.getName(), restaurant);
+	public void addItem(String restaurantName, int itemID) {
+		Restaurant restaurant = restaurants.get(restaurantName);
+		restaurant.addItemID(itemID);
 		saveRestaurants();
 	}
 }
