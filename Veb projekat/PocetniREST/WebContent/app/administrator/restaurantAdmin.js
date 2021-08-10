@@ -6,7 +6,11 @@ Vue.component("restaurant-admin", {
 				name: "",
 				type: "",
 				status: "",
-				managerUsername: ""
+				managerUsername: "",
+				city:"",
+				number:"",
+				street:"",
+				zipCode:""
 			},
 			newUser: {
 				userName: "",
@@ -34,6 +38,11 @@ Vue.component("restaurant-admin", {
 			<option>Gyros</option>
 			</select>
 			<br><br>
+			<input type="text" v-model="newRestaurant.city" placeholder="Place" required>
+			<br><br>
+			<input type="text" v-model="newRestaurant.street" placeholder="Street" required>
+			<input type="text" v-model="newRestaurant.number" placeholder="Number" required>
+			<input type="text" v-model="newRestaurant.zipCode" placeholder="ZipCode" required>
 			<label v-if="managers.length!=0" > Select manager </label>
 			<select v-if="managers.length!=0" v-model="newRestaurant.managerUsername">
 		    		<option v-for="manager in managers" v-bind:value=manager.userName>
@@ -78,7 +87,11 @@ Vue.component("restaurant-admin", {
 				"name":''+newRestaurant.name, 
 				"type":''+newRestaurant.type, 
 				"status":''+"Open",
-				"managerUsername":''+newRestaurant.managerUsername
+				"managerUsername":''+newRestaurant.managerUsername,
+				"street":''+newRestaurant.street,
+				"number":''+newRestaurant.number,
+				"city":''+newRestaurant.city,
+				"zipCode":''+newRestaurant.zipCode
 				
 			})
 			}
@@ -90,7 +103,11 @@ Vue.component("restaurant-admin", {
 				"name":''+newRestaurant.name, 
 				"type":''+newRestaurant.type, 
 				"status":''+"Open",
-				"managerUsername":''+newUser.userName
+				"managerUsername":''+newUser.userName,
+				"street":''+newRestaurant.street,
+				"number":''+newRestaurant.number,
+				"city":''+newRestaurant.city,
+				"zipCode":''+newRestaurant.zipCode
 				}),
 			axios
 			.post('rest/users/registration', {

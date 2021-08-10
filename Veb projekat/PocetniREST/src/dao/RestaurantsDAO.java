@@ -13,6 +13,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import beans.Address;
+import beans.Location;
 import beans.Restaurant;
 import dto.RestaurantDTO;
 
@@ -141,8 +143,8 @@ public class RestaurantsDAO {
 
 
 	public void addRestaurant(RestaurantDTO dto) {
-		//PROMENITI
-		Restaurant restaurant = new Restaurant(dto.name, dto.type, dto.status, null, dto.managerUsername);
+		Location location = new Location("0", "0", new Address(dto.city, dto.street, dto.number, dto.zipCode));
+		Restaurant restaurant = new Restaurant(dto.name, dto.type, dto.status, location, dto.managerUsername);
 		restaurants.put(restaurant.getName(), restaurant);
 		saveRestaurants();
 	}
