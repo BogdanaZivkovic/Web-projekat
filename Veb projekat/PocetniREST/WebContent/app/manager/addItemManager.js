@@ -24,7 +24,7 @@ Vue.component("add-item-manager", {
 		    	<option> FOOD </option>
 		    	<option> DRINK </option>
 			</select>
-			<input type="text" v-model="item.quantity" placeholder="Quantity" required>
+			<input type="text" v-model="item.quantity" placeholder="Quantity">
 			<br><br>
 			<input type="text" v-model="item.description" placeholder="Description">
 			<br><br>

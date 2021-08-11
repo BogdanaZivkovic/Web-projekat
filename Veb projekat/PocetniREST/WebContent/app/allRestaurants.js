@@ -3,27 +3,53 @@ Vue.component("all-restaurants-app", {
 		return {
 			searchFields: {
 				name: '',
-				type: ''
+				type: '',
+				location: ''
+			},
+			filters: {
+				type:''
 			},
 			restaurants: [],
-			searchVisible: false
+			searchVisible: false,
+			sortVisible: false,
+			filterVisible: false
 		}
 	},
 	template: `
 	<div>
 		<button @click="searchVisible=!searchVisible">Search</button>
+		<button @click="sortVisible=!sortVisible">Sort</button>
+		<button @click="filterVisible=!filterVisible">Filter</button>
 		<br><br>
 		<div v-if="searchVisible">
 			<form method='post'>
-				<input type="text" v-model="searchFields.name" placeholder="Naziv"></input>
+				<input type="text" v-model="searchFields.name" placeholder="Restaurant name"></input>
+				<br><br>
+				<input type="text" v-model="searchFields.type" placeholder="Restaurant type"></input>
+				<br><br>
+				<input type="text" v-model="searchFields.location" placeholder="Restaurant location"></input>
 				<br><br>
 			</form>
-			<button @click="sortAlphanumeric"> Sort alphanumeric </button>
-			<br><br>
-			<button @click="sortAlphanumericReverse"> Sort alphanumeric reverse </button>
+		</div>
+		<div v-if="sortVisible">
+			<button @click="sortNameAsc"> Sort alphanumeric </button>
+			<button @click="sortNameDesc"> Sort alphanumeric reverse </button>
 			<br><br>
 		</div>
-		
+		<div v-if="filterVisible">
+			<form method='post'>
+				<select v-model="filters.type">
+		    		<option disabled value="">Please select one</option>
+					<option value="">All</option>
+		    		<option>Chinese</option>
+		    		<option>Italian</option>
+					<option>Fast food</option>
+					<option>BBQ</option>
+					<option>Mexican</option>
+					<option>Gyros</option>
+				</select>
+			</form>
+		</div>
 		<ul>
 			<li v-for ="restaurant in filteredRestaurants">
 				<table>
@@ -53,37 +79,30 @@ Vue.component("all-restaurants-app", {
 	`,
 	methods: {
 		matchesSearch: function (restaurant) {
-			if(!restaurant.name.match(this.searchFields.name))
+			if(!restaurant.name.toLowerCase().match(this.searchFields.name.toLowerCase()))
+				return false;
+			if(!restaurant.type.toLowerCase().match(this.searchFields.type.toLowerCase()))
+				return false;
+			if(!restaurant.location.address.city.toLowerCase().match(this.searchFields.location.toLowerCase()))
+				return false;
+			if(!restaurant.type.toLowerCase().match(this.filters.type.toLowerCase()))
 				return false;
 			return true;
 		},
-		sortAlphanumeric: function () {
-			this.restaurants.sort(this.alphaNumCriterium);
+		sortNameAsc: function () {
+			this.restaurants.sort((a, b) => {return this.alphaNumCriterium(a.name, b.name)});
 		},
-		sortAlphanumericReverse: function () {
-			this.restaurants.sort(this.reverseAlphaNumCriterium);
+		sortNameDesc: function () {
+			this.restaurants.sort((a, b) => {return this.alphaNumCriterium(b.name, a.name)});
 		},
 		alphaNumCriterium: function (a,b) {
       		var reA = /[^a-zA-Z]/g;
       		var reN = /[^0-9]/g;
-      		var aA = a.name.replace(reA, "");
-      		var bA = b.name.replace(reA, "");
+      		var aA = a.replace(reA, "");
+      		var bA = b.replace(reA, "");
       		if(aA === bA) {
-          		var aN = parseInt(a.name.replace(reN, ""), 10);
-          		var bN = parseInt(b.name.replace(reN, ""), 10);
-          		return aN === bN ? 0 : aN > bN ? 1 : -1;
-      		} else {
-          		return aA > bA ? 1 : -1;
-      		}
-    	},
-		reverseAlphaNumCriterium: function (a,b) {
-      		var reA = /[^a-zA-Z]/g;
-      		var reN = /[^0-9]/g;
-      		var aA = a.name.replace(reA, "");
-      		var bA = b.name.replace(reA, "");
-      		if(aA === bA) {
-          		var aN = parseInt(a.name.replace(reN, ""), 10);
-          		var bN = parseInt(b.name.replace(reN, ""), 10);
+          		var aN = parseInt(a.replace(reN, ""), 10);
+          		var bN = parseInt(b.replace(reN, ""), 10);
           		return aN === bN ? 0 : aN > bN ? -1 : 1;
       		} else {
           		return aA > bA ? -1 : 1;
