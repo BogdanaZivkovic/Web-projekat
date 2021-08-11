@@ -58,6 +58,15 @@ public class ItemService {
 		return items;
 	}
 	
+	@POST
+	@Path("editItem")
+	@Produces(MediaType.TEXT_HTML)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response editItem(Item item) {
+		getItems().editItem(item);
+		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
+	}
+	
 	private RestaurantsDAO getRestaurants() {
 		RestaurantsDAO restaurants = (RestaurantsDAO) ctx.getAttribute("restaurants");
 		
