@@ -7,7 +7,8 @@ Vue.component("all-restaurants-app", {
 				location: ''
 			},
 			filters: {
-				type:''
+				type:'',
+				status:''
 			},
 			restaurants: [],
 			searchVisible: false,
@@ -32,8 +33,11 @@ Vue.component("all-restaurants-app", {
 			</form>
 		</div>
 		<div v-if="sortVisible">
-			<button @click="sortNameAsc"> Sort alphanumeric </button>
-			<button @click="sortNameDesc"> Sort alphanumeric reverse </button>
+			<button @click="sortNameAsc"> Name ascending </button>
+			<button @click="sortNameDesc"> Name descending </button>
+			<br><br>
+			<button @click="sortLocationAsc"> Location ascending </button>
+			<button @click="sortLocationDesc"> Location descending </button>
 			<br><br>
 		</div>
 		<div v-if="filterVisible">
@@ -47,6 +51,11 @@ Vue.component("all-restaurants-app", {
 					<option>BBQ</option>
 					<option>Mexican</option>
 					<option>Gyros</option>
+				</select>
+				<select v-model="filters.status">
+					<option disabled value="">Please select one</option>
+					<option value=""> All </option>
+					<option> Open </option>
 				</select>
 			</form>
 		</div>
@@ -87,6 +96,8 @@ Vue.component("all-restaurants-app", {
 				return false;
 			if(!restaurant.type.toLowerCase().match(this.filters.type.toLowerCase()))
 				return false;
+			if(!restaurant.status.toLowerCase().match(this.filters.status.toLowerCase()))
+				return false;
 			return true;
 		},
 		sortNameAsc: function () {
@@ -94,6 +105,12 @@ Vue.component("all-restaurants-app", {
 		},
 		sortNameDesc: function () {
 			this.restaurants.sort((a, b) => {return this.alphaNumCriterium(b.name, a.name)});
+		},
+		sortLocationAsc: function() {
+			this.restaurants.sort((a, b) => {return this.alphaNumCriterium(a.location.address.city, b.location.address.city)});
+		},
+		sortLocationDesc: function() {
+			this.restaurants.sort((a, b) => {return this.alphaNumCriterium(b.location.address.city, a.location.address.city)});
 		},
 		alphaNumCriterium: function (a,b) {
       		var reA = /[^a-zA-Z]/g;
