@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -148,5 +149,68 @@ public class UserService {
 		}
 
 		return restaurants;
+	}
+	
+	@GET
+	@Path("/logout")
+	@Produces(MediaType.TEXT_HTML)
+	public Response logoutUser() {
+		
+		if(isUserManager() || isUserAdmin() || isUserCustomer() || isUserDeliverer()) {
+		
+			HttpSession session = request.getSession();
+			if(session != null && session.getAttribute("loggedUser") != null) {
+				session.invalidate();
+			}
+			return Response
+					.status(Response.Status.ACCEPTED).entity("SUCCESS LOGOUT")
+					.build();
+		}
+		return Response.status(403).type("text/plain")
+				.entity("You do not have permission to access!").build();
+	}
+	
+	private boolean isUserManager() {
+		User user = (User) request.getSession().getAttribute("loggedUser");
+		
+		if(user!= null) {
+			if(user.getRole().equals("MANAGER")) {	
+				return true;
+			}
+		}	
+		return false;
+	}
+	
+	private boolean isUserAdmin() {
+		User user = (User) request.getSession().getAttribute("loggedUser");
+		
+		if(user!= null) {
+			if(user.getRole().equals("ADMINISTRATOR")) {
+				return true;
+			}
+		}	
+		return false;
+	}
+	
+	private boolean isUserCustomer() {
+		User user = (User) request.getSession().getAttribute("loggedUser");
+		
+		if(user!= null) {
+			if(user.getRole().equals("CUSTOMER")) {
+				return true;
+			}
+		}	
+		return false;
+	}
+	
+	private boolean isUserDeliverer() {
+		User user = (User) request.getSession().getAttribute("loggedUser");
+		
+		if(user!= null) {
+			if(user.getRole().equals("DELIVERER")) {
+				return true;
+			}
+		}	
+		return false;
 	}
 }

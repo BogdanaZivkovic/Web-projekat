@@ -1,11 +1,9 @@
-Vue.component("header-admin", {
+Vue.component("header-customer", {
 	template:`
 	<div>
 		<nav>
 			<ul>
 				<li><router-link to="/" exact> Profile </router-link></li>
-				<li> <router-link to="/usersadmin" exact> Users </router-link> </li>
-				<li> <router-link to="/restaurantsadmin" exact> Restaurants </router-link></li>
 				<li><button @click="logout" > Log out </button></li>
 			</ul>
 		</nav>

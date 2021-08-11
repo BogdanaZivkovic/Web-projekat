@@ -25,7 +25,7 @@ Vue.component("edit-user", {
 			<label>Date of birth:</label>
 			<input type="date" v-model="user.dateOfBirth" min="1950-01-01" max="2020-01-01">		
 			<br><br>
-			<button type='submit'> UPDATE </button>
+			<button type='submit'> UPDATE </button> 
 		</form>
     </div>
     `,
@@ -42,7 +42,7 @@ Vue.component("edit-user", {
 				"role":''+user.role
 			})
 			.then(response => (this.init()))
-		}
+		}		
 	},
 	mounted() {
 		axios
