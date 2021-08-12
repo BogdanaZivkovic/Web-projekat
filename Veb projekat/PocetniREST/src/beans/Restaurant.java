@@ -9,19 +9,21 @@ public class Restaurant {
 	private String status;
 	private Location location;
 	private String managerUsername;
+	private String logoPath;
 	private ArrayList<Integer> itemIDs;
 	
 	public Restaurant() {
 
 	}
 
-	public Restaurant(String name, String type, String status, Location location, String managerUsername) {
+	public Restaurant(String name, String type, String status, Location location, String managerUsername, String logoPath) {
 		super();
 		this.name = name;
 		this.type = type;
 		this.status = status;
 		this.location = location;
 		this.managerUsername = managerUsername;
+		this.logoPath = logoPath;
 		this.itemIDs = new ArrayList<Integer>();
 	}
 
@@ -76,4 +78,13 @@ public class Restaurant {
 	public void addItemID(int itemID) {
 		itemIDs.add(itemID);
 	}
+
+	public String getLogoPath() {
+		return logoPath;
+	}
+
+	public void setLogoPath(String logoPath) {
+		this.logoPath = logoPath;
+	}
+	
 }

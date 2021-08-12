@@ -14,9 +14,11 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import beans.Image;
 import beans.Item;
 import beans.Restaurant;
 import beans.User;
+import dao.ImagesDAO;
 import dao.ItemsDAO;
 import dao.RestaurantsDAO;
 import dto.ItemDTO;
@@ -46,6 +48,10 @@ public class RestaurantService {
 					.entity("Username taken. Please try another one").build();
 		}
 		
+		ImagesDAO imagesDAO = getImages();
+		Image addedImage = imagesDAO.addNewImage(dto.logoPath);
+		dto.logoPath = Integer.toString(addedImage.getID());
+	
 		restaurants.addRestaurant(dto);
 		System.out.println(dto.name);
 		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
@@ -97,5 +103,19 @@ public class RestaurantService {
 		}
 
 		return items;
+	}
+	
+	private ImagesDAO getImages() {
+		ImagesDAO images = (ImagesDAO) ctx.getAttribute("images");
+		
+		if(images == null) {
+			images = new ImagesDAO();
+			images.readImages();
+			
+			ctx.setAttribute("images", images);
+		}
+		
+		return images;
+		
 	}
 }

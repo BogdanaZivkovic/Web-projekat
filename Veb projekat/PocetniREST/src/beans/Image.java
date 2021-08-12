@@ -3,7 +3,7 @@ package beans;
 public class Image {
 	
 	private Integer ID;
-	private String Base64;
+	private String base64;
 	
 	public Image() {
 		
@@ -12,7 +12,7 @@ public class Image {
 	public Image(Integer iD, String base64) {
 		super();
 		ID = iD;
-		Base64 = base64;
+		this.base64 = base64;
 	}
 	public Integer getID() {
 		return ID;
@@ -21,10 +21,10 @@ public class Image {
 		ID = iD;
 	}
 	public String getBase64() {
-		return Base64;
+		return base64;
 	}
 	public void setBase64(String base64) {
-		Base64 = base64;
+		this.base64 = base64;
 	}
 	
 	

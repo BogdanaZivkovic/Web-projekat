@@ -10,7 +10,8 @@ Vue.component("restaurant-admin", {
 				city:"",
 				street:"",
 				number:"",
-				zipCode:""
+				zipCode:"",
+				logoPath: "",
 			},
 			newUser: {
 				userName: "",
@@ -19,7 +20,7 @@ Vue.component("restaurant-admin", {
 				surname: "",
 				gender: "",
 				dateOfBirth: ""
-			}
+			},
 		}
 	},
 	template: `
@@ -37,6 +38,9 @@ Vue.component("restaurant-admin", {
 			<option>Mexican</option>
 			<option>Gyros</option>
 			</select>
+			<br><br>
+			<input type="file" onchange="encodeImageFileAsURLForChanging(this)" />
+			<img hidden id="imgForChangeID"  src="" alt="Image of restaurant" width="11" height="11">
 			<br><br>
 			<input type="text" v-model="newRestaurant.city" placeholder="Place" required>
 			<br><br>
@@ -79,7 +83,10 @@ Vue.component("restaurant-admin", {
     </div>
     `,
 	methods: {
+		
 		createRestaurant : function (newRestaurant, newUser) {
+			
+			this.newRestaurant.logoPath = document.getElementById("imgForChangeID").src;
 			
 			if(this.managers.length != 0) {
 			axios
@@ -91,7 +98,8 @@ Vue.component("restaurant-admin", {
 				"street":''+newRestaurant.street,
 				"number":''+newRestaurant.number,
 				"city":''+newRestaurant.city,
-				"zipCode":''+newRestaurant.zipCode
+				"zipCode":''+newRestaurant.zipCode,
+				"logoPath":''+newRestaurant.logoPath
 				
 			})
 			}
@@ -107,7 +115,8 @@ Vue.component("restaurant-admin", {
 				"street":''+newRestaurant.street,
 				"number":''+newRestaurant.number,
 				"city":''+newRestaurant.city,
-				"zipCode":''+newRestaurant.zipCode
+				"zipCode":''+newRestaurant.zipCode,
+				"logoPath":''+newRestaurant.logoPath
 				}),
 			axios
 			.post('rest/users/registration', {
@@ -120,8 +129,8 @@ Vue.component("restaurant-admin", {
 				"role":''+"MANAGER"
 				})
 			])
-		}			
-			
+		}	
+		
 		this.$router.push('/restaurantsadmin');
 		}	
 	},
@@ -132,3 +141,20 @@ Vue.component("restaurant-admin", {
           .then(response => (this.managers = response.data))
 	}
 });
+
+/**
+ * ref: https://stackoverflow.com/questions/6150289/how-can-i-convert-an-image-into-base64-string-using-javascript
+ * @param {*} element 
+ */
+function encodeImageFileAsURLForChanging(element) {
+    var file = element.files[0];
+    var reader = new FileReader();
+    reader.onloadend = function () {
+        console.log("\n ENKODIRANJE SLIKE \n");
+        document.getElementById('imgForChangeID')
+            .setAttribute(
+                'src', reader.result
+            );
+    }
+    reader.readAsDataURL(file);
+}

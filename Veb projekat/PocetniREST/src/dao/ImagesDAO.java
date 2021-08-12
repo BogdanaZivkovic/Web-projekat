@@ -25,7 +25,7 @@ public class ImagesDAO {
 		readImages();
 	}
 	
-	private void readImages() {
+	public void readImages() {
 		ObjectMapper objectMapper = new ObjectMapper();
 
 		File file = new File(this.path);
