@@ -53,6 +53,7 @@ Vue.component("view-restaurant-manager", {
 							<td> {{item.description}} </td>
 						</tr>
 					</table>
+					<button @click= "editItem(item)" > Edit </button>
 				</li>
 			</ul>
 		</div>
@@ -66,6 +67,13 @@ Vue.component("view-restaurant-manager", {
         		name: "addItem", //use name for router push
        			params: { data }
       		});
+		},
+		editItem: function (item) {
+			let data = item;
+			this.$router.push({
+				name: "editItem",
+				params: { data }
+			});
 		}
 	},
 	mounted() {

@@ -45,7 +45,7 @@ public class ItemsDAO {
 		}
 
 		for (Item i : loadedItems) {
-			items.put(i.getID(), i);
+			items.put(i.getItemID(), i);
 		}
 	}
 
@@ -74,9 +74,9 @@ public class ItemsDAO {
 
 	public int addItem(ItemDTO dto) {
 		Item item = new Item(items.size(), dto.name, dto.price, dto.type, dto.restaurantName, dto.quantity, dto.description);
-		items.put(item.getID(), item);
+		items.put(item.getItemID(), item);
 		saveItems();
-		return item.getID();
+		return item.getItemID();
 	}
 	
 	public Collection<Item> getItemsForRestaurant(String restaurantName) {
@@ -87,5 +87,16 @@ public class ItemsDAO {
 			}
 		}
 		return items;
+	}
+	
+	public void editItem(Item editedItem) {
+		Item itemToEdit = getItem(editedItem.getItemID());
+		itemToEdit.setName(editedItem.getName());
+		itemToEdit.setPrice(editedItem.getPrice());
+		itemToEdit.setType(editedItem.getType());
+		itemToEdit.setRestaurantName(editedItem.getRestaurantName());
+		itemToEdit.setQuantity(editedItem.getQuantity());
+		itemToEdit.setDescription(editedItem.getDescription());
+		saveItems();
 	}
 }

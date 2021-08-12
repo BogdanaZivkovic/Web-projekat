@@ -1,19 +1,12 @@
-Vue.component("add-item-manager", {
+Vue.component("edit-item-manager", {
 	data: function() {
 		return {
-			item: {
-				name: "",
-				price: "",
-				type: "",
-				restaurantName: "",
-				quantity: "",
-				description: ""
-			}
+			item: {}
 		}
 	},
 	template:`
 	<div>
-		<form @submit="addItem(item)" method='post'>
+		<form @submit="editItem(item)" method='post'>
 			<input type="text" v-model="item.name" placeholder="Name" required>
 			<br><br>
 			<input type="number" v-model="item.price" placeholder="Price" required>
@@ -34,9 +27,10 @@ Vue.component("add-item-manager", {
 	</div>
 	`,
 	methods: {
-		addItem : function (item) {
+		editItem : function (item) {
 			axios
-			.post('rest/items/addItem', {
+			.post('rest/items/editItem', {
+				"itemID":''+item.itemID,
 				"name":''+item.name, 
 				"price":''+item.price, 
 				"type":''+item.type, 
@@ -48,6 +42,6 @@ Vue.component("add-item-manager", {
 		}
 	},
 	mounted () {
-		this.item.restaurantName = this.$route.params.data;
+		this.item = this.$route.params.data;
 	}
 });

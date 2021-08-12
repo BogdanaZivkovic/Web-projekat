@@ -16,7 +16,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import beans.Address;
 import beans.Location;
 import beans.Restaurant;
-import dto.ItemDTO;
 import dto.RestaurantDTO;
 
 public class RestaurantsDAO {
@@ -150,13 +149,16 @@ public class RestaurantsDAO {
 		saveRestaurants();
 	}
 
-	public Restaurant getRestaurantByName(String name) {
-		return restaurants.get(name);
+	public Restaurant getActiveRestaurant(String name) {
+		Restaurant restaurant = getRestaurant(name);
+		if(restaurant == null || restaurant.getIsDeleted() == true)
+			return null;
+		return restaurant;
 	}
 	
 	public Restaurant getRestaurantByManager(String managerUsername) {
-		for (Restaurant restaurant : restaurants.values())
-			if(restaurant.getManagerUsername().equals(managerUsername))
+		for (Restaurant restaurant : getActiveRestaurants())
+			if(restaurant.getManagerUsername().equals(managerUsername) && !restaurant.getIsDeleted())
 				return restaurant;
 		return null;
 	}
@@ -164,6 +166,19 @@ public class RestaurantsDAO {
 	public void addItem(String restaurantName, int itemID) {
 		Restaurant restaurant = restaurants.get(restaurantName);
 		restaurant.addItemID(itemID);
+		saveRestaurants();
+	}
+	
+	public Collection<Restaurant> getActiveRestaurants() {
+		Collection<Restaurant> ret = new ArrayList<Restaurant>();
+		for(Restaurant restaurant : getValues())
+			if(!restaurant.getIsDeleted())
+				ret.add(restaurant);
+		return ret;
+	}
+	
+	public void deleteLogically(String name) {
+		restaurants.get(name).setIsDeleted(true);
 		saveRestaurants();
 	}
 }

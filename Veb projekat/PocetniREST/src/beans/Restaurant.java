@@ -11,7 +11,8 @@ public class Restaurant {
 	private String managerUsername;
 	private String logoPath;
 	private ArrayList<Integer> itemIDs;
-	
+	private Boolean isDeleted;
+
 	public Restaurant() {
 
 	}
@@ -25,6 +26,7 @@ public class Restaurant {
 		this.managerUsername = managerUsername;
 		this.logoPath = logoPath;
 		this.itemIDs = new ArrayList<Integer>();
+		isDeleted = false;
 	}
 
 	public String getName() {
@@ -74,7 +76,7 @@ public class Restaurant {
 	public void setItemIDs(ArrayList<Integer> itemIDs) {
 		this.itemIDs = itemIDs;
 	}
-	
+
 	public void addItemID(int itemID) {
 		itemIDs.add(itemID);
 	}
@@ -86,5 +88,12 @@ public class Restaurant {
 	public void setLogoPath(String logoPath) {
 		this.logoPath = logoPath;
 	}
-	
+
+	public Boolean getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(Boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
 }

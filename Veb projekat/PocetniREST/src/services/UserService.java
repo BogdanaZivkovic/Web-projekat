@@ -2,7 +2,6 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +21,7 @@ import dao.RestaurantsDAO;
 import dao.UsersDAO;
 import dto.LoginDTO;
 import dto.UserDTO;
+import dto.UserNameDTO;
 
 @Path("/users")
 public class UserService {
@@ -39,7 +39,7 @@ public class UserService {
 	{
 		UsersDAO users = getUsers();
 		
-		if(users.getUserByUsername(dto.userName) != null)
+		if(users.getUser(dto.userName) != null)
 		{
 			System.out.println("korisnik vec postoji");
 			return Response.status(Response.Status.BAD_REQUEST)
@@ -55,7 +55,7 @@ public class UserService {
 	@Produces(MediaType.TEXT_HTML)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response loginUser(LoginDTO dto) {
-		User user = getUsers().getUserByUsername(dto.userName);	
+		User user = getUsers().getActiveUser(dto.userName);	
 		if(user == null || !user.getPassword().equals(dto.password))
 		{
 			System.out.println("bad");
@@ -82,7 +82,11 @@ public class UserService {
 	@Path("/getAllUsers")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllUsers() {
-		Collection<User> users = getUsers().getValues();
+		Collection<User> users = getUsers().getActiveUsers();
+		User user = (User) request.getSession().getAttribute("loggedUser");
+		for(User u: users) 
+			if (u.getUserName().equals(user.getUserName()))
+				users.remove(u);
 		return Response
 				.status(Response.Status.ACCEPTED).entity("SUCCESS")
 				.entity(users)
@@ -93,7 +97,7 @@ public class UserService {
 	@Path("/getAvailableManagers")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getManagers() {
-		Collection<User> users = getUsers().getValues();
+		Collection<User> users = getUsers().getActiveUsers();
 		Collection<Restaurant> restaurants = getRestaurants().getValues();
 		ArrayList<User> managers = new ArrayList<User>();
 		ArrayList<User> filteredManagers = new ArrayList<User>();
@@ -168,6 +172,15 @@ public class UserService {
 		}
 		return Response.status(403).type("text/plain")
 				.entity("You do not have permission to access!").build();
+	}
+	
+	@POST
+	@Path("/delete")
+	@Produces(MediaType.TEXT_HTML)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response deleteUser(UserNameDTO dto) {
+		getUsers().deleteLogically(dto.userName);
+		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
 	}
 	
 	private boolean isUserManager() {

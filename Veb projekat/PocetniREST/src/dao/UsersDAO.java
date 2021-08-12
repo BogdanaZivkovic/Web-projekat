@@ -13,7 +13,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import beans.Restaurant;
 import beans.User;
 import dto.UserDTO;
 
@@ -152,17 +151,34 @@ public class UsersDAO {
 		saveUsers();
 	}
 
-	public User getUserByUsername(String username) {
-		return users.get(username);
+	public User getActiveUser(String username) {
+		User user = getUser(username);
+		if(user == null ||user.getIsDeleted() == true)
+			return null;
+		return user;
 	}
 
 	public void updateUser(UserDTO dto) {
-		User user = getUserByUsername(dto.userName);
+		User user = getUser(dto.userName);
 		user.setPassword(dto.password);
 		user.setName(dto.name);
 		user.setSurname(dto.surname);
 		user.setGender(dto.gender);
 		user.setDateOfBirth(dto.dateOfBirth);
 		user.setRole(dto.role);
+		saveUsers();
+	}
+	
+	public Collection<User> getActiveUsers() {
+		Collection<User> ret = new ArrayList<User>();
+		for(User user : getValues())
+			if(!user.getIsDeleted())
+				ret.add(user);
+		return ret;
+	}
+	
+	public void deleteLogically(String userName) {
+		users.get(userName).setIsDeleted(true);
+		saveUsers();
 	}
 }
