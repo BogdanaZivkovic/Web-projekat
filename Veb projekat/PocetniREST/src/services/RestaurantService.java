@@ -14,11 +14,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import beans.Image;
-import beans.Item;
 import beans.Restaurant;
 import beans.User;
 import dao.ImagesDAO;
-import dao.ItemsDAO;
 import dao.RestaurantsDAO;
 import dto.RestaurantDTO;
 import dto.RestaurantNameDTO;

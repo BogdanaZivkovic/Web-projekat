@@ -41,6 +41,10 @@ public class ItemService {
 	@Produces(MediaType.TEXT_HTML)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addItem(ItemDTO dto) {
+		if(!getItems().isItemUnique(dto)) {
+			return Response.status(Response.Status.BAD_REQUEST)
+					.entity("Your restaurant already has that item").build();
+		}
 		int itemID = getItems().addItem(dto);
 		getRestaurants().addItem(dto.restaurantName, itemID);
 		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();

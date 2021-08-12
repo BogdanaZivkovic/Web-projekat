@@ -99,4 +99,11 @@ public class ItemsDAO {
 		itemToEdit.setDescription(editedItem.getDescription());
 		saveItems();
 	}
+	
+	public Boolean isItemUnique(ItemDTO dto) {
+		for(Item item: getValues())
+			if(item.getRestaurantName().equals(dto.restaurantName) && item.getName().equals(dto.name))
+				return false;
+		return true;
+	}
 }
