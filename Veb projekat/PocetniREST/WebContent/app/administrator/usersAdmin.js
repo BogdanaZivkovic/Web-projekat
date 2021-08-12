@@ -16,6 +16,7 @@ Vue.component("users-admin", {
 				<th> Gender </th>
 				<th> Date of birth </th>
 				<th> Role </th>
+				<th> Delete </th>
 			</tr>
 			<tr v-for="user in users">
 				<td> {{user.userName}} </td>
@@ -25,13 +26,28 @@ Vue.component("users-admin", {
 				<td> {{ user.gender }} </td>
 				<td> {{user.dateOfBirth}} </td>
 				<td> {{ user.role }} </td>
+				<td> <button @click="deleteUser(user)"> Delete </button> </td>
 			</tr>
 		</table>
 	</div>
 	`,
+	methods: {
+		init : function() {
+			axios
+          	.get('rest/users/getAllUsers')
+          	.then(response => (this.users = response.data))
+    	},
+		deleteUser : function (user) {
+			if (confirm('Are you sure?') == true) {
+				axios
+				.post('rest/users/delete', {
+					"userName":''+user.userName
+				})
+				.then(response => (this.init()))
+			}
+		}
+	},
 	mounted () {
-		axios
-          .get('rest/users/getAllUsers')
-          .then(response => (this.users = response.data))
+		this.init();
 	},
 });

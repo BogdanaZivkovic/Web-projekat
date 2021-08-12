@@ -8,6 +8,7 @@ public class User {
 	private String gender;
 	private String dateOfBirth;
 	private String role;
+	private Boolean isDeleted;
 	
 	public User() {
 		
@@ -22,6 +23,7 @@ public class User {
 		this.gender = gender;
 		this.dateOfBirth = dateOfBirth;
 		this.role = role;
+		isDeleted = false;
 	}
 	
 	public String getUserName() {
@@ -79,5 +81,13 @@ public class User {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public Boolean getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(Boolean isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 }

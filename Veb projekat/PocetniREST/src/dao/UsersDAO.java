@@ -152,7 +152,11 @@ public class UsersDAO {
 	}
 
 	public User getUserByUsername(String username) {
-		return users.get(username);
+		User user = getUser(username);
+		if(user.getIsDeleted() == false)
+			return user;
+		else
+			return null;
 	}
 
 	public void updateUser(UserDTO dto) {
@@ -163,5 +167,19 @@ public class UsersDAO {
 		user.setGender(dto.gender);
 		user.setDateOfBirth(dto.dateOfBirth);
 		user.setRole(dto.role);
+		saveUsers();
+	}
+	
+	public Collection<User> getActiveUsers() {
+		Collection<User> users = new ArrayList<User>();
+		for(User user : getValues())
+			if(!user.getIsDeleted())
+				users.add(user);
+		return users;
+	}
+	
+	public void deleteLogically(String userName) {
+		users.get(userName).setIsDeleted(true);
+		saveUsers();
 	}
 }
