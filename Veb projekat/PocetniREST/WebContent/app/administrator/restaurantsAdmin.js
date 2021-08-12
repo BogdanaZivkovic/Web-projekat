@@ -30,14 +30,28 @@ Vue.component("restaurants-admin", {
 						<td> {{restaurant.location.address.zipCode}} </td>
 					</tr>
 				</table>
+				<button @click="deleteRestaurant(restaurant)"> Delete </button>
 			</li>
 		</ul>
 	</div>
 	`,
-		
+	methods: {
+		init : function() {
+			axios
+          	.get('rest/restaurants/getAllRestaurants')
+          	.then(response => (this.restaurants = response.data))	
+		},
+		deleteRestaurant : function (restaurant) {
+			if (confirm('Are you sure?') == true) {
+				axios
+				.post('rest/restaurants/delete', {
+					"name":''+restaurant.name
+				})
+				.then(response => (this.init()))
+			}
+		}
+	},
 	mounted () {
-		axios
-          .get('rest/restaurants/getAllRestaurants')
-          .then(response => (this.restaurants = response.data))
+		this.init();
 	},
 });

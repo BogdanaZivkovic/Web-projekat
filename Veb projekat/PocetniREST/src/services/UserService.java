@@ -39,7 +39,7 @@ public class UserService {
 	{
 		UsersDAO users = getUsers();
 		
-		if(users.getUserByUsername(dto.userName) != null)
+		if(users.getUser(dto.userName) != null)
 		{
 			System.out.println("korisnik vec postoji");
 			return Response.status(Response.Status.BAD_REQUEST)
@@ -55,7 +55,7 @@ public class UserService {
 	@Produces(MediaType.TEXT_HTML)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response loginUser(LoginDTO dto) {
-		User user = getUsers().getUserByUsername(dto.userName);	
+		User user = getUsers().getActiveUser(dto.userName);	
 		if(user == null || !user.getPassword().equals(dto.password))
 		{
 			System.out.println("bad");

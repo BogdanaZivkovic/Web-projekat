@@ -151,7 +151,7 @@ public class UsersDAO {
 		saveUsers();
 	}
 
-	public User getUserByUsername(String username) {
+	public User getActiveUser(String username) {
 		User user = getUser(username);
 		if(user == null ||user.getIsDeleted() == true)
 			return null;
@@ -159,7 +159,7 @@ public class UsersDAO {
 	}
 
 	public void updateUser(UserDTO dto) {
-		User user = getUserByUsername(dto.userName);
+		User user = getUser(dto.userName);
 		user.setPassword(dto.password);
 		user.setName(dto.name);
 		user.setSurname(dto.surname);
@@ -170,11 +170,11 @@ public class UsersDAO {
 	}
 	
 	public Collection<User> getActiveUsers() {
-		Collection<User> users = new ArrayList<User>();
+		Collection<User> ret = new ArrayList<User>();
 		for(User user : getValues())
 			if(!user.getIsDeleted())
-				users.add(user);
-		return users;
+				ret.add(user);
+		return ret;
 	}
 	
 	public void deleteLogically(String userName) {

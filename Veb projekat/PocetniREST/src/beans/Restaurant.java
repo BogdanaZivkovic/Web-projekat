@@ -10,6 +10,7 @@ public class Restaurant {
 	private Location location;
 	private String managerUsername;
 	private ArrayList<Integer> itemIDs;
+	private Boolean isDeleted;
 	
 	public Restaurant() {
 
@@ -23,6 +24,7 @@ public class Restaurant {
 		this.location = location;
 		this.managerUsername = managerUsername;
 		this.itemIDs = new ArrayList<Integer>();
+		isDeleted = false;
 	}
 
 	public String getName() {
@@ -75,5 +77,13 @@ public class Restaurant {
 	
 	public void addItemID(int itemID) {
 		itemIDs.add(itemID);
+	}
+
+	public Boolean getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(Boolean isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 }

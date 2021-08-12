@@ -1,6 +1,5 @@
 package services;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.servlet.ServletContext;
@@ -14,13 +13,11 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import beans.Item;
 import beans.Restaurant;
 import beans.User;
-import dao.ItemsDAO;
 import dao.RestaurantsDAO;
-import dto.ItemDTO;
 import dto.RestaurantDTO;
+import dto.RestaurantNameDTO;
 
 @Path("/restaurants")
 public class RestaurantService {
@@ -39,7 +36,7 @@ public class RestaurantService {
 	{
 		RestaurantsDAO restaurants = getRestaurants();
 		
-		if(restaurants.getRestaurantByName(dto.name) != null)
+		if(restaurants.getRestaurant(dto.name) != null)
 		{
 			System.out.println("restoran sa istim nazivom vec postoji");
 			return Response.status(Response.Status.BAD_REQUEST)
@@ -55,7 +52,7 @@ public class RestaurantService {
 	@Path("/getAllRestaurants")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllRestaurants() {
-		Collection<Restaurant> restaurants = getRestaurants().getValues();
+		Collection<Restaurant> restaurants = getRestaurants().getActiveRestaurants();
 		return Response
 				.status(Response.Status.ACCEPTED).entity("SUCCESS")
 				.entity(restaurants)
@@ -63,7 +60,7 @@ public class RestaurantService {
 	}
 	
 	@GET
-	@Path("getMyRestaurant")
+	@Path("/getMyRestaurant")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getMyRestaurant() {
 		User user = (User) request.getSession().getAttribute("loggedUser");
@@ -73,6 +70,15 @@ public class RestaurantService {
 				.status(Response.Status.ACCEPTED).entity("SUCCESS")
 				.entity(restaurant)
 				.build();
+	}
+	
+	@POST
+	@Path("/delete")
+	@Produces(MediaType.TEXT_HTML)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response deleteRestaurant(RestaurantNameDTO dto) {
+		getRestaurants().deleteLogically(dto.name);
+		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
 	}
 	
 	private RestaurantsDAO getRestaurants() {
@@ -85,17 +91,5 @@ public class RestaurantService {
 		}
 
 		return restaurants;
-	}
-	
-	private ItemsDAO getItems() {
-		ItemsDAO items = (ItemsDAO) ctx.getAttribute("items");
-		
-		if (items == null) {
-			items = new ItemsDAO();
-			ctx.setAttribute("items", items);
-
-		}
-
-		return items;
 	}
 }

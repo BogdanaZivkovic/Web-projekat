@@ -41,7 +41,7 @@ public class ProfileService {
 	public Response updateUser(UserDTO dto) {
 		UsersDAO users = getUsers();
 		users.updateUser(dto);
-		User user = users.getUserByUsername(dto.userName);
+		User user = users.getUser(dto.userName);
 		request.getSession().setAttribute("loggedUser", user);
 		return Response
 				.status(Response.Status.ACCEPTED).entity("SUCCESS")
