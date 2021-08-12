@@ -153,10 +153,9 @@ public class UsersDAO {
 
 	public User getUserByUsername(String username) {
 		User user = getUser(username);
-		if(user.getIsDeleted() == false)
-			return user;
-		else
+		if(user == null ||user.getIsDeleted() == true)
 			return null;
+		return user;
 	}
 
 	public void updateUser(UserDTO dto) {
