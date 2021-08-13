@@ -111,4 +111,5 @@ public class ItemService {
 		}
 
 		return images;
+	}
 }

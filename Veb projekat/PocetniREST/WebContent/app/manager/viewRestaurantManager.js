@@ -91,12 +91,12 @@ Vue.component("view-restaurant-manager", {
 							if (el.restaurantName == this.restaurant.name) {
 								this.items.push(el);
 							}
+						})						
 						axios
-						.get('rest/images/getImages')
-						.then(response => (this.images = response.data));
-						})
+							.get('rest/images/getImages')
+							.then(response => (this.images = response.data));
 					})
-			})
+				})
 		},
 		deleteItem: function (item) {
 			if (confirm('Are you sure?') == true) {
