@@ -17,6 +17,7 @@ import beans.Item;
 import dao.ItemsDAO;
 import dao.RestaurantsDAO;
 import dto.ItemDTO;
+import dto.ItemIDDTO;
 
 @Path("/items")
 public class ItemService {
@@ -29,7 +30,7 @@ public class ItemService {
 	@Path("getAllItems")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllItems() {
-		Collection<Item> items = getItems().getValues();
+		Collection<Item> items = getItems().getActiveItems();
 		return Response
 				.status(Response.Status.ACCEPTED).entity("SUCCESS")
 				.entity(items)
@@ -81,5 +82,14 @@ public class ItemService {
 		}
 
 		return restaurants;
+	}
+	
+	@POST
+	@Path("delete")
+	@Produces(MediaType.TEXT_HTML)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response deleteItem(ItemIDDTO dto) {
+		getItems().deleteLogically(dto.itemID);
+		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
 	}
 }

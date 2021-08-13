@@ -81,7 +81,7 @@ public class ItemsDAO {
 	
 	public Collection<Item> getItemsForRestaurant(String restaurantName) {
 		Collection<Item> items = new ArrayList<Item>();
-		for (Item i : getValues()) {
+		for (Item i : getActiveItems()) {
 			if(i.getRestaurantName().equals(restaurantName)) {
 				items.add(i);
 			}
@@ -101,9 +101,22 @@ public class ItemsDAO {
 	}
 	
 	public Boolean isItemUnique(ItemDTO dto) {
-		for(Item item: getValues())
+		for(Item item: getActiveItems())
 			if(item.getRestaurantName().equals(dto.restaurantName) && item.getName().equals(dto.name))
 				return false;
 		return true;
+	}
+	
+	public Collection<Item> getActiveItems() {
+		Collection<Item> ret = new ArrayList<Item>();
+		for(Item item : getValues())
+			if(!item.getIsDeleted())
+				ret.add(item);
+		return ret;
+	}
+	
+	public void deleteLogically(int id) {
+		items.get(id).setIsDeleted(true);
+		saveItems();
 	}
 }

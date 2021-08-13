@@ -54,6 +54,7 @@ Vue.component("view-restaurant-manager", {
 						</tr>
 					</table>
 					<button @click= "editItem(item)" > Edit </button>
+					<button @click= "deleteItem(item)"> Delete </button>
 				</li>
 			</ul>
 		</div>
@@ -74,10 +75,10 @@ Vue.component("view-restaurant-manager", {
 				name: "editItem",
 				params: { data }
 			});
-		}
-	},
-	mounted() {
-		axios
+		},
+		init : function () {
+			this.items = [];
+			axios
 			.get('rest/restaurants/getMyRestaurant')
 			.then(response => {
 				this.restaurant = response.data
@@ -90,6 +91,19 @@ Vue.component("view-restaurant-manager", {
 							}
 						})
 					})	
-			})
+			})	
+		},
+		deleteItem: function (item) {
+			if (confirm('Are you sure?') == true) {
+				axios
+				.post('rest/items/delete', {
+					"itemID":''+item.itemID
+				})
+				.then(response => (this.init()))
+			}
+		}
+	},
+	mounted() {
+		this.init();
 	}
 });

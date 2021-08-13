@@ -8,6 +8,7 @@ public class Item {
 	private String restaurantName;
 	private String quantity;
 	private String description;
+	private Boolean isDeleted;
 	
 	public Item() {
 		
@@ -21,6 +22,7 @@ public class Item {
 		this.restaurantName = restaurantName;
 		this.quantity = quantity;
 		this.description = description;
+		this.isDeleted = false;
 	}
 	
 	public int getItemID() {
@@ -77,5 +79,13 @@ public class Item {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Boolean getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(Boolean isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 }
