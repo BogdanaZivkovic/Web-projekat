@@ -13,7 +13,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import beans.Image;
 import beans.Item;
+import dao.ImagesDAO;
 import dao.ItemsDAO;
 import dao.RestaurantsDAO;
 import dto.ItemDTO;
@@ -45,6 +47,11 @@ public class ItemService {
 			return Response.status(Response.Status.BAD_REQUEST)
 					.entity("Your restaurant already has that item").build();
 		}
+		
+		ImagesDAO imagesDAO = getImages();
+		Image addedImage = imagesDAO.addNewImage(dto.logoPath);
+		dto.logoPath = Integer.toString(addedImage.getID());
+		
 		int itemID = getItems().addItem(dto);
 		getRestaurants().addItem(dto.restaurantName, itemID);
 		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
@@ -81,5 +88,19 @@ public class ItemService {
 		}
 
 		return restaurants;
+	}
+	
+	private ImagesDAO getImages() {
+		ImagesDAO images = (ImagesDAO) ctx.getAttribute("images");
+
+		if(images == null) {
+			images = new ImagesDAO();
+			images.readImages();
+
+			ctx.setAttribute("images", images);
+		}
+
+		return images;
+
 	}
 }

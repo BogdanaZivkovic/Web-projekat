@@ -7,4 +7,5 @@ public class ItemDTO {
 	public String restaurantName;
 	public String quantity;
 	public String description;
+	public String logoPath;
 }
