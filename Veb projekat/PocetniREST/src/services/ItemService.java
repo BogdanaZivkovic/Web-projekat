@@ -13,7 +13,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import beans.Image;
 import beans.Item;
+import dao.ImagesDAO;
 import dao.ItemsDAO;
 import dao.RestaurantsDAO;
 import dto.ItemDTO;
@@ -25,7 +27,7 @@ public class ItemService {
 	HttpServletRequest request;
 	@Context
 	ServletContext ctx;
-	
+
 	@GET
 	@Path("getAllItems")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -36,7 +38,7 @@ public class ItemService {
 				.entity(items)
 				.build();
 	}
-	
+
 	@POST
 	@Path("addItem")
 	@Produces(MediaType.TEXT_HTML)
@@ -46,14 +48,19 @@ public class ItemService {
 			return Response.status(Response.Status.BAD_REQUEST)
 					.entity("Your restaurant already has that item").build();
 		}
+
+		ImagesDAO imagesDAO = getImages();
+		Image addedImage = imagesDAO.addNewImage(dto.logoPath);
+		dto.logoPath = Integer.toString(addedImage.getID());
+
 		int itemID = getItems().addItem(dto);
 		getRestaurants().addItem(dto.restaurantName, itemID);
 		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
 	}
-	
+
 	private ItemsDAO getItems() {
 		ItemsDAO items = (ItemsDAO) ctx.getAttribute("items");
-		
+
 		if (items == null) {
 			items = new ItemsDAO();
 			ctx.setAttribute("items", items);
@@ -62,7 +69,7 @@ public class ItemService {
 
 		return items;
 	}
-	
+
 	@POST
 	@Path("editItem")
 	@Produces(MediaType.TEXT_HTML)
@@ -71,10 +78,10 @@ public class ItemService {
 		getItems().editItem(item);
 		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
 	}
-	
+
 	private RestaurantsDAO getRestaurants() {
 		RestaurantsDAO restaurants = (RestaurantsDAO) ctx.getAttribute("restaurants");
-		
+
 		if (restaurants == null) {
 			restaurants = new RestaurantsDAO();
 			ctx.setAttribute("restaurants", restaurants);
@@ -83,7 +90,7 @@ public class ItemService {
 
 		return restaurants;
 	}
-	
+
 	@POST
 	@Path("delete")
 	@Produces(MediaType.TEXT_HTML)
@@ -92,4 +99,16 @@ public class ItemService {
 		getItems().deleteLogically(dto.itemID);
 		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
 	}
+
+	private ImagesDAO getImages() {
+		ImagesDAO images = (ImagesDAO) ctx.getAttribute("images");
+
+		if(images == null) {
+			images = new ImagesDAO();
+			images.readImages();
+
+			ctx.setAttribute("images", images);
+		}
+
+		return images;
 }

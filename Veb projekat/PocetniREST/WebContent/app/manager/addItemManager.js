@@ -7,7 +7,8 @@ Vue.component("add-item-manager", {
 				type: "",
 				restaurantName: "",
 				quantity: "",
-				description: ""
+				description: "",
+				logoPath: "",
 			}
 		}
 	},
@@ -18,6 +19,8 @@ Vue.component("add-item-manager", {
 			<br><br>
 			<input type="number" v-model="item.price" placeholder="Price" required>
 			<br><br>
+			<input type="file" onchange="encodeImageFileAsURLForChanging(this)" />
+			<img hidden id="imgForChangeID"  src="" alt="Image of restaurant" width="11" height="11">
 			<label>Type:</label>
 			<select v-model="item.type">
 		    	<option disabled value="">Please select one</option>
@@ -35,6 +38,9 @@ Vue.component("add-item-manager", {
 	`,
 	methods: {
 		addItem : function (item) {
+			
+			this.item.logoPath = document.getElementById("imgForChangeID").src;
+			
 			axios
 			.post('rest/items/addItem', {
 				"name":''+item.name, 
@@ -42,7 +48,8 @@ Vue.component("add-item-manager", {
 				"type":''+item.type, 
 				"quantity":''+item.quantity, 
 				"restaurantName":''+item.restaurantName,
-				"description":''+item.description
+				"description":''+item.description,
+				"logoPath":''+item.logoPath
 			})
 			this.$router.push('/restaurantmanager');
 		}
@@ -51,3 +58,21 @@ Vue.component("add-item-manager", {
 		this.item.restaurantName = this.$route.params.data;
 	}
 });
+
+
+/**
+ * ref: https://stackoverflow.com/questions/6150289/how-can-i-convert-an-image-into-base64-string-using-javascript
+ * @param {*} element 
+ */
+function encodeImageFileAsURLForChanging(element) {
+    var file = element.files[0];
+    var reader = new FileReader();
+    reader.onloadend = function () {
+        console.log("\n ENKODIRANJE SLIKE \n");
+        document.getElementById('imgForChangeID')
+            .setAttribute(
+                'src', reader.result
+            );
+    }
+    reader.readAsDataURL(file);
+}

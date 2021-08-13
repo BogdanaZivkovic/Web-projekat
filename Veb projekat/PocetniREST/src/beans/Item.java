@@ -9,12 +9,13 @@ public class Item {
 	private String quantity;
 	private String description;
 	private Boolean isDeleted;
-	
+	private String logoPath;
+
 	public Item() {
-		
+
 	}
-	
-	public Item(int itemID, String name, double price, String type, String restaurantName, String quantity, String description) {
+
+	public Item(int itemID, String name, double price, String type, String restaurantName, String quantity, String description, String logoPath) {
 		this.itemID = itemID;
 		this.name = name;
 		this.price = price;
@@ -23,8 +24,17 @@ public class Item {
 		this.quantity = quantity;
 		this.description = description;
 		this.isDeleted = false;
+		this.logoPath = logoPath;
 	}
-	
+
+	public String getLogoPath() {
+		return logoPath;
+	}
+
+	public void setLogoPath(String logoPath) {
+		this.logoPath = logoPath;
+	}
+
 	public int getItemID() {
 		return itemID;
 	}

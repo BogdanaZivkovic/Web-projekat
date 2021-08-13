@@ -73,7 +73,7 @@ public class ItemsDAO {
 	}
 
 	public int addItem(ItemDTO dto) {
-		Item item = new Item(items.size(), dto.name, dto.price, dto.type, dto.restaurantName, dto.quantity, dto.description);
+		Item item = new Item(items.size(), dto.name, dto.price, dto.type, dto.restaurantName, dto.quantity, dto.description, dto.logoPath);
 		items.put(item.getItemID(), item);
 		saveItems();
 		return item.getItemID();
@@ -97,6 +97,7 @@ public class ItemsDAO {
 		itemToEdit.setRestaurantName(editedItem.getRestaurantName());
 		itemToEdit.setQuantity(editedItem.getQuantity());
 		itemToEdit.setDescription(editedItem.getDescription());
+		itemToEdit.setLogoPath(editedItem.getLogoPath());
 		saveItems();
 	}
 	
