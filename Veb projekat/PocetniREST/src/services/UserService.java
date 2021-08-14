@@ -83,10 +83,6 @@ public class UserService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllUsers() {
 		Collection<User> users = getUsers().getActiveUsers();
-		User user = (User) request.getSession().getAttribute("loggedUser");
-		for(User u: users) 
-			if (u.getUserName().equals(user.getUserName()))
-				users.remove(u);
 		return Response
 				.status(Response.Status.ACCEPTED).entity("SUCCESS")
 				.entity(users)
