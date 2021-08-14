@@ -5,8 +5,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -14,6 +16,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import beans.Order;
+import beans.ShoppingCartItem;
 
 
 public class OrdersDAO {
@@ -49,7 +52,7 @@ public class OrdersDAO {
 		}
 	}
 
-	public void saveItems() {
+	public void saveOrders() {
 		List<Order> allOrders = new ArrayList<Order>();
 		for (Order o : getValues()) {
 			allOrders.add(o);
@@ -70,5 +73,34 @@ public class OrdersDAO {
 
 	public Order getOrder(String id) {
 		return orders.get(id);
+	}
+	
+	public void resolveShoppingCart(Collection<ShoppingCartItem> items, String nameAndSurname) {
+		
+		HashMap<String, Order> ordersByRestaurant = new HashMap<String, Order>();
+		
+		for(ShoppingCartItem item: items) {
+			String restaurantName = item.getItem().getRestaurantName(); 
+			if(ordersByRestaurant.containsKey(restaurantName)) {
+				Order order = ordersByRestaurant.get(restaurantName);
+				order.addItem(item);
+				order.setPrice(order.getPrice() + item.getTotal());
+				System.out.println(order.getPrice());
+			}
+			else {
+				String orderID = UUID.randomUUID().toString().substring(0, 10);
+				while(orders.containsKey(orderID)) {
+					orderID = UUID.randomUUID().toString().substring(0, 10);
+				}
+				Order order = new Order(orderID, restaurantName, nameAndSurname, "OBRADA", new Date(), item.getTotal());
+				order.addItem(item);
+				ordersByRestaurant.put(restaurantName, order);
+			}
+		}
+		
+		for(Order order: ordersByRestaurant.values()) {
+			orders.put(order.getOrderID(), order);
+		}
+		saveOrders();
 	}
 }

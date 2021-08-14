@@ -1,6 +1,7 @@
 package beans;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Order {
 	
@@ -8,13 +9,13 @@ public class Order {
 	private String restaurantName;
 	private String nameAndSurname;
 	private String status;
-	private String dateAndTime;
+	private Date dateAndTime;
 	private double price;
 	private Boolean isDeleted;
 	
 	private ArrayList<ShoppingCartItem> items;
 
-	public Order(String orderID, String restaurantName, String nameAndSurname, String status, String dateAndTime,
+	public Order(String orderID, String restaurantName, String nameAndSurname, String status, Date dateAndTime,
 			double price) {
 		super();
 		this.orderID = orderID;
@@ -58,12 +59,12 @@ public class Order {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-
-	public String getDateAndTime() {
+	
+	public Date getDateAndTime() {
 		return dateAndTime;
 	}
 
-	public void setDateAndTime(String dateAndTime) {
+	public void setDateAndTime(Date dateAndTime) {
 		this.dateAndTime = dateAndTime;
 	}
 
@@ -89,5 +90,9 @@ public class Order {
 
 	public void setIsDeleted(Boolean isDeleted) {
 		this.isDeleted = isDeleted;
+	}
+	
+	public void addItem(ShoppingCartItem item) {
+		items.add(item);
 	}
 }

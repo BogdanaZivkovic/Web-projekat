@@ -32,9 +32,15 @@ Vue.component("shopping-cart", {
 				</table>
 			</li>
 		</ul>
-
+		<button @click="createOrders"> Order </button>
 	</div>
 	`,
+	methods: {
+		createOrders : function () {
+			axios
+			.post('rest/orders/create')
+		}
+	},
 	mounted () {
 		axios
 		.get('rest/shoppingCart/getJustSc')
