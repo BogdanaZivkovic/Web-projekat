@@ -5,6 +5,8 @@ public class ShoppingCartItem {
 	private Item item;
 	private int count;
 	
+	public ShoppingCartItem() {}
+	
 	public ShoppingCartItem(Item item, int count) {
 		this.item = item;
 		this.count = count;

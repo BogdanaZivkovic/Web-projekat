@@ -4,6 +4,8 @@ Vue.component("header-customer", {
 		<nav>
 			<ul>
 				<li><router-link to="/" exact> Profile </router-link></li>
+				<li><router-link to="/restaurants" exact> Restaurants </router-link></li>
+				<li><router-link to="/sc" exact> Shopping cart </router-link></li>
 				<li><button @click="logout" > Log out </button></li>
 			</ul>
 		</nav>

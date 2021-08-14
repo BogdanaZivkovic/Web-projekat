@@ -13,10 +13,9 @@ public class ShoppingCart {
 		totalPrice = 0;
 	}
 	
-	public void addItem(Item item, int count) {
-		ShoppingCartItem newItem = new ShoppingCartItem(item, count);
-		items.add(newItem);
-		totalPrice += newItem.getTotal();		
+	public void addItem(ShoppingCartItem item) {
+		items.add(item);
+		totalPrice += item.getTotal();		
 	}
 	
 	public ArrayList<ShoppingCartItem> getItems() {

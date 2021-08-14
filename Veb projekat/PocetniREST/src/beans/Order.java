@@ -10,6 +10,7 @@ public class Order {
 	private String status;
 	private String dateAndTime;
 	private double price;
+	private Boolean isDeleted;
 	
 	private ArrayList<ShoppingCartItem> items;
 
@@ -23,6 +24,7 @@ public class Order {
 		this.dateAndTime = dateAndTime;
 		this.price = price;
 		this.items = new ArrayList<ShoppingCartItem>();
+		isDeleted = false;
 	}
 
 	public String getOrderID() {
@@ -79,5 +81,13 @@ public class Order {
 
 	public void setItems(ArrayList<ShoppingCartItem> items) {
 		this.items = items;
+	}
+
+	public Boolean getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(Boolean isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 }

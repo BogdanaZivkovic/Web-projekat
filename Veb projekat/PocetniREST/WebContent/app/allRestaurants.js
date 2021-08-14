@@ -130,7 +130,7 @@ Vue.component("all-restaurants-app", {
 		viewRestaurant: function (restaurant) {
 			let data = restaurant;
       		this.$router.push({
-        		name: "viewRestaurant", //use name for router push
+        		name: "viewRestaurant",
        			params: { data }
       		});
 		},
