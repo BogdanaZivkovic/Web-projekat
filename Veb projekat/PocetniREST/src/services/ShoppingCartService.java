@@ -49,6 +49,17 @@ public class ShoppingCartService {
 				.build();
 	}
 	
+	@GET
+	@Path("/getScTotal")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getScTotal() {
+		double totalPrice =  getShoppingCart().getTotalPrice();
+		return Response
+				.status(Response.Status.ACCEPTED).entity("SUCCESS")
+				.entity(totalPrice)
+				.build();
+	}
+	
 	private ShoppingCart getShoppingCart() {
 		ShoppingCart sc = (ShoppingCart) request.getSession().getAttribute("shoppingCart");
 		if (sc == null) {
