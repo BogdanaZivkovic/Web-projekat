@@ -16,7 +16,24 @@ public class ShoppingCart {
 	}
 	
 	public void addItem(ShoppingCartItem item) {
-		items.add(item);
+		int exists = 0;
+		int cnt = 0;
+		for (ShoppingCartItem shoppingCartItem : items) {
+			if(shoppingCartItem.getItem().getItemID()==item.getItem().getItemID()) {
+				exists = 1;
+				break;
+			}
+			else {
+				cnt+=1;
+			}
+		}
+		
+		if(exists==0) {
+			items.add(item);
+		}
+		else {			
+			items.get(cnt).setCount(items.get(cnt).getCount()+item.getCount());
+		}
 		totalPrice += item.getTotal();		
 	}
 	

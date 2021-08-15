@@ -62,7 +62,7 @@ Vue.component("all-restaurants-app", {
 		</div>
 		<ul>
 			<li v-for ="restaurant in filteredRestaurants">
-				<img v-bind:src="getLogoPath(restaurant)">
+				<img height="200" width="350" v-bind:src="getLogoPath(restaurant)">
 				<table>
 					<tr>
 						<td> Name of restaurant: </td>

@@ -25,7 +25,7 @@ public class ShoppingCartService {
 	HttpServletRequest request;
 	@Context
 	ServletContext ctx;
-	
+
 	@POST
 	@Path("/add")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -38,7 +38,7 @@ public class ShoppingCartService {
 		}
 		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
 	}
-	
+
 	@GET
 	@Path("/getJustSc")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -49,7 +49,7 @@ public class ShoppingCartService {
 				.entity(items)
 				.build();
 	}
-	
+
 	@POST
 	@Path("/initSc")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -62,14 +62,25 @@ public class ShoppingCartService {
 		}
 		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
 	}
-	
+
+	@GET
+	@Path("/getScTotal")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getScTotal() {
+		double totalPrice =  getShoppingCart().getTotalPrice();
+		return Response
+				.status(Response.Status.ACCEPTED).entity("SUCCESS")
+				.entity(totalPrice)
+				.build();
+	}
+
 	private ShoppingCart getShoppingCart() {
 		ShoppingCart sc = (ShoppingCart) request.getSession().getAttribute("shoppingCart");
 		if (sc == null) {
 			User user = (User) request.getSession().getAttribute("loggedUser");
 			sc = new ShoppingCart(user.getUserName());
 			request.getSession().setAttribute("shoppingCart", sc);
-		} 
+		}
 		return sc;
 	}
 }
