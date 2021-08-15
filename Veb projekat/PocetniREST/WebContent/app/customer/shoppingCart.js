@@ -4,7 +4,7 @@ Vue.component("shopping-cart", {
 			restaurant: {},
 			sc: [],
 			images: [],
-			totalPrice: 0
+			totalPrice: 0.0
 		}
 	},
 	template:`
@@ -35,23 +35,23 @@ Vue.component("shopping-cart", {
 					</tr>
 				</table>
 			</li>
-			<li>
-				<table>
-					<tr>
-						<td> Total price of order:</td>
-						<td> {{totalPrice}} <td>
-					</tr>
-				</table>
-			</li>
 		</ul>
+		<label> Total price of order:</label>
+		<label> {{totalPrice}} </label>
+		<br><br>
 		<button @click="createOrders"> Order </button>
 		<button @click="goBack"> Continue shopping </button>
 	</div>
 	`,
 	methods: {
+		init : function() {
+			this.sc = [];
+			this.totalPrice = 0.0;
+		},
 		createOrders : function () {
 			axios
 			.post('rest/orders/create')
+			.then(this.init())
 		},
 		goBack : function () {
 			let data = this.restaurant;
