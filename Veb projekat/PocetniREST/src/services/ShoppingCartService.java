@@ -14,6 +14,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import beans.Item;
 import beans.ShoppingCart;
 import beans.ShoppingCartItem;
 import beans.User;
@@ -60,6 +61,17 @@ public class ShoppingCartService {
 			sc.getItems().clear();
 			sc.setRestaurantName(dto.name);
 		}
+		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
+	}
+	
+	@POST
+	@Path("/editQuantity")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response editQuantity(ShoppingCartItem shoppingCartItem) {
+		ShoppingCart sc = getShoppingCart();
+		sc.changeQuantity(shoppingCartItem);
+	
 		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
 	}
 

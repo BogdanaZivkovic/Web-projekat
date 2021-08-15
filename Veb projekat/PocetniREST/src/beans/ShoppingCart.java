@@ -1,6 +1,7 @@
 package beans;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class ShoppingCart {
 	private String customerUsername;
@@ -57,4 +58,13 @@ public class ShoppingCart {
 		this.restaurantName = restaurantName;
 	}
 	
+	public void changeQuantity(ShoppingCartItem sci) {
+		
+		for (ShoppingCartItem shoppingCartItem : items) {
+			if(shoppingCartItem.getItem().getItemID() == sci.getItem().getItemID()) {
+				shoppingCartItem.setCount(sci.getCount());
+				totalPrice = shoppingCartItem.getTotal();	
+			}
+		}
+	}	
 }
