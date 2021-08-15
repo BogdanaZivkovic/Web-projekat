@@ -6,6 +6,7 @@ Vue.component("header-manager", {
 				<li><router-link to="/" exact> Profile </router-link></li>
 				<li> <router-link to="/restaurantmanager" exact> My restaurant </router-link> </li>
 				<li> <router-link to="/allrestaurantsmanager" exact> Restaurants </router-link> </li>
+				<li><router-link to="/orders" exact> Orders </router-link></li>
 				<li><button @click="logout" > Log out </button></li>
 			</ul>
 		</nav>
