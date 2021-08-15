@@ -1,6 +1,7 @@
 Vue.component("shopping-cart", {
 	data: function () {
 		return {
+			restaurant: {},
 			sc: []
 		}
 	},
@@ -33,15 +34,24 @@ Vue.component("shopping-cart", {
 			</li>
 		</ul>
 		<button @click="createOrders"> Order </button>
+		<button @click="goBack"> Continue shopping </button>
 	</div>
 	`,
 	methods: {
 		createOrders : function () {
 			axios
 			.post('rest/orders/create')
+		},
+		goBack : function () {
+			let data = this.restaurant;
+      		this.$router.push({
+        		name: "viewRestaurant",
+       			params: { data }
+      		});
 		}
 	},
 	mounted () {
+		this.restaurant = this.$route.params.data;
 		axios
 		.get('rest/shoppingCart/getJustSc')
 		.then(response => (this.sc = response.data));

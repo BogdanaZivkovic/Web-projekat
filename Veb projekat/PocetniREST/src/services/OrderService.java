@@ -29,10 +29,9 @@ public class OrderService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response CreateOrders() {
-		Collection<ShoppingCartItem> items = getShoppingCart().getItems();
-		User user = (User) request.getSession().getAttribute("loggedUser");
-		String nameAndSurname = user.getName() + " " + user.getSurname();
-		getOrders().resolveShoppingCart(items, nameAndSurname);
+		ShoppingCart sc = getShoppingCart();
+		getOrders().createOrder(sc);
+		sc.getItems().clear();
 		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
 	}
 	

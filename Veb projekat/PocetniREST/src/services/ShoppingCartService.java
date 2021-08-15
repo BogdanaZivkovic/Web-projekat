@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response;
 import beans.ShoppingCart;
 import beans.ShoppingCartItem;
 import beans.User;
+import dto.RestaurantNameDTO;
 
 @Path("/shoppingCart")
 public class ShoppingCartService {
@@ -47,6 +48,19 @@ public class ShoppingCartService {
 				.status(Response.Status.ACCEPTED).entity("SUCCESS")
 				.entity(items)
 				.build();
+	}
+	
+	@POST
+	@Path("/initSc")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response clearSc(RestaurantNameDTO dto) {
+		ShoppingCart sc = getShoppingCart();
+		if (!sc.getRestaurantName().equals(dto.name)) {
+			sc.getItems().clear();
+			sc.setRestaurantName(dto.name);
+		}
+		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
 	}
 	
 	private ShoppingCart getShoppingCart() {

@@ -7,7 +7,7 @@ public class Order {
 	
 	private String orderID; 
 	private String restaurantName;
-	private String nameAndSurname;
+	private String userName;
 	private String status;
 	private Date dateAndTime;
 	private double price;
@@ -15,16 +15,18 @@ public class Order {
 	
 	private ArrayList<ShoppingCartItem> items;
 
-	public Order(String orderID, String restaurantName, String nameAndSurname, String status, Date dateAndTime,
-			double price) {
+	public Order() {}
+	
+	public Order(String orderID, String restaurantName, String userName, String status, Date dateAndTime,
+			double price, ArrayList<ShoppingCartItem> items) {
 		super();
 		this.orderID = orderID;
 		this.restaurantName = restaurantName;
-		this.nameAndSurname = nameAndSurname;
+		this.userName = userName;
 		this.status = status;
 		this.dateAndTime = dateAndTime;
 		this.price = price;
-		this.items = new ArrayList<ShoppingCartItem>();
+		this.items = items;
 		isDeleted = false;
 	}
 
@@ -44,12 +46,12 @@ public class Order {
 		this.restaurantName = restaurantName;
 	}
 
-	public String getNameAndSurname() {
-		return nameAndSurname;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setNameAndSurname(String nameAndSurname) {
-		this.nameAndSurname = nameAndSurname;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public String getStatus() {

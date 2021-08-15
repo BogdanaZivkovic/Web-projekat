@@ -6,11 +6,13 @@ public class ShoppingCart {
 	private String customerUsername;
 	private double totalPrice;
 	private ArrayList<ShoppingCartItem> items;
+	private String restaurantName;
 	
 	public ShoppingCart(String customerUsername) {
 		items = new ArrayList<ShoppingCartItem>();
 		this.customerUsername = customerUsername;
 		totalPrice = 0;
+		restaurantName="";
 	}
 	
 	public void addItem(ShoppingCartItem item) {
@@ -29,4 +31,13 @@ public class ShoppingCart {
 	public double getTotalPrice() {
 		return totalPrice;
 	}
+
+	public String getRestaurantName() {
+		return restaurantName;
+	}
+
+	public void setRestaurantName(String restaurantName) {
+		this.restaurantName = restaurantName;
+	}
+	
 }

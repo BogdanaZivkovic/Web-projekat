@@ -1,5 +1,7 @@
 package beans;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class ShoppingCartItem {
 	
 	private Item item;
@@ -28,6 +30,7 @@ public class ShoppingCartItem {
 		this.count = count;
 	}
 	
+	@JsonIgnore
 	public double getTotal() {
 		return  item.getPrice() * count;
 	}
