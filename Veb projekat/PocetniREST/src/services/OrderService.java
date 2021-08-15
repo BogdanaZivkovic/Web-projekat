@@ -5,6 +5,7 @@ import java.util.Collection;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -12,8 +13,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import beans.Order;
 import beans.ShoppingCart;
-import beans.ShoppingCartItem;
 import beans.User;
 import dao.OrdersDAO;
 
@@ -45,6 +46,18 @@ public class OrderService {
 		}
 
 		return orders;
+	}
+	
+	@GET
+	@Path("/getMyOrders")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getMyOrders() {
+		User user = (User) request.getSession().getAttribute("loggedUser");
+		Collection<Order> orders = getOrders().getOrdersForUser(user.getUserName());
+		return Response
+				.status(Response.Status.ACCEPTED).entity("SUCCESS")
+				.entity(orders)
+				.build();
 	}
 	
 	private ShoppingCart getShoppingCart() {

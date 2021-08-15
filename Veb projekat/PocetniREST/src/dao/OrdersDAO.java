@@ -85,4 +85,12 @@ public class OrdersDAO {
 		orders.put(orderID, order);
 		saveOrders();
 	}
+	
+	public Collection<Order> getOrdersForUser(String userName) {
+		Collection<Order> ret = new ArrayList<Order>();
+		for(Order order: getValues())
+			if(order.getUserName().equals(userName))
+				ret.add(order);
+		return ret;
+	}
 }
