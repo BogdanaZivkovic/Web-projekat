@@ -17,7 +17,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import beans.Order;
 import beans.ShoppingCart;
-import beans.ShoppingCartItem;
 
 
 public class OrdersDAO {
@@ -84,5 +83,21 @@ public class OrdersDAO {
 		Order order = new Order(orderID, sc.getRestaurantName(), sc.getCustomerUsername(), "OBRADA", new Date(), sc.getTotalPrice(), sc.getItems());
 		orders.put(orderID, order);
 		saveOrders();
+	}
+	
+	public Collection<Order> getOrdersForUser(String userName) {
+		Collection<Order> ret = new ArrayList<Order>();
+		for(Order order: getValues())
+			if(order.getUserName().equals(userName))
+				ret.add(order);
+		return ret;
+	}
+	
+	public Collection<Order> getOrdersForRestaurant(String restaurantName) {
+		Collection<Order> ret = new ArrayList<Order>();
+		for(Order order: getValues())
+			if(order.getRestaurantName().equals(restaurantName))
+				ret.add(order);
+		return ret;
 	}
 }

@@ -5,6 +5,7 @@ import java.util.Collection;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -12,10 +13,12 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import beans.Order;
+import beans.Restaurant;
 import beans.ShoppingCart;
-import beans.ShoppingCartItem;
 import beans.User;
 import dao.OrdersDAO;
+import dao.RestaurantsDAO;
 
 @Path("/orders")
 public class OrderService {
@@ -47,6 +50,32 @@ public class OrderService {
 		return orders;
 	}
 	
+	@GET
+	@Path("/getMyOrders")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getMyOrders() {
+		User user = (User) request.getSession().getAttribute("loggedUser");
+		Collection<Order> orders = getOrders().getOrdersForUser(user.getUserName());
+		return Response
+				.status(Response.Status.ACCEPTED).entity("SUCCESS")
+				.entity(orders)
+				.build();
+	}
+	
+	@GET
+	@Path("/getOrdersRestaurant")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getOrdersForRestaurant() {
+		User user = (User) request.getSession().getAttribute("loggedUser");
+		RestaurantsDAO restaurants = getRestaurants();
+		Restaurant restaurant =  restaurants.getRestaurantByManager(user.getUserName());
+		Collection<Order> orders = getOrders().getOrdersForRestaurant(restaurant.getName());
+		return Response
+				.status(Response.Status.ACCEPTED).entity("SUCCESS")
+				.entity(orders)
+				.build();
+	}
+	
 	private ShoppingCart getShoppingCart() {
 		ShoppingCart sc = (ShoppingCart) request.getSession().getAttribute("shoppingCart");
 		if (sc == null) {
@@ -55,5 +84,17 @@ public class OrderService {
 			request.getSession().setAttribute("shoppingCart", sc);
 		} 
 		return sc;
+	}
+	
+	private RestaurantsDAO getRestaurants() {
+		RestaurantsDAO restaurants = (RestaurantsDAO) ctx.getAttribute("restaurants");
+
+		if (restaurants == null) {
+			restaurants = new RestaurantsDAO();
+			ctx.setAttribute("restaurants", restaurants);
+
+		}
+
+		return restaurants;
 	}
 }
