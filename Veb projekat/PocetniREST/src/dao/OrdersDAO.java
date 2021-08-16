@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import beans.Order;
 import beans.ShoppingCart;
+import dto.OrderStatusDTO;
 
 
 public class OrdersDAO {
@@ -107,5 +108,10 @@ public class OrdersDAO {
 			if(order.getStatus().equals("WAITING_FOR_DELIVERY"))
 				ret.add(order);
 		return ret;
+	}
+	
+	public void changeStatus(OrderStatusDTO dto) {
+		getOrder(dto.orderID).setStatus(dto.status);
+		saveOrders();
 	}
 }
