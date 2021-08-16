@@ -16,6 +16,7 @@ import javax.ws.rs.core.Response;
 import beans.Order;
 import beans.Restaurant;
 import beans.ShoppingCart;
+import beans.ShoppingCartItem;
 import beans.User;
 import dao.OrdersDAO;
 import dao.RestaurantsDAO;
@@ -70,6 +71,17 @@ public class OrderService {
 		RestaurantsDAO restaurants = getRestaurants();
 		Restaurant restaurant =  restaurants.getRestaurantByManager(user.getUserName());
 		Collection<Order> orders = getOrders().getOrdersForRestaurant(restaurant.getName());
+		return Response
+				.status(Response.Status.ACCEPTED).entity("SUCCESS")
+				.entity(orders)
+				.build();
+	}
+	
+	@GET
+	@Path("/getWaiting")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getWaiting() {
+		Collection<Order> orders = getOrders().getWaiting();
 		return Response
 				.status(Response.Status.ACCEPTED).entity("SUCCESS")
 				.entity(orders)

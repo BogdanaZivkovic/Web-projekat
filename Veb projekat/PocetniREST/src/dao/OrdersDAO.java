@@ -100,4 +100,12 @@ public class OrdersDAO {
 				ret.add(order);
 		return ret;
 	}
+	
+	public Collection<Order> getWaiting() {
+		Collection<Order> ret = new ArrayList<Order>();
+		for(Order order: getValues())
+			if(order.getStatus().equals("WAITING_FOR_DELIVERY"))
+				ret.add(order);
+		return ret;
+	}
 }

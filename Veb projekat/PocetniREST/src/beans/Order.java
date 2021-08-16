@@ -27,7 +27,7 @@ public class Order {
 		this.status = status;
 		this.dateAndTime = dateAndTime;
 		this.price = price;
-		this.items = items;
+		this.items = new ArrayList<ShoppingCartItem>(items);
 		isDeleted = false;
 	}
 
