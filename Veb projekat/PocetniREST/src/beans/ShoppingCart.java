@@ -62,9 +62,21 @@ public class ShoppingCart {
 		
 		for (ShoppingCartItem shoppingCartItem : items) {
 			if(shoppingCartItem.getItem().getItemID() == sci.getItem().getItemID()) {
+				totalPrice -= shoppingCartItem.getTotal();
 				shoppingCartItem.setCount(sci.getCount());
-				totalPrice = shoppingCartItem.getTotal();	
+				totalPrice += shoppingCartItem.getTotal();
+				System.out.println(totalPrice);
 			}
 		}
-	}	
+	}
+	
+	public void removeItem(ShoppingCartItem sci) {
+		for (ShoppingCartItem shoppingCartItem : items) {
+			if(shoppingCartItem.getItem().getItemID() == sci.getItem().getItemID()) {
+				totalPrice -= sci.getTotal();
+				items.remove(shoppingCartItem);
+				
+			}
+		}
+	}
 }

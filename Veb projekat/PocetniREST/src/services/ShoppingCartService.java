@@ -18,6 +18,7 @@ import beans.Item;
 import beans.ShoppingCart;
 import beans.ShoppingCartItem;
 import beans.User;
+import dto.ItemIDDTO;
 import dto.RestaurantNameDTO;
 
 @Path("/shoppingCart")
@@ -74,6 +75,16 @@ public class ShoppingCartService {
 	
 		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
 	}
+	
+	@POST
+	@Path("/removeItem")
+	@Produces(MediaType.TEXT_HTML)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response removeItem(ShoppingCartItem shoppingCartItem) {
+		getShoppingCart().removeItem(shoppingCartItem);
+		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
+	}
+
 
 	@GET
 	@Path("/getScTotal")
