@@ -80,7 +80,7 @@ public class OrdersDAO {
 		while(orders.containsKey(orderID)) {
 			orderID = UUID.randomUUID().toString().substring(0, 10);
 		}
-		Order order = new Order(orderID, sc.getRestaurantName(), sc.getCustomerUsername(), "OBRADA", new Date(), sc.getTotalPrice(), sc.getItems());
+		Order order = new Order(orderID, sc.getRestaurantName(), sc.getCustomerUsername(), "PROCESSING", new Date(), sc.getTotalPrice(), sc.getItems());
 		orders.put(orderID, order);
 		saveOrders();
 	}

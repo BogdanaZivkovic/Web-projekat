@@ -8,6 +8,7 @@ public class Order {
 	private String orderID; 
 	private String restaurantName;
 	private String userName;
+	//PROCESSING, IN_PREPARATION, WAITING_FOR_DELIVERY, IN_TRANSPORT, DELIVERED, CANCELED
 	private String status;
 	private Date dateAndTime;
 	private double price;
