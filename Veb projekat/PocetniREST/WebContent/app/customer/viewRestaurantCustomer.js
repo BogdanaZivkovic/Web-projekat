@@ -52,8 +52,9 @@ Vue.component("view-restaurant-customer", {
 							<td> {{i.item.description}} </td>
 						</tr>
 					</table>
-					<input type="number" v-model="i.count" placeHolder="Count" min="1">
-					<button @click="selectItem(i)"> Add </button>
+					<input v-if="restaurant.status.match('Open')" type="number" v-model="i.count" placeHolder="Count" min="1">
+					<button v-if="restaurant.status.match('Open')" @click="selectItem(i)"> Add </button>
+					<label v-if="restaurant.status.match('Closed')"> Restaurant is closed. You can't add items from this restaurant into your shopping cart. </label>
 				</li>
 			</ul>
 			<button @click="viewShoppingCart"> Shopping cart </button>
