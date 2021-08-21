@@ -33,6 +33,12 @@ Vue.component("orders-manager", {
 				</ul>
 				<button v-if="order.status.match('PROCESSING')" @click="prepareOrder(order)"> ACCEPT </button>
 				<button v-if="order.status.match('IN_PREPARATION')" @click="orderReady(order)"> READY </button>
+				<ul v-if="order.status.match('WAITING_FOR_DELIVERY')">
+					<li v-for = "request in order.requests">
+						{{request}}
+						<button> APPROVE </button>
+					</li>
+				</ul>
 			</li>
 		</ul>
 	</div>

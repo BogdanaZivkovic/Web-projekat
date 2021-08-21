@@ -1,11 +1,13 @@
 Vue.component("orders-deliverer", {
 	data: function() {
 		return {
-			orders: []	
+			orders: [],
+			usename: ''	
 		}
 	},
 	template:`
 	<div>
+		{{username}}
 		<ul>
 			<li v-for = "order in orders">
 				<table>
@@ -31,7 +33,8 @@ Vue.component("orders-deliverer", {
 						{{i.count}} * {{i.item.name}}
 					</li>
 				</ul>
-				<button @click="requestDelivery(order)"> REQUEST </button>
+				<label v-if = "order.requests.includes(username)"> Request sent </label>
+				<button v-else @click="requestDelivery(order)"> REQUEST </button>
 			</li>
 		</ul>
 	</div>
@@ -42,6 +45,7 @@ Vue.component("orders-deliverer", {
 				.post('rest/orders/requestDelivery', {
 					orderID:''+order.orderID
 				})
+				.then(response => (this.init()))
 		},
 		foo: function(dateAndTime) {
 			let d = new Date(dateAndTime);
@@ -49,11 +53,17 @@ Vue.component("orders-deliverer", {
 			let mo = new Intl.DateTimeFormat('en', { month: 'short' }).format(d);
 			let da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(d);
 			return (`${da}-${mo}-${ye}`);
+		},
+		init: function() {
+			axios
+				.get('rest/orders/getWaiting')
+				.then(response =>(this.orders = response.data))
+			axios
+				.get('rest/profile/getUser')
+				.then(response => (this.username = response.data.userName))	
 		}
 	},
 	mounted () {
-		axios
-			.get('rest/orders/getWaiting')
-			.then(response =>(this.orders = response.data))
+		this.init();
 	}
 });
