@@ -20,6 +20,7 @@ import beans.ShoppingCartItem;
 import beans.User;
 import dao.OrdersDAO;
 import dao.RestaurantsDAO;
+import dto.OrderIDDTO;
 import dto.OrderStatusDTO;
 
 @Path("/orders")
@@ -95,6 +96,17 @@ public class OrderService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response changeStatus(OrderStatusDTO dto) {
 		getOrders().changeStatus(dto);
+		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
+	}
+	
+	@POST
+	@Path("/requestDelivery")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response requestDelivery(OrderIDDTO dto) {
+		User user = (User) request.getSession().getAttribute("loggedUser");
+		getOrders().getOrder(dto.orderID).addRequest(user.getUserName());;
+		getOrders().saveOrders();
 		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
 	}
 	

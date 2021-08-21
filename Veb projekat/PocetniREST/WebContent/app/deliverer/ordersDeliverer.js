@@ -31,11 +31,18 @@ Vue.component("orders-deliverer", {
 						{{i.count}} * {{i.item.name}}
 					</li>
 				</ul>
+				<button @click="requestDelivery(order)"> REQUEST </button>
 			</li>
 		</ul>
 	</div>
 	`,
 	methods: {
+		requestDelivery: function (order) {
+			axios
+				.post('rest/orders/requestDelivery', {
+					orderID:''+order.orderID
+				})
+		},
 		foo: function(dateAndTime) {
 			let d = new Date(dateAndTime);
 			let ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(d);

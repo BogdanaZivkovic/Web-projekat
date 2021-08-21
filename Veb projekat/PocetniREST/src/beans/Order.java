@@ -15,7 +15,9 @@ public class Order {
 	private Boolean isDeleted;
 	
 	private ArrayList<ShoppingCartItem> items;
-
+	
+	private ArrayList<String> requests;
+	
 	public Order() {}
 	
 	public Order(String orderID, String restaurantName, String userName, String status, Date dateAndTime,
@@ -28,6 +30,7 @@ public class Order {
 		this.dateAndTime = dateAndTime;
 		this.price = price;
 		this.items = new ArrayList<ShoppingCartItem>(items);
+		requests = new ArrayList<String>();
 		isDeleted = false;
 	}
 
@@ -97,5 +100,17 @@ public class Order {
 	
 	public void addItem(ShoppingCartItem item) {
 		items.add(item);
+	}
+
+	public ArrayList<String> getRequests() {
+		return requests;
+	}
+
+	public void setRequests(ArrayList<String> requests) {
+		this.requests = requests;
+	}
+	
+	public void addRequest(String userName) {
+		requests.add(userName);
 	}
 }
