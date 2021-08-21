@@ -5,6 +5,7 @@ Vue.component("header-deliverer", {
 			<ul>
 				<li><router-link to="/" exact> Profile </router-link></li>
 				<li><router-link to="/orders" exact> Orders </router-link></li>
+				<li><router-link to="/myorders" exact> Deliveries </router-link></li>
 				<li><button @click="logout" > Log out </button></li>
 			</ul>
 		</nav>

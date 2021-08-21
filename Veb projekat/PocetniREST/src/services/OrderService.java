@@ -124,6 +124,18 @@ public class OrderService {
 		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
 	}
 	
+	@GET
+	@Path("/getOrdersDeliverer")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getOrdersDeliverer() {
+		User user = (User) request.getSession().getAttribute("loggedUser");
+		Collection<Order> orders = getOrders().getOrdersForDeliverer(user.getUserName());
+		return Response
+				.status(Response.Status.ACCEPTED).entity("SUCCESS")
+				.entity(orders)
+				.build();
+	}
+	
 	private ShoppingCart getShoppingCart() {
 		ShoppingCart sc = (ShoppingCart) request.getSession().getAttribute("shoppingCart");
 		if (sc == null) {

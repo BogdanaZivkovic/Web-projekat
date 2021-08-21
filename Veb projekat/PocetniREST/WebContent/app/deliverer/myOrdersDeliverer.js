@@ -1,8 +1,7 @@
-Vue.component("orders-deliverer", {
+Vue.component("my-orders-deliverer", {
 	data: function() {
 		return {
-			orders: [],
-			usename: ''	
+			orders: []
 		}
 	},
 	template:`
@@ -32,17 +31,17 @@ Vue.component("orders-deliverer", {
 						{{i.count}} * {{i.item.name}}
 					</li>
 				</ul>
-				<label v-if = "order.requests.includes(username)"> Request sent </label>
-				<button v-else @click="requestDelivery(order)"> REQUEST </button>
+				<button v-if="order.status.match('IN_TRANSPORT')" @click="deliverOrder(order)"> DELIVER </button>
 			</li>
 		</ul>
 	</div>
 	`,
 	methods: {
-		requestDelivery: function (order) {
+		deliverOrder : function (order) {
 			axios
-				.post('rest/orders/requestDelivery', {
-					orderID:''+order.orderID
+				.post('rest/orders/changeStatus', {
+					'orderID':''+order.orderID,
+					'status':'DELIVERED'
 				})
 				.then(response => (this.init()))
 		},
@@ -55,11 +54,8 @@ Vue.component("orders-deliverer", {
 		},
 		init: function() {
 			axios
-				.get('rest/orders/getWaiting')
+				.get('rest/orders/getOrdersDeliverer')
 				.then(response =>(this.orders = response.data))
-			axios
-				.get('rest/profile/getUser')
-				.then(response => (this.username = response.data.userName))	
 		}
 	},
 	mounted () {

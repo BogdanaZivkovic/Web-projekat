@@ -114,4 +114,12 @@ public class OrdersDAO {
 		getOrder(dto.orderID).setStatus(dto.status);
 		saveOrders();
 	}
+	
+	public Collection<Order> getOrdersForDeliverer(String userName) {
+		Collection<Order> ret = new ArrayList<Order>();
+		for(Order order: getValues())
+			if(order.getDeliverer().equals(userName))
+				ret.add(order);
+		return ret;
+	}
 }
