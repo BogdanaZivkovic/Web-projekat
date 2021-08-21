@@ -1,5 +1,6 @@
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.servlet.ServletContext;
@@ -20,6 +21,7 @@ import beans.ShoppingCartItem;
 import beans.User;
 import dao.OrdersDAO;
 import dao.RestaurantsDAO;
+import dto.ApproveOrderDTO;
 import dto.OrderIDDTO;
 import dto.OrderStatusDTO;
 
@@ -106,6 +108,18 @@ public class OrderService {
 	public Response requestDelivery(OrderIDDTO dto) {
 		User user = (User) request.getSession().getAttribute("loggedUser");
 		getOrders().getOrder(dto.orderID).addRequest(user.getUserName());;
+		getOrders().saveOrders();
+		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
+	}
+	
+	@POST
+	@Path("/approveDelivery")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response approveDelivery(ApproveOrderDTO dto) {
+		Order order = getOrders().getOrder(dto.orderID);
+		order.setStatus("IN_TRANSPORT");
+		order.setDeliverer(dto.userName);
 		getOrders().saveOrders();
 		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
 	}

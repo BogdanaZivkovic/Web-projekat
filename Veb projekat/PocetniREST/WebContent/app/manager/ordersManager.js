@@ -36,7 +36,7 @@ Vue.component("orders-manager", {
 				<ul v-if="order.status.match('WAITING_FOR_DELIVERY')">
 					<li v-for = "request in order.requests">
 						{{request}}
-						<button> APPROVE </button>
+						<button @click = "approveDelivery(order, request)"> APPROVE </button>
 					</li>
 				</ul>
 			</li>
@@ -44,6 +44,14 @@ Vue.component("orders-manager", {
 	</div>
 	`,
 	methods: {
+		approveDelivery : function (order, request) {
+			axios
+				.post('rest/orders/approveDelivery', {
+					'orderID':''+order.orderID,
+					'userName':''+request
+				})
+				.then(response => {this.init()})
+		},
 		prepareOrder: function (order) {
 			axios
 				.post('rest/orders/changeStatus', {

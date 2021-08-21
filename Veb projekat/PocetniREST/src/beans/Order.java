@@ -13,6 +13,7 @@ public class Order {
 	private Date dateAndTime;
 	private double price;
 	private Boolean isDeleted;
+	private String deliverer;
 	
 	private ArrayList<ShoppingCartItem> items;
 	
@@ -32,6 +33,7 @@ public class Order {
 		this.items = new ArrayList<ShoppingCartItem>(items);
 		requests = new ArrayList<String>();
 		isDeleted = false;
+		deliverer = "";
 	}
 
 	public String getOrderID() {
@@ -112,5 +114,13 @@ public class Order {
 	
 	public void addRequest(String userName) {
 		requests.add(userName);
+	}
+
+	public String getDeliverer() {
+		return deliverer;
+	}
+
+	public void setDeliverer(String deliverer) {
+		this.deliverer = deliverer;
 	}
 }
