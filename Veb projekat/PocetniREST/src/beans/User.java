@@ -9,6 +9,7 @@ public class User {
 	private String dateOfBirth;
 	private String role;
 	private Boolean isDeleted;
+	private double points;
 	
 	public User() {
 		
@@ -24,6 +25,7 @@ public class User {
 		this.dateOfBirth = dateOfBirth;
 		this.role = role;
 		isDeleted = false;
+		this.points = 0.0;
 	}
 	
 	public String getUserName() {
@@ -89,5 +91,13 @@ public class User {
 
 	public void setIsDeleted(Boolean isDeleted) {
 		this.isDeleted = isDeleted;
+	}
+
+	public double getPoints() {
+		return points;
+	}
+
+	public void setPoints(double points) {
+		this.points = points;
 	}
 }

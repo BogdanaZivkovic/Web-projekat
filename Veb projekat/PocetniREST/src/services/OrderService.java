@@ -20,6 +20,7 @@ import beans.ShoppingCartItem;
 import beans.User;
 import dao.OrdersDAO;
 import dao.RestaurantsDAO;
+import dao.UsersDAO;
 import dto.OrderStatusDTO;
 
 @Path("/orders")
@@ -36,7 +37,16 @@ public class OrderService {
 	public Response CreateOrders() {
 		ShoppingCart sc = getShoppingCart();
 		getOrders().createOrder(sc);
+		double points = sc.getTotalPrice()/1000*133;
+		
+		User user = getUsers().getActiveUser(sc.getCustomerUsername());
+		double userPoints = user.getPoints();
+		user.setPoints(userPoints + points);	
+		getUsers().saveUsers();
+		
 		sc.getItems().clear();
+		sc.setTotalPrice(0.0);
+		
 		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
 	}
 	
@@ -98,6 +108,24 @@ public class OrderService {
 		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
 	}
 	
+	@POST
+	@Path("/removePoints")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response removePoints(OrderStatusDTO dto) {
+		
+		Order order = getOrders().getOrder(dto.orderID);
+		
+		double points = order.getPrice()/1000*133*4;
+		User user = getUsers().getActiveUser(order.getUserName());
+		
+		double userPoints = user.getPoints();
+		user.setPoints(userPoints - points);	
+		getUsers().saveUsers();
+		
+		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
+	}
+	
 	private ShoppingCart getShoppingCart() {
 		ShoppingCart sc = (ShoppingCart) request.getSession().getAttribute("shoppingCart");
 		if (sc == null) {
@@ -118,5 +146,17 @@ public class OrderService {
 		}
 
 		return restaurants;
+	}
+	
+	private UsersDAO getUsers() {
+		UsersDAO users = (UsersDAO) ctx.getAttribute("users");
+		
+		if (users == null) {
+			users = new UsersDAO();
+			ctx.setAttribute("users", users);
+
+		}
+
+		return users;
 	}
 }
