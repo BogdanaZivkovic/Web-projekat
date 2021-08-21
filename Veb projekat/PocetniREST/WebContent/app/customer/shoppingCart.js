@@ -72,9 +72,10 @@ Vue.component("shopping-cart", {
 		},
 		editShoppingCartItem: function (shoppingCartItem) {
 			let data = shoppingCartItem;
+			let data1 = this.restaurant
 			this.$router.push({
 				name: "editShoppingCart",
-				params: { data }
+				params: { data, data1 }
 			});
 		},
 		goBack : function () {
