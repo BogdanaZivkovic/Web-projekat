@@ -21,6 +21,7 @@ import beans.ShoppingCartItem;
 import beans.User;
 import dao.OrdersDAO;
 import dao.RestaurantsDAO;
+import dao.UsersDAO;
 import dto.ApproveOrderDTO;
 import dto.OrderIDDTO;
 import dto.OrderStatusDTO;
@@ -31,7 +32,7 @@ public class OrderService {
 	HttpServletRequest request;
 	@Context
 	ServletContext ctx;
-	
+
 	@POST
 	@Path("/create")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -39,13 +40,22 @@ public class OrderService {
 	public Response CreateOrders() {
 		ShoppingCart sc = getShoppingCart();
 		getOrders().createOrder(sc);
+		double points = sc.getTotalPrice()/1000*133;
+
+		User user = getUsers().getActiveUser(sc.getCustomerUsername());
+		double userPoints = user.getPoints();
+		user.setPoints(userPoints + points);
+		getUsers().saveUsers();
+
 		sc.getItems().clear();
+		sc.setTotalPrice(0.0);
+
 		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
 	}
-	
+
 	private OrdersDAO getOrders() {
 		OrdersDAO orders = (OrdersDAO) ctx.getAttribute("orders");
-		
+
 		if (orders == null) {
 			orders = new OrdersDAO();
 			ctx.setAttribute("orders", orders);
@@ -54,7 +64,7 @@ public class OrderService {
 
 		return orders;
 	}
-	
+
 	@GET
 	@Path("/getMyOrders")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -66,7 +76,7 @@ public class OrderService {
 				.entity(orders)
 				.build();
 	}
-	
+
 	@GET
 	@Path("/getOrdersRestaurant")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -80,7 +90,7 @@ public class OrderService {
 				.entity(orders)
 				.build();
 	}
-	
+
 	@GET
 	@Path("/getWaiting")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -91,7 +101,7 @@ public class OrderService {
 				.entity(orders)
 				.build();
 	}
-	
+
 	@POST
 	@Path("/changeStatus")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -100,7 +110,7 @@ public class OrderService {
 		getOrders().changeStatus(dto);
 		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
 	}
-	
+
 	@POST
 	@Path("/requestDelivery")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -111,7 +121,7 @@ public class OrderService {
 		getOrders().saveOrders();
 		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
 	}
-	
+
 	@POST
 	@Path("/approveDelivery")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -123,7 +133,7 @@ public class OrderService {
 		getOrders().saveOrders();
 		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
 	}
-	
+
 	@GET
 	@Path("/getOrdersDeliverer")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -135,17 +145,34 @@ public class OrderService {
 				.entity(orders)
 				.build();
 	}
-	
+
+	@Path("/removePoints")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response removePoints(OrderStatusDTO dto) {
+
+		Order order = getOrders().getOrder(dto.orderID);
+
+		double points = order.getPrice()/1000*133*4;
+		User user = getUsers().getActiveUser(order.getUserName());
+
+		double userPoints = user.getPoints();
+		user.setPoints(userPoints - points);
+		getUsers().saveUsers();
+
+		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
+	}
+
 	private ShoppingCart getShoppingCart() {
 		ShoppingCart sc = (ShoppingCart) request.getSession().getAttribute("shoppingCart");
 		if (sc == null) {
 			User user = (User) request.getSession().getAttribute("loggedUser");
 			sc = new ShoppingCart(user.getUserName());
 			request.getSession().setAttribute("shoppingCart", sc);
-		} 
+		}
 		return sc;
 	}
-	
+
 	private RestaurantsDAO getRestaurants() {
 		RestaurantsDAO restaurants = (RestaurantsDAO) ctx.getAttribute("restaurants");
 
@@ -156,5 +183,17 @@ public class OrderService {
 		}
 
 		return restaurants;
+	}
+
+	private UsersDAO getUsers() {
+		UsersDAO users = (UsersDAO) ctx.getAttribute("users");
+
+		if (users == null) {
+			users = new UsersDAO();
+			ctx.setAttribute("users", users);
+
+		}
+
+		return users;
 	}
 }

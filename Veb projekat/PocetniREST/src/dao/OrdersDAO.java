@@ -83,6 +83,7 @@ public class OrdersDAO {
 		}
 		Order order = new Order(orderID, sc.getRestaurantName(), sc.getCustomerUsername(), "PROCESSING", new Date(), sc.getTotalPrice(), sc.getItems());
 		orders.put(orderID, order);
+		
 		saveOrders();
 	}
 	
