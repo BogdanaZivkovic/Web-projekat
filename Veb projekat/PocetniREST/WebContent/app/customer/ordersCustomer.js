@@ -1,13 +1,39 @@
 Vue.component("orders-customer", {
 	data: function() {
 		return {
-			orders: []	
+			orders: [],
+			searchVisible: false,
+			sortVisible: false,
+			filterVisible: false,
+			search: {
+				restaurant:'',
+				minPrice:'',
+				maxPrice:'',
+				minDate: '',
+				maxDate:''
+			}	
 		}
 	},
 	template:`
 	<div>
+		<button @click="searchVisible=!searchVisible">Search</button>
+		<button @click="sortVisible=!sortVisible">Sort</button>
+		<button @click="filterVisible=!filterVisible">Filter</button>
+		<br><br>
+		<div v-if="searchVisible">
+			<input type="text" v-model="search.restaurant" placeholder="Restaurant">
+			<br><br>
+			<input type="number" v-model="search.minPrice" placeholder="Min price">
+			<input type="number" v-model="search.maxPrice" placeholder="Max price">
+			<br><br>
+			<label> Min date: </label>
+			<input type="date" v-model="search.minDate" placeholder="Min date">
+			<label> Max date: </label>
+			<input type="date" v-model="search.maxDate" placeholder="Max date">
+			<br><br>
+		</div>
 		<ul>
-			<li v-for = "order in orders">
+			<li v-for = "order in filteredOrders">
 				<table>
 					<tr>
 						<td> Restaurant: </td>
@@ -62,9 +88,29 @@ Vue.component("orders-customer", {
 			axios
 				.get('rest/orders/getMyOrders')
 				.then(response =>(this.orders = response.data))
+		},
+		matchesSearch: function(order) {
+			if(!order.restaurantName.toLowerCase().match(this.search.restaurant.toLowerCase()))
+				return false;
+			if(order.price < parseInt(this.search.minPrice, 10))
+				return false;
+			if(order.price > parseInt(this.search.maxPrice, 10))
+				return false;
+			if(order.dateAndTime < Date.parse(this.search.minDate))
+				return false;
+			if(order.dateAndTime > Date.parse(this.search.maxDate))
+				return false;
+			return true;
 		}
 	},
 	mounted () {
 		this.init();
+	},
+	computed: {
+		filteredOrders: function() {
+			return this.orders.filter((order) => {
+				return this.matchesSearch(order);
+			});
+		}
 	}
 });
