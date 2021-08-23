@@ -85,7 +85,7 @@ Vue.component("orders-customer", {
 					</tr>
 					<tr>
 						<td> Date and time: </td>
-						<td> {{foo(order.dateAndTime)}} </td>
+						<td> {{formatDate(order.dateAndTime)}} </td>
 					</tr>
 					<tr>
 						<td> Price: </td>
@@ -117,12 +117,21 @@ Vue.component("orders-customer", {
 				})
 				.then(response => {this.init()})
 		},
-		foo: function(dateAndTime) {
-			let d = new Date(dateAndTime);
+		formatDate: function(dateMillisec) {
+			/*let d = new Date(dateAndTime);
 			let ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(d);
 			let mo = new Intl.DateTimeFormat('en', { month: 'short' }).format(d);
 			let da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(d);
-			return (`${da}-${mo}-${ye}`);
+			return (`${da}-${mo}-${ye}`);*/
+			var date = new Date(dateMillisec)
+			var hours = date.getHours();
+  			var minutes = date.getMinutes();
+  			var ampm = hours >= 12 ? 'pm' : 'am';
+  			hours = hours % 12;
+  			hours = hours ? hours : 12; // the hour '0' should be '12'
+  			minutes = minutes < 10 ? '0'+minutes : minutes;
+  			var strTime = hours + ':' + minutes + ' ' + ampm;
+  			return (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear() + "  " + strTime;
 		},		
 		init: function() {
 			axios
