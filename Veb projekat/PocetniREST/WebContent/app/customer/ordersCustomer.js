@@ -118,11 +118,6 @@ Vue.component("orders-customer", {
 				.then(response => {this.init()})
 		},
 		formatDate: function(dateMillisec) {
-			/*let d = new Date(dateAndTime);
-			let ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(d);
-			let mo = new Intl.DateTimeFormat('en', { month: 'short' }).format(d);
-			let da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(d);
-			return (`${da}-${mo}-${ye}`);*/
 			var date = new Date(dateMillisec)
 			var hours = date.getHours();
   			var minutes = date.getMinutes();
