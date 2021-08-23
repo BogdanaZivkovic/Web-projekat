@@ -87,6 +87,7 @@ Vue.component("all-restaurants-app", {
 				<button @click= "viewRestaurant(restaurant)" > View </button>
 			</li>
 		</ul>
+	</div>
 	`,
 	methods: {
 		matchesSearch: function (restaurant) {
