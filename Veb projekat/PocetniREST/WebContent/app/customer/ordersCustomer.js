@@ -1,6 +1,7 @@
 Vue.component("orders-customer", {
 	data: function() {
 		return {
+			restaurants: [],
 			orders: [],
 			searchVisible: false,
 			sortVisible: false,
@@ -11,6 +12,10 @@ Vue.component("orders-customer", {
 				maxPrice:'',
 				minDate: '',
 				maxDate:''
+			},
+			filter: {
+				type:'',
+				status:''
 			}	
 		}
 	},
@@ -42,6 +47,30 @@ Vue.component("orders-customer", {
 			<button @click="sortDateAsc"> Date ascending </button>
 			<button @click="sortDateDesc"> Date descending </button>
 			<br><br>
+		</div>
+		<div v-if="filterVisible">
+			<label> Restaurant type: </label>
+			<select v-model="filter.type">
+				<option disabled value="">Please select one</option>
+				<option value="">All</option>
+		   		<option>Chinese</option>
+		   		<option>Italian</option>
+				<option>Fast food</option>
+				<option>BBQ</option>
+				<option>Mexican</option>
+				<option>Gyros</option>
+			</select>
+			<label> Order status: </label>
+			<select v-model="filter.status">
+				<option disabled value="">Please select one</option>
+				<option value="">All</option>
+				<option> PROCESSING </option>
+				<option> IN_PREPARATION </option>
+				<option> WAITING_FOR_DELIVERY </option>
+				<option> IN_TRANSPORT </option>
+				<option> DELIVERED </option>
+				<option> CANCELED </option>
+			</select>
 		</div>
 		<ul>
 			<li v-for = "order in filteredOrders">
@@ -98,7 +127,10 @@ Vue.component("orders-customer", {
 		init: function() {
 			axios
 				.get('rest/orders/getMyOrders')
-				.then(response =>(this.orders = response.data))
+				.then(response => (this.orders = response.data))
+			axios
+				.get('rest/restaurants/getAllRestaurants')
+				.then(response => (this.restaurants = response.data))
 		},
 		matchesSearch: function(order) {
 			if(!order.restaurantName.toLowerCase().match(this.search.restaurant.toLowerCase()))
@@ -110,6 +142,17 @@ Vue.component("orders-customer", {
 			if(order.dateAndTime < Date.parse(this.search.minDate))
 				return false;
 			if(order.dateAndTime > Date.parse(this.search.maxDate))
+				return false;
+			if(!order.status.match(this.filter.status))
+				return false;
+			let restaurant;
+			for(let i =0; i < this.restaurants.length; i++) {
+				if(this.restaurants[i].name.match(order.restaurantName)) {
+					restaurant = this.restaurants[i];
+					break;
+				}
+			}
+			if(!restaurant.type.match(this.filter.type))
 				return false;
 			return true;
 		},
