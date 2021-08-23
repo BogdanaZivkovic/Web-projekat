@@ -32,6 +32,17 @@ Vue.component("orders-customer", {
 			<input type="date" v-model="search.maxDate" placeholder="Max date">
 			<br><br>
 		</div>
+		<div v-if="sortVisible">
+			<button @click="sortRestaurantAsc"> Restaurant ascending </button>
+			<button @click="sortRestaurantDesc"> Restaurant descending </button>
+			<br><br>
+			<button @click="sortPriceAsc"> Price ascending </button>
+			<button @click="sortPriceDesc"> Price descending </button>
+			<br><br>
+			<button @click="sortDateAsc"> Date ascending </button>
+			<button @click="sortDateDesc"> Date descending </button>
+			<br><br>
+		</div>
 		<ul>
 			<li v-for = "order in filteredOrders">
 				<table>
@@ -101,6 +112,37 @@ Vue.component("orders-customer", {
 			if(order.dateAndTime > Date.parse(this.search.maxDate))
 				return false;
 			return true;
+		},
+		sortRestaurantAsc: function() {
+			this.orders.sort((a, b) => {return this.alphaNumCriterium(a.restaurantName, b.restaurantName)})
+		},
+		sortRestaurantDesc: function() {
+			this.orders.sort((a, b) => {return this.alphaNumCriterium(b.restaurantName, a.restaurantName)})
+		},
+		alphaNumCriterium: function (a,b) {
+      		var reA = /[^a-zA-Z]/g;
+      		var reN = /[^0-9]/g;
+      		var aA = a.replace(reA, "");
+      		var bA = b.replace(reA, "");
+      		if(aA === bA) {
+          		var aN = parseInt(a.replace(reN, ""), 10);
+          		var bN = parseInt(b.replace(reN, ""), 10);
+          		return aN === bN ? 0 : aN > bN ? 1 : -1;
+      		} else {
+          		return aA > bA ? 1 : -1;
+      		}
+    	},
+		sortPriceAsc: function() {
+			this.orders.sort((a, b) => {return a.price - b.price})
+		},
+		sortPriceDesc: function() {
+			this.orders.sort((a, b) => {return b.price - a.price})
+		},
+		sortDateAsc: function() {
+			this.orders.sort((a,b) => {return a.dateAndTime - b.dateAndTime})
+		},
+		sortDateDesc: function() {
+			this.orders.sort((a,b) => {return b.dateAndTime - a.dateAndTime})
 		}
 	},
 	mounted () {

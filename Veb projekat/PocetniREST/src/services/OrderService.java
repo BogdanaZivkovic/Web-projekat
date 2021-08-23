@@ -1,6 +1,5 @@
 package services;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.servlet.ServletContext;
@@ -17,7 +16,6 @@ import javax.ws.rs.core.Response;
 import beans.Order;
 import beans.Restaurant;
 import beans.ShoppingCart;
-import beans.ShoppingCartItem;
 import beans.User;
 import dao.OrdersDAO;
 import dao.RestaurantsDAO;
@@ -146,6 +144,7 @@ public class OrderService {
 				.build();
 	}
 
+	@POST
 	@Path("/removePoints")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
