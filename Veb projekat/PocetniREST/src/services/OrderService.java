@@ -1,5 +1,6 @@
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.servlet.ServletContext;
@@ -204,6 +205,23 @@ public class OrderService {
 		getUsers().saveUsers();
 
 		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
+	}
+	
+	@GET
+	@Path("/getSussyUsers")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getSussyUsers() {
+		Collection<User> allUsers = getUsers().getActiveUsers();
+		Collection<User> sussyUsers = new ArrayList<User>();
+		for(User user : allUsers) {
+			if(getOrders().isUserSussy(user.getUserName())) {
+				sussyUsers.add(user);
+			}
+		}
+		return Response
+				.status(Response.Status.ACCEPTED).entity("SUCCESS")
+				.entity(sussyUsers)
+				.build();
 	}
 
 	private ShoppingCart getShoppingCart() {

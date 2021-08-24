@@ -3,7 +3,9 @@ package dao;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -122,5 +124,20 @@ public class OrdersDAO {
 			if(order.getDeliverer().equals(userName))
 				ret.add(order);
 		return ret;
+	}
+	
+	public boolean isUserSussy(String username) {
+		int count = 0;
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date()); // Using today's date
+		c.add(Calendar.DATE, -30); // Adding 5 days
+		Date beginning = c.getTime();
+		for(Order order : getValues()) {
+			if(order.getUserName().equals(username) && order.getStatus().equals("CANCELED") && order.getDateAndTime().after(beginning))
+				count++;
+		}
+		if(count >= 5)
+			return true;
+		return false;
 	}
 }
