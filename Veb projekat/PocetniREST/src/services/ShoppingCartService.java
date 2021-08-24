@@ -18,6 +18,7 @@ import beans.Item;
 import beans.ShoppingCart;
 import beans.ShoppingCartItem;
 import beans.User;
+import dao.UsersDAO;
 import dto.ItemIDDTO;
 import dto.RestaurantNameDTO;
 
@@ -90,7 +91,26 @@ public class ShoppingCartService {
 	@Path("/getScTotal")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getScTotal() {
+		
 		double totalPrice =  getShoppingCart().getTotalPrice();
+
+		for(User user : getUsers().getValues()) {
+			if(user.getUserName().matches(getShoppingCart().getCustomerUsername())) {
+				
+				if(user.getCustomerType().matches("GOLD")) {
+					totalPrice = totalPrice*0.85;
+				}
+				
+				else if(user.getCustomerType().matches("SILVER")) {
+					totalPrice = totalPrice*0.90;
+				}
+				
+				else if(user.getCustomerType().matches("BRONZE")) {
+					totalPrice = totalPrice*0.95;
+				}	
+			}
+		}
+		
 		return Response
 				.status(Response.Status.ACCEPTED).entity("SUCCESS")
 				.entity(totalPrice)
@@ -105,5 +125,17 @@ public class ShoppingCartService {
 			request.getSession().setAttribute("shoppingCart", sc);
 		}
 		return sc;
+	}
+	
+	private UsersDAO getUsers() {
+		UsersDAO users = (UsersDAO) ctx.getAttribute("users");
+		
+		if (users == null) {
+			users = new UsersDAO();
+			ctx.setAttribute("users", users);
+
+		}
+
+		return users;
 	}
 }

@@ -19,6 +19,7 @@ import beans.Restaurant;
 import beans.ShoppingCart;
 import beans.ShoppingCartItem;
 import beans.User;
+import dao.CustomerTypeDAO;
 import dao.OrdersDAO;
 import dao.RestaurantsDAO;
 import dao.UsersDAO;
@@ -39,14 +40,42 @@ public class OrderService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response CreateOrders() {
 		ShoppingCart sc = getShoppingCart();
-		getOrders().createOrder(sc);
-		double points = sc.getTotalPrice()/1000*133;
+		
+		CustomerTypeDAO customerTypes = new CustomerTypeDAO();
 
 		User user = getUsers().getActiveUser(sc.getCustomerUsername());
 		double userPoints = user.getPoints();
+		double totalPrice = sc.getTotalPrice();
+		
+		if(user.getCustomerType().matches("GOLD")) {
+			sc.setTotalPrice(totalPrice*0.85);
+		}
+		
+		else if(user.getCustomerType().matches("SILVER")) {
+			sc.setTotalPrice(totalPrice*0.9);
+		}
+		
+		else if(user.getCustomerType().matches("BRONZE")) {
+			sc.setTotalPrice(totalPrice*0.95);
+		}
+		
+		double points = sc.getTotalPrice()/1000*133;
+		
 		user.setPoints(userPoints + points);
+		
+		if (user.getPoints() >= customerTypes.getCustomerType("GOLD").getPoints()) {
+			user.setCustomerType("GOLD");
+		}
+		else if (user.getPoints() >= customerTypes.getCustomerType("SILVER").getPoints()) {
+			user.setCustomerType("SILVER");
+		}
+		else if (user.getPoints() >= customerTypes.getCustomerType("BRONZE").getPoints()) {
+			user.setCustomerType("BRONZE");
+		}
+		
 		getUsers().saveUsers();
 
+		getOrders().createOrder(sc);
 		sc.getItems().clear();
 		sc.setTotalPrice(0.0);
 
@@ -146,11 +175,13 @@ public class OrderService {
 				.build();
 	}
 
+	@POST
 	@Path("/removePoints")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response removePoints(OrderStatusDTO dto) {
-
+		
+		CustomerTypeDAO customerTypes = new CustomerTypeDAO();
 		Order order = getOrders().getOrder(dto.orderID);
 
 		double points = order.getPrice()/1000*133*4;
@@ -158,6 +189,20 @@ public class OrderService {
 
 		double userPoints = user.getPoints();
 		user.setPoints(userPoints - points);
+		
+		if (user.getPoints() >= customerTypes.getCustomerType("GOLD").getPoints()) {
+			user.setCustomerType("GOLD");
+		}
+		else if (user.getPoints() >= customerTypes.getCustomerType("SILVER").getPoints()) {
+			user.setCustomerType("SILVER");
+		}
+		else if (user.getPoints() >= customerTypes.getCustomerType("BRONZE").getPoints()) {
+			user.setCustomerType("BRONZE");
+		}
+		else {
+			user.setCustomerType("");
+		}
+		
 		getUsers().saveUsers();
 
 		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
@@ -195,5 +240,5 @@ public class OrderService {
 		}
 
 		return users;
-	}
+	}	
 }

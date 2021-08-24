@@ -10,6 +10,7 @@ public class User {
 	private String role;
 	private Boolean isDeleted;
 	private double points;
+	private String customerType;
 	
 	public User() {
 		
@@ -26,6 +27,7 @@ public class User {
 		this.role = role;
 		isDeleted = false;
 		this.points = 0.0;
+		customerType = "";
 	}
 	
 	public String getUserName() {
@@ -100,4 +102,13 @@ public class User {
 	public void setPoints(double points) {
 		this.points = points;
 	}
+
+	public String getCustomerType() {
+		return customerType;
+	}
+
+	public void setCustomerType(String customerType) {
+		this.customerType = customerType;
+	}
+	
 }
