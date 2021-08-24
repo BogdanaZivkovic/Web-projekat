@@ -56,7 +56,7 @@ public class UserService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response loginUser(LoginDTO dto) {
 		User user = getUsers().getActiveUser(dto.userName);	
-		if(user == null || !user.getPassword().equals(dto.password))
+		if(user == null || !user.getPassword().equals(dto.password) || user.getIsBlocked())
 		{
 			System.out.println("bad");
 			return Response.status(Response.Status.BAD_REQUEST).entity("Password or username are incorrect, try again")
@@ -176,6 +176,24 @@ public class UserService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteUser(UserNameDTO dto) {
 		getUsers().deleteLogically(dto.userName);
+		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
+	}
+	
+	@POST
+	@Path("/block")
+	@Produces(MediaType.TEXT_HTML)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response blockUser(UserNameDTO dto) {
+		getUsers().blockUser(dto.userName);
+		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
+	}
+	
+	@POST
+	@Path("/unblock")
+	@Produces(MediaType.TEXT_HTML)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response unblockUser(UserNameDTO dto) {
+		getUsers().unblockUser(dto.userName);
 		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
 	}
 	

@@ -63,7 +63,9 @@ Vue.component("sus-users-admin", {
 				<th> Gender </th>
 				<th> Date of birth </th>
 				<th> Role </th>
+				<th> Blocked </th>
 				<th> Delete </th>
+				<th> Block </th>
 			</tr>
 			<tr v-for="user in filteredUsers">
 				<td> {{user.userName}} </td>
@@ -73,7 +75,10 @@ Vue.component("sus-users-admin", {
 				<td> {{ user.gender }} </td>
 				<td> {{user.dateOfBirth}} </td>
 				<td> {{ user.role }} </td>
+				<td> {{ user.isBlocked }} </td>
 				<td> <button @click="deleteUser(user)"> Delete </button> </td>
+				<td v-if = "!user.isBlocked"> <button @click="blockUser(user)"> Block </button> </td>
+				<td v-else> <button @click="unblockUser(user)"> Unblock </button> </td>
 			</tr>
 		</table>
 	</div>
@@ -130,6 +135,24 @@ Vue.component("sus-users-admin", {
 			if (confirm('Are you sure?') == true) {
 				axios
 				.post('rest/users/delete', {
+					"userName":''+user.userName
+				})
+				.then(response => (this.init()))
+			}
+		},
+		blockUser : function (user) {
+			if (confirm('Are you sure?') == true) {
+				axios
+				.post('rest/users/block', {
+					"userName":''+user.userName
+				})
+				.then(response => (this.init()))
+			}
+		},
+		unblockUser : function (user) {
+			if (confirm('Are you sure?') == true) {
+				axios
+				.post('rest/users/unblock', {
 					"userName":''+user.userName
 				})
 				.then(response => (this.init()))
