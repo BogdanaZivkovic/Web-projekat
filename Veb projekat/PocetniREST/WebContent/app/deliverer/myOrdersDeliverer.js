@@ -1,8 +1,8 @@
 Vue.component("my-orders-deliverer", {
 	data: function() {
 		return {
-			restaurants: [],
 			orders: [],
+			ordersWithRestaurant: [],
 			searchVisible: false,
 			sortVisible: false,
 			filterVisible: false,
@@ -73,31 +73,35 @@ Vue.component("my-orders-deliverer", {
 			</select>
 		</div>
 		<ul>
-			<li v-for = "order in filteredOrders">
+			<li v-for = "orderWithRestaurant in filteredOrdersWithRestaurant">
 				<table>
 					<tr>
 						<td> Restaurant: </td>
-						<td> {{order.restaurantName}} </td>
+						<td> {{orderWithRestaurant.order.restaurantName}} </td>
 					</tr>
 					<tr>
 						<td> Status: </td>
-						<td> {{order.status}} </td>
+						<td> {{orderWithRestaurant.order.status}} </td>
 					</tr>
 					<tr>
 						<td> Date and time: </td>
-						<td> {{formatDate(order.dateAndTime)}} </td>
+						<td> {{formatDate(orderWithRestaurant.order.dateAndTime)}} </td>
 					</tr>
 					<tr>
 						<td> Price: </td>
-						<td> {{order.price}} </td>
+						<td> {{orderWithRestaurant.order.price}} </td>
+					</tr>
+					<tr>
+						<td> Restaurant type: </td>
+						<td> {{orderWithRestaurant.restaurant.type}} </td>
 					</tr>
 				</table>
 				<ul>
-					<li v-for = "i in order.items">
+					<li v-for = "i in orderWithRestaurant.order.items">
 						{{i.count}} * {{i.item.name}}
 					</li>
 				</ul>
-				<button v-if="order.status.match('IN_TRANSPORT')" @click="deliverOrder(order)"> DELIVER </button>
+				<button v-if="order.status == 'IN_TRANSPORT'" @click="deliverOrder(orderWithRestaurant.order)"> DELIVER </button>
 			</li>
 		</ul>
 	</div>
@@ -125,40 +129,44 @@ Vue.component("my-orders-deliverer", {
 		init: function() {
 			axios
 				.get('rest/orders/getOrdersDeliverer')
-				.then(response =>(this.orders = response.data))
-			axios
-				.get('rest/restaurants/getAllRestaurants')
-				.then(response => (this.restaurants = response.data))
+				.then(response => {
+					this.orders = response.data;
+					axios
+						.get('rest/restaurants/getAllRestaurants')
+						.then(response => {
+							response.data.forEach(el => {
+								for(let i =0; i < this.orders.length; i++) {
+									if(el.name == this.orders[i].restaurantName) {
+										let orderWithRestaurant = {order: this.orders[i], restaurant: el}
+										this.ordersWithRestaurant.push(orderWithRestaurant);
+									}
+								}
+							})
+						})
+				})
 		},
-		matchesSearch: function(order) {
-			if(!order.restaurantName.toLowerCase().match(this.search.restaurant.toLowerCase()))
+		matchesSearch: function(orderWithRestaurant) {
+			if(!orderWithRestaurant.order.restaurantName.toLowerCase().match(this.search.restaurant.toLowerCase()))
 				return false;
-			if(order.price < parseInt(this.search.minPrice, 10))
+			if(orderWithRestaurant.order.price < parseInt(this.search.minPrice, 10))
 				return false;
-			if(order.price > parseInt(this.search.maxPrice, 10))
+			if(orderWithRestaurant.order.price > parseInt(this.search.maxPrice, 10))
 				return false;
-			if(order.dateAndTime < Date.parse(this.search.minDate))
+			if(orderWithRestaurant.order.dateAndTime < Date.parse(this.search.minDate))
 				return false;
-			if(order.dateAndTime > Date.parse(this.search.maxDate))
+			if(orderWithRestaurant.order.dateAndTime > Date.parse(this.search.maxDate))
 				return false;
-			if(!order.status.match(this.filter.status))
+			if(!orderWithRestaurant.order.status.match(this.filter.status))
 				return false;
-			let restaurant;
-			for(let i =0; i < this.restaurants.length; i++) {
-				if(this.restaurants[i].name.match(order.restaurantName)) {
-					restaurant = this.restaurants[i];
-					break;
-				}
-			}
-			if(!restaurant.type.match(this.filter.type))
+			if(!orderWithRestaurant.restaurant.type.match(this.filter.type))
 				return false;
 			return true;
 		},
 		sortRestaurantAsc: function() {
-			this.orders.sort((a, b) => {return this.alphaNumCriterium(a.restaurantName, b.restaurantName)})
+			this.ordersWithRestaurant.sort((a, b) => {return this.alphaNumCriterium(a.order.restaurantName, b.order.restaurantName)})
 		},
 		sortRestaurantDesc: function() {
-			this.orders.sort((a, b) => {return this.alphaNumCriterium(b.restaurantName, a.restaurantName)})
+			this.ordersWithRestaurant.sort((a, b) => {return this.alphaNumCriterium(b.order.restaurantName, a.order.restaurantName)})
 		},
 		alphaNumCriterium: function (a,b) {
       		var reA = /[^a-zA-Z]/g;
@@ -174,25 +182,25 @@ Vue.component("my-orders-deliverer", {
       		}
     	},
 		sortPriceAsc: function() {
-			this.orders.sort((a, b) => {return a.price - b.price})
+			this.ordersWithRestaurant.sort((a, b) => {return a.order.price - b.order.price})
 		},
 		sortPriceDesc: function() {
-			this.orders.sort((a, b) => {return b.price - a.price})
+			this.ordersWithRestaurant.sort((a, b) => {return b.order.price - a.order.price})
 		},
 		sortDateAsc: function() {
-			this.orders.sort((a,b) => {return a.dateAndTime - b.dateAndTime})
+			this.ordersWithRestaurant.sort((a,b) => {return a.order.dateAndTime - b.order.dateAndTime})
 		},
 		sortDateDesc: function() {
-			this.orders.sort((a,b) => {return b.dateAndTime - a.dateAndTime})
+			this.ordersWithRestaurant.sort((a,b) => {return b.order.dateAndTime - a.order.dateAndTime})
 		}
 	},
 	mounted () {
 		this.init();
 	},
 	computed: {
-		filteredOrders: function() {
-			return this.orders.filter((order) => {
-				return this.matchesSearch(order);
+		filteredOrdersWithRestaurant: function() {
+			return this.ordersWithRestaurant.filter((orderWithRestaurant) => {
+				return this.matchesSearch(orderWithRestaurant);
 			});
 		}
 	}
