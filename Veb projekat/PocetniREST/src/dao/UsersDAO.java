@@ -181,4 +181,14 @@ public class UsersDAO {
 		users.get(userName).setIsDeleted(true);
 		saveUsers();
 	}
+	
+	public void blockUser(String userName) {
+		users.get(userName).setIsBlocked(true);
+		saveUsers();
+	}
+	
+	public void unblockUser(String userName) {
+		users.get(userName).setIsBlocked(false);
+		saveUsers();
+	}
 }

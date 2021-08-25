@@ -11,6 +11,7 @@ public class User {
 	private Boolean isDeleted;
 	private double points;
 	private String customerType;
+	private Boolean isBlocked;
 	
 	public User() {
 		
@@ -28,6 +29,7 @@ public class User {
 		isDeleted = false;
 		this.points = 0.0;
 		customerType = "";
+		isBlocked = false;
 	}
 	
 	public String getUserName() {
@@ -110,5 +112,12 @@ public class User {
 	public void setCustomerType(String customerType) {
 		this.customerType = customerType;
 	}
-	
+
+	public Boolean getIsBlocked() {
+		return isBlocked;
+	}
+
+	public void setIsBlocked(Boolean isBlocked) {
+		this.isBlocked = isBlocked;
+	}
 }

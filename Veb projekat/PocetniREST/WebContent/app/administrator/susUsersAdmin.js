@@ -1,4 +1,4 @@
-Vue.component("users-admin", {
+Vue.component("sus-users-admin", {
 	data: function() {
 		return {
 			searchFields: {
@@ -17,8 +17,6 @@ Vue.component("users-admin", {
 	},
 	template: `
 	<div>
-		<button @click="$router.push('/adduseradmin')"> ADD </button>
-		<br><br>
 		<button @click="searchVisible=!searchVisible">Search</button>
 		<button @click="sortVisible=!sortVisible">Sort</button>
 		<button @click="filterVisible=!filterVisible">Filter</button>
@@ -78,11 +76,9 @@ Vue.component("users-admin", {
 				<td> {{user.dateOfBirth}} </td>
 				<td> {{ user.role }} </td>
 				<td> {{ user.isBlocked }} </td>
-				<td v-if = "!user.role.match('ADMINISTRATOR')"> <button @click="deleteUser(user)"> Delete </button> </td>
-				<div v-if = "!user.role.match('ADMINISTRATOR')">
-					<td v-if = "!user.isBlocked"> <button @click="blockUser(user)"> Block </button> </td>
-					<td v-else> <button @click="unblockUser(user)"> Unblock </button> </td>
-				</div>
+				<td> <button @click="deleteUser(user)"> Delete </button> </td>
+				<td v-if = "!user.isBlocked"> <button @click="blockUser(user)"> Block </button> </td>
+				<td v-else> <button @click="unblockUser(user)"> Unblock </button> </td>
 			</tr>
 		</table>
 	</div>
@@ -132,7 +128,7 @@ Vue.component("users-admin", {
     	},	
 		init : function() {
 			axios
-          	.get('rest/users/getAllUsers')
+          	.get('rest/orders/getSussyUsers')
           	.then(response => (this.users = response.data))
     	},
 		deleteUser : function (user) {
