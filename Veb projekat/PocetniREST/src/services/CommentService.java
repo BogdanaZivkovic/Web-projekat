@@ -1,5 +1,7 @@
 package services;
 
+import java.util.Collection;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -11,8 +13,10 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import beans.Comment;
 import dao.CommentsDAO;
 import dto.CommentDTO;
+import dto.CommentStatusDTO;
 
 @Path("/comments")
 public class CommentService {
@@ -26,11 +30,13 @@ public class CommentService {
 	@Path("/getComments")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getJustComments() {
-		
-					return Response
-					.status(Response.Status.ACCEPTED).entity("SUCCESS GET")
-					.entity(getComments().getValues())
-					.build();
+		Collection<Comment> comments = getComments().getValues();
+		for(Comment c: comments)
+			System.out.println(c.getCommentText());
+		return Response
+				.status(Response.Status.ACCEPTED).entity("SUCCESS")
+				.entity(getComments().getValues())
+				.build();
 		
 	}
 	
@@ -45,6 +51,16 @@ public class CommentService {
 		comments.addComment(dto);
 
 		return Response.status(Response.Status.ACCEPTED).entity("/PocetniREST/").build();
+	}
+	
+	@POST
+	@Path("/changeStatus")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response changeStatus(CommentStatusDTO dto) {
+		getComments().getComment(dto.commentID).setStatus(dto.status);
+		getComments().saveComments();
+		return Response.status(Response.Status.ACCEPTED).build();
 	}
 	
 	private CommentsDAO getComments() {
