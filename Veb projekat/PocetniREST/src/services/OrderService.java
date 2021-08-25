@@ -137,6 +137,16 @@ public class OrderService {
 		getOrders().changeStatus(dto);
 		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
 	}
+	
+	@POST
+	@Path("/changeCommented")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response changeCommented(OrderIDDTO dto) {
+		getOrders().getOrder(dto.orderID).setCommented(true);
+		getOrders().saveOrders();
+		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
+	}
 
 	@POST
 	@Path("/requestDelivery")

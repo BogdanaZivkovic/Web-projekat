@@ -98,11 +98,19 @@ Vue.component("orders-customer", {
 					</li>
 				</ul>
 				<button v-if="order.status.match('PROCESSING')" @click="cancelOrder(order)"> CANCEL </button>
+				<button v-if="order.status.match('DELIVERED') && order.commented==false " @click="comment(order)"> Leave a comment </button>
 			</li>
 		</ul>
 	</div>
 	`,
 	methods: {
+		comment: function(order) {
+			let data = order
+			this.$router.push({
+				name: "commentCustomer",
+				params: { data }
+			});
+		},
 		cancelOrder: function (order) {
 			axios
 				.post('rest/orders/changeStatus', {

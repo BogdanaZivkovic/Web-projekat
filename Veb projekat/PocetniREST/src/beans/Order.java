@@ -14,6 +14,7 @@ public class Order {
 	private double price;
 	private Boolean isDeleted;
 	private String deliverer;
+	private Boolean commented;
 	
 	private ArrayList<ShoppingCartItem> items;
 	
@@ -34,6 +35,7 @@ public class Order {
 		requests = new ArrayList<String>();
 		isDeleted = false;
 		deliverer = "";
+		commented = false;
 	}
 
 	public String getOrderID() {
@@ -42,6 +44,14 @@ public class Order {
 
 	public void setOrderID(String orderID) {
 		this.orderID = orderID;
+	}
+	
+	public Boolean getCommented() {
+		return commented;
+	}
+
+	public void setCommented(Boolean commented) {
+		this.commented = commented;
 	}
 
 	public String getRestaurantName() {

@@ -3,7 +3,7 @@ Vue.component("orders-deliverer", {
 		return {
 			restaurants: [],
 			orders: [],
-			usename: '',
+			username: '',
 			searchVisible: false,
 			sortVisible: false,
 			filterVisible: false,
