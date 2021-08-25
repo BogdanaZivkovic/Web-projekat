@@ -78,4 +78,14 @@ public class CommentsDAO {
 		comments.put(comment.getCommentID(),comment);
 		saveComments();
 	}
+	
+	public Collection<Comment> getAccepted() {
+		Collection<Comment> ret = new ArrayList<Comment>();
+		for(Comment comment : comments.values()) {
+			if(comment.getStatus().equals("ACCEPTED")) {
+				ret.add(comment);
+			}
+		}
+		return ret;
+	}
 }

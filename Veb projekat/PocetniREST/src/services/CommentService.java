@@ -30,14 +30,20 @@ public class CommentService {
 	@Path("/getComments")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getJustComments() {
-		Collection<Comment> comments = getComments().getValues();
-		for(Comment c: comments)
-			System.out.println(c.getCommentText());
 		return Response
 				.status(Response.Status.ACCEPTED).entity("SUCCESS")
 				.entity(getComments().getValues())
+				.build();	
+	}
+	
+	@GET
+	@Path("/getAccepted")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAcceptedComments() {
+		return Response
+				.status(Response.Status.ACCEPTED).entity("SUCCESS")
+				.entity(getComments().getAccepted())
 				.build();
-		
 	}
 	
 	@POST
