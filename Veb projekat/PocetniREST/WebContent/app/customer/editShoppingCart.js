@@ -36,7 +36,7 @@ Vue.component("edit-shopping-cart", {
 					<tr>
 						<td> Count: </td>
 						<td><input type="number" v-model="shoppingCartItem.count" min="1"></td>
-					<tr>
+					</tr>
 					<button @click="selectItem(shoppingCartItem)"> Edit </button>
 			</table>
 		</div>

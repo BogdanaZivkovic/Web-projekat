@@ -31,7 +31,7 @@ Vue.component("shopping-cart", {
 					</tr>
 					<tr>
 						<td> Total for item: </td>
-						<td> {{i.total}} </td>
+						<td> {{i.count*i.item.price}} </td>
 					</tr>
 				</table>
 				<button @click= "editShoppingCartItem(i)" > Edit </button>

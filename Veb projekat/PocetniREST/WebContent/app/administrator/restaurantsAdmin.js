@@ -4,7 +4,9 @@ Vue.component("restaurants-admin", {
 			searchFields: {
 				name: '',
 				type: '',
-				location: ''
+				location: '',
+				minRating: '',
+				maxRating: '',
 			},
 			filters: {
 				type:'',
@@ -33,6 +35,9 @@ Vue.component("restaurants-admin", {
 				<br><br>
 				<input type="text" v-model="searchFields.location" placeholder="Restaurant location"></input>
 				<br><br>
+				<input type="text" v-model="searchFields.minRating" placeholder="Min rating"></input>
+				<input type="text" v-model="searchFields.maxRating" placeholder="Max rating"></input>
+				<br><br>
 			</form>
 		</div>
 		<div v-if="sortVisible">
@@ -41,6 +46,9 @@ Vue.component("restaurants-admin", {
 			<br><br>
 			<button @click="sortLocationAsc"> Location ascending </button>
 			<button @click="sortLocationDesc"> Location descending </button>
+			<br><br>
+			<button @click="sortRatingAsc"> Rating ascending </button>
+			<button @click="sortRatingDesc"> Rating descending </button>
 			<br><br>
 		</div>
 		<div v-if="filterVisible">
@@ -104,6 +112,10 @@ Vue.component("restaurants-admin", {
 				return false;
 			if(!restaurant.status.toLowerCase().match(this.filters.status.toLowerCase()))
 				return false;
+			if(restaurant.averageRating < parseFloat(this.searchFields.minRating))
+				return false;
+			if(restaurant.averageRating > parseFloat(this.searchFields.maxRating))
+				return false;
 			return true;
 		},
 		sortNameAsc: function () {
@@ -117,6 +129,12 @@ Vue.component("restaurants-admin", {
 		},
 		sortLocationDesc: function() {
 			this.restaurants.sort((a, b) => {return this.alphaNumCriterium(b.location.address.city, a.location.address.city)});
+		},
+		sortRatingAsc: function() {
+			this.restaurants.sort((a, b) => {return a.averageRating - b.averageRating})
+		},
+		sortRatingDesc: function() {
+			this.restaurants.sort((a, b) => {return b.averageRating - a.averageRating})
 		},
 		alphaNumCriterium: function (a,b) {
       		var reA = /[^a-zA-Z]/g;

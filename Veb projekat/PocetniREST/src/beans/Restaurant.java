@@ -12,6 +12,7 @@ public class Restaurant {
 	private String logoPath;
 	private ArrayList<Integer> itemIDs;
 	private Boolean isDeleted;
+	private Double averageRating;
 
 	public Restaurant() {
 
@@ -27,6 +28,7 @@ public class Restaurant {
 		this.logoPath = logoPath;
 		this.itemIDs = new ArrayList<Integer>();
 		isDeleted = false;
+		averageRating = 0.0;
 	}
 
 	public String getName() {
@@ -95,5 +97,13 @@ public class Restaurant {
 
 	public void setIsDeleted(Boolean isDeleted) {
 		this.isDeleted = isDeleted;
+	}
+	
+	public Double getAverageRating() {				
+		return averageRating;
+	}
+
+	public void setAverageRating(Double averageRating) {
+		this.averageRating = averageRating;
 	}
 }
