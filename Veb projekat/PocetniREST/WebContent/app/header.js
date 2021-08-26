@@ -3,7 +3,7 @@ Vue.component("header-app", {
 	<div class="container">
 		<nav class="navbar navbar-expand-md navbar-light">
 		<a href="#" class="navbar-brand"> 
-			<img src="images/logo.png" alt="FDLogo" width="100" height="100" class="d-inline-block align-top"/> 
+			<img src="images/logo.png" alt="FDLogo" width="90" height="60" class="d-inline-block align-top"/> 
 			<span class="hidden"> FD </span> 
 		</a>
 		<button

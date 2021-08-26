@@ -68,35 +68,25 @@ Vue.component("all-restaurants-app", {
 				</select>
 			</form>
 		</div>
-		<ul>
-			<li v-for ="restaurant in filteredRestaurants">
-				<img height="200" width="350" v-bind:src="getLogoPath(restaurant)">
-				<table>
-					<tr>
-						<td> Name of restaurant: </td>
-						<td> {{restaurant.name}} </td>
-					</tr>
-					<tr>
-						<td> Restaurant type: </td>
-						<td> {{restaurant.type}} </td>
-					</tr>
-					<tr>
-						<td> Restaurant status: </td>
-						<td> {{restaurant.status}} </td>
-					</tr>
-					<tr>
-						<td> Restaurant rating: </td>
-						<td> {{restaurant.averageRating}}</td>
-					</tr>
-					<tr>
-						<td> Restaurant address: </td>
-						<td> {{restaurant.location.address.city}} </td>
-						<td> {{restaurant.location.address.street}} </td>
-						<td> {{restaurant.location.address.number}} </td>
-						<td> {{restaurant.location.address.zipCode}} </td>
-					</tr>
-				</table>
-				<button @click= "viewRestaurant(restaurant)" > View </button>
+		<ul class="list-group">
+			<li class="list-group-item list-group-item-action" v-for ="restaurant in filteredRestaurants">			
+			<div class="container">
+				<div class="row justify-content-between">
+					<div class="col-md-4"> 
+						<img height="200" width="300" v-bind:src="getLogoPath(restaurant)"> 
+					</div>
+					<div class="col-md-8"> 
+						<div class="d-flex w-100 justify-content-between">
+						<h5 class="mb-1"> {{restaurant.name}} </h5>
+						<small>{{restaurant.status}}</small>
+						</div>
+						<p class="mb-1"> {{restaurant.location.address.street}} {{restaurant.location.address.number}}, {{restaurant.location.address.city}} {{restaurant.location.address.zipCode}} </p>
+						<small>{{restaurant.type}}  </small>
+						<small>{{restaurant.averageRating}} </small>
+						<button @click= "viewRestaurant(restaurant)" > View </button>
+					</div>
+				</div>
+			</div>	
 			</li>
 		</ul>
 	</div>
