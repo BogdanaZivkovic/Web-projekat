@@ -20,7 +20,7 @@ Vue.component("all-restaurants-app", {
 		}
 	},
 	template: `
-	<div>
+	<div class="container-fluid bg">
 		<button @click="searchVisible=!searchVisible">Search</button>
 		<button @click="sortVisible=!sortVisible">Sort</button>
 		<button @click="filterVisible=!filterVisible">Filter</button>
@@ -68,27 +68,30 @@ Vue.component("all-restaurants-app", {
 				</select>
 			</form>
 		</div>
-		<ul class="list-group">
-			<li class="list-group-item list-group-item-action" v-for ="restaurant in filteredRestaurants">			
-			<div class="container">
-				<div class="row justify-content-between">
-					<div class="col-md-4"> 
-						<img height="200" width="300" v-bind:src="getLogoPath(restaurant)"> 
-					</div>
-					<div class="col-md-8"> 
-						<div class="d-flex w-100 justify-content-between">
-						<h5 class="mb-1"> {{restaurant.name}} </h5>
-						<small>{{restaurant.status}}</small>
-						</div>
-						<p class="mb-1"> {{restaurant.location.address.street}} {{restaurant.location.address.number}}, {{restaurant.location.address.city}} {{restaurant.location.address.zipCode}} </p>
-						<small>{{restaurant.type}}  </small>
-						<small>{{restaurant.averageRating}} </small>
-						<button @click= "viewRestaurant(restaurant)" > View </button>
-					</div>
-				</div>
-			</div>	
-			</li>
-		</ul>
+		<div class="row justify-content-center">
+			<div class="col-8 col-md-10 col-sm-12">
+				<ul class="list-group">
+					<li v-on:click="viewRestaurant(restaurant)" class="list-group-item list-group-item-action li-container" v-for ="restaurant in filteredRestaurants">			
+						<div class="container">
+							<div class="row justify-content-between">
+								<div class="col-sm-4"> 
+									<img height="200" width="300" v-bind:src="getLogoPath(restaurant)"> 
+								</div>
+								<div class="col-sm-8"> 
+									<div class="d-flex w-100 justify-content-between">
+									<h5 class="mb-1"> {{restaurant.name}} </h5>
+									<small>{{restaurant.status}}</small>
+									</div>
+									<p class="mb-1"> {{restaurant.location.address.street}} {{restaurant.location.address.number}}, {{restaurant.location.address.city}} {{restaurant.location.address.zipCode}} </p>
+									<small>{{restaurant.type}}  </small>
+									<small>{{restaurant.averageRating}} </small>
+								</div>
+							</div>
+						</div>	
+					</li>
+				</ul>
+			</div>
+		</div>
 	</div>
 	`,
 	methods:{

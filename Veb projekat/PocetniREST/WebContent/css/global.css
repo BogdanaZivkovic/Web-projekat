@@ -19,6 +19,13 @@
 	display:none
 }
 
+.li-container {
+	margin-top: 5px;
+	margin-bottom: 5px;
+	border-radius: 20px;
+	box-shadow: 0px 0px 10px 0px #000;
+}
+
 @media only screen and (max-width: 678px) {
 		.bg{
 			background-size:300%;
