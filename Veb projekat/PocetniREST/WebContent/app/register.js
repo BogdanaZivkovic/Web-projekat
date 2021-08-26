@@ -12,28 +12,44 @@ Vue.component("register-app", {
 		}
 	},
 	template: `
-    <div>
-        <form id='register-form' @submit="register(newUser)" method='post'>
-            <input type="text" v-model="newUser.userName" placeholder="Username" required>
-			<br><br>
-            <input type="text" v-model="newUser.name" placeholder="Name">
-			<br><br>
-            <input type="text" v-model="newUser.surname" placeholder="Surname">
-			<br><br>
-            <input type="password" v-model="newUser.password" placeholder="Password" required>
-			<br><br>
-			<label>Gender:</label>
-			<select v-model="newUser.gender">
-		    <option disabled value="">Please select one</option>
-		    <option>Male</option>
-		    <option>Female</option>
-			</select>
-			<br><br>
-			<label for="start">Date of birth:</label>
-			<input type="date" v-model="newUser.dateOfBirth" min="1950-01-01" max="2020-01-01">		
-			<br><br>	
-            <button type='submit'> REGISTER </button>
-        </form>
+	<div class="container-fluid bg">
+        <div class="row justify-content-center">
+			<div class="col-12 col-sm-6 col-md-3">
+				<form class="form-container" @submit="register(newUser)" method='post'>
+				  <div class="mb-3">
+				    <label for="usernameInput" class="form-label">Username</label>
+				    <input id="usernameInput" type="text" v-model="newUser.userName" class="form-control" placeholder="Username" required>
+				  </div>
+					<div class="mb-3">
+				    <label for="nameInput" class="form-label">Name</label>
+				    <input id="nameInput" type="text" v-model="newUser.name" class="form-control" placeholder="Name">
+				  </div>
+					<div class="mb-3">
+				    <label for="surnameInput" class="form-label">Username</label>
+				    <input id="surnameInput" type="text" v-model="newUser.surname" class="form-control" placeholder="Surname">
+				  </div>
+				  <div class="mb-3">
+				    <label for="passwordInput" class="form-label">Password</label>
+				    <input id="passwordInput" type="password" v-model="newUser.password" class="form-control" placeholder="Password" required>
+				  </div>
+					<div class="mb-3">
+				   		<label for="genderInput" class="form-label">Gender</label>
+				    	<select id="genderInput" v-model="newUser.gender" class="form-select">
+							<option disabled value="">Please select one</option>
+						    <option>Male</option>
+						    <option>Female</option>
+						</select>
+				  	</div>
+					<div class="mb-3">
+				    	<label for="dateInput" class="form-label">Date of birth</label>
+				    	<input id="dateInput" type="date" v-model="newUser.dateOfBirth" class="form-control" placeholder="Date of birth">
+				 	 </div>
+					<div class="d-grid gap-2 col-6 mx-auto">
+					  <button type="submit" class="btn btn-primary">Submit</button>
+					</div>
+				</form>
+			</div>
+		</div>
     </div>
     `,
 	methods: {
