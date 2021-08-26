@@ -3,7 +3,8 @@ Vue.component("view-restaurant-customer", {
 		return {
 			restaurant: {},
 			items: [],
-			images: []
+			images: [],
+			comments: []
 		}
 	},
 	template:`
@@ -58,6 +59,24 @@ Vue.component("view-restaurant-customer", {
 				</li>
 			</ul>
 			<button @click="viewShoppingCart"> Shopping cart </button>
+			<ul>
+				<li v-for="comment in comments">
+					<table>
+						<tr>
+							<td> Customer: </td>
+							<td> {{comment.customerUsername}} </td>
+						</tr>
+						<tr>
+							<td> Comment: </td>
+							<td> {{comment.commentText}} </td>
+						</tr>
+						<tr>
+							<td> Rating: </td>
+							<td> {{comment.rating}} </td>
+						</tr>
+					</table>
+				</li>
+			</ul>
 		</div>
 	`,
 	methods: {
@@ -118,6 +137,15 @@ Vue.component("view-restaurant-customer", {
 		axios
 			.post('rest/shoppingCart/initSc', {
 				name:''+this.restaurant.name
+			})
+		axios
+			.get('rest/comments/getAccepted')
+			.then(response => {
+				response.data.forEach(el => {
+					if (el.restaurantName == this.restaurant.name) {
+						this.comments.push(el);
+					}
+				})						
 			})
 	}
 });

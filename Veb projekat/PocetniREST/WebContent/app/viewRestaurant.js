@@ -3,7 +3,8 @@ Vue.component("view-restaurant", {
 		return {
 			restaurant: {},
 			items: [],
-			images: []
+			images: [],
+			comments: []
 		}
 	},
 	template:`
@@ -55,6 +56,24 @@ Vue.component("view-restaurant", {
 					</table>
 				</li>
 			</ul>
+			<ul>
+				<li v-for="comment in comments">
+					<table>
+						<tr>
+							<td> Customer: </td>
+							<td> {{comment.customerUsername}} </td>
+						</tr>
+						<tr>
+							<td> Comment: </td>
+							<td> {{comment.commentText}} </td>
+						</tr>
+						<tr>
+							<td> Rating: </td>
+							<td> {{comment.rating}} </td>
+						</tr>
+					</table>
+				</li>
+			</ul>
 		</div>
 	`,
 	methods: {
@@ -94,6 +113,17 @@ Vue.component("view-restaurant", {
 				}
 			})
 		})
+		
+		axios
+			.get('rest/comments/getAccepted')
+			.then(response => {
+				response.data.forEach(el => {
+					if (el.restaurantName == this.restaurant.name) {
+						this.comments.push(el);
+					}
+				})						
+			})
+		
 		axios
 			.get('rest/images/getImages')
 			.then(response => (this.images = response.data));

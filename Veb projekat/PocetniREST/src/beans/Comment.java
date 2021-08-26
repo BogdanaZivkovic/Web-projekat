@@ -8,7 +8,8 @@ public class Comment {
 	private String restaurantName;
 	private String commentText;
 	private double rating;
-	
+	//PENDING, ACCEPTED, REJECTED
+	private String status;
 	
 	public Comment() {
 		
@@ -22,7 +23,7 @@ public class Comment {
 		this.commentText = commentText;
 		this.rating = rating;
 		isDeleted = false;
-		
+		status = "PENDING";
 	}
 
 	public int getCommentID() {
@@ -78,5 +79,13 @@ public class Comment {
 
 	public void setRating(double rating) {
 		this.rating = rating;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 }

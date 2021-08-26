@@ -1,7 +1,7 @@
 package services;
 
 import java.util.ArrayList;
-
+import java.util.Collection;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -18,10 +18,11 @@ import beans.Restaurant;
 import dao.CommentsDAO;
 import dao.RestaurantsDAO;
 import dto.CommentDTO;
+import dto.CommentStatusDTO;
 
 @Path("/comments")
 public class CommentService {
-	
+
 	@Context
 	HttpServletRequest request;
 	@Context
@@ -31,14 +32,22 @@ public class CommentService {
 	@Path("/getComments")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getJustComments() {
-		
-					return Response
-					.status(Response.Status.ACCEPTED).entity("SUCCESS GET")
-					.entity(getComments().getValues())
-					.build();
-		
+		return Response
+				.status(Response.Status.ACCEPTED).entity("SUCCESS")
+				.entity(getComments().getValues())
+				.build();
 	}
-	
+
+	@GET
+	@Path("/getAccepted")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAcceptedComments() {
+		return Response
+				.status(Response.Status.ACCEPTED).entity("SUCCESS")
+				.entity(getComments().getAccepted())
+				.build();
+	}
+
 	@POST
 	@Path("/addComment")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -46,29 +55,39 @@ public class CommentService {
 	public Response addComment(CommentDTO dto)
 	{
 		CommentsDAO comments = getComments();
-		
+
 		comments.addComment(dto);
-		
+
 		RestaurantsDAO restaurants = getRestaurants();
 		Restaurant restaurant = restaurants.getRestaurant(dto.restaurantName);
-		
+
 		Double sum = 0.0;
 		Double count = 0.0;
-		
+
 		for (Comment comment : comments.getValues()) {
 			if(comment.getRestaurantName().matches(restaurant.getName())) {
 				sum += comment.getRating();
 				count += 1.0;
 			}
 		}
-		
+
 		restaurant.setAverageRating(sum/count);
-	
+
 		restaurants.saveRestaurants();
 
 		return Response.status(Response.Status.ACCEPTED).entity("/PocetniREST/").build();
 	}
-	
+
+	@POST
+	@Path("/changeStatus")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response changeStatus(CommentStatusDTO dto) {
+		getComments().getComment(dto.commentID).setStatus(dto.status);
+		getComments().saveComments();
+		return Response.status(Response.Status.ACCEPTED).build();
+	}
+
 	private CommentsDAO getComments() {
 
 		CommentsDAO commentsDAO = (CommentsDAO) ctx.getAttribute("comments");
@@ -81,7 +100,7 @@ public class CommentService {
 
 		return commentsDAO;
 	}
-	
+
 	private RestaurantsDAO getRestaurants() {
 		RestaurantsDAO restaurants = (RestaurantsDAO) ctx.getAttribute("restaurants");
 

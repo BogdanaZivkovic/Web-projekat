@@ -3,7 +3,8 @@ Vue.component("view-restaurant-manager", {
 		return {
 			restaurant: {},
 			items: [],
-			images: []
+			images: [],
+			comments: []
 		}
 	},
 	template:`
@@ -60,11 +61,51 @@ Vue.component("view-restaurant-manager", {
 					<button @click= "deleteItem(item)"> Delete </button>
 				</li>
 			</ul>
+			<ul>
+				<li v-for="comment in comments">
+					<table>
+						<tr>
+							<td> Customer: </td>
+							<td> {{comment.customerUsername}} </td>
+						</tr>
+						<tr>
+							<td> Comment: </td>
+							<td> {{comment.commentText}} </td>
+						</tr>
+						<tr>
+							<td> Rating: </td>
+							<td> {{comment.rating}} </td>
+						</tr>
+						<tr>
+							<td> Status: </td>
+							<td> {{comment.status}} </td>
+						</tr>
+					</table>
+					<button v-if="comment.status.match('PENDING')" @click="acceptComment(comment)"> Accept </button>
+					<button v-if="comment.status.match('PENDING')" @click="rejectComment(comment)"> Reject </button>
+				</li>
+			</ul>
 		</div>
 		<h3 v-else>You are not assigned to a restaurant</h3>
 	</div>
 	`,
 	methods: {
+		acceptComment: function(comment) {
+			axios
+				.post('rest/comments/changeStatus', {
+					"commentID":comment.commentID,
+					"status":"ACCEPTED"
+				})
+				.then(response => (this.init()))
+		},
+		rejectComment: function(comment) {
+			axios
+				.post('rest/comments/changeStatus', {
+					"commentID":comment.commentID,
+					"status":"REJECTED"
+				})
+				.then(response => (this.init()))
+		},
 		newItem: function () {
 			let data = this.restaurant.name;
       		this.$router.push({
@@ -82,18 +123,27 @@ Vue.component("view-restaurant-manager", {
 		init : function () {
 			this.items = [];
 			axios
-			.get('rest/restaurants/getMyRestaurant')
-			.then(response => {
-				this.restaurant = response.data
-				axios
-					.get('rest/items/getAllItems')
-					.then(response => {
-						response.data.forEach(el => {
-							if (el.restaurantName == this.restaurant.name) {
-								this.items.push(el);
-							}
-						})						
-					})
+				.get('rest/restaurants/getMyRestaurant')
+				.then(response => {
+					this.restaurant = response.data
+					axios
+						.get('rest/items/getAllItems')
+						.then(response => {
+							response.data.forEach(el => {
+								if (el.restaurantName == this.restaurant.name) {
+									this.items.push(el);
+								}
+							})						
+						})
+					axios
+						.get('rest/comments/getComments')
+						.then(response => {
+							response.data.forEach(el => {
+								if (el.restaurantName == this.restaurant.name) {
+									this.comments.push(el);
+								}
+							})						
+						})
 				})
 				
 			axios
