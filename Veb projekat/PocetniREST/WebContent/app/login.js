@@ -14,11 +14,11 @@ Vue.component("login-app", {
 				<form class="form-container" @submit="login(newUser)" method='post'>
 				  <div class="mb-3">
 				    <label for="usernameInput" class="form-label">Username</label>
-				    <input id="usernameInput" type="text" v-model="newUser.userName" class="form-control" placeholder="Username">
+				    <input id="usernameInput" type="text" v-model="newUser.userName" class="form-control" placeholder="Username" required>
 				  </div>
 				  <div class="mb-3">
 				    <label for="passwordInput" class="form-label">Password</label>
-				    <input id="passwordInput" type="password" v-model="newUser.password" class="form-control" placeholder="Password">
+				    <input id="passwordInput" type="password" v-model="newUser.password" class="form-control" placeholder="Password" required>
 				  </div>
 					<div class="d-grid gap-2 col-6 mx-auto">
 					  <button type="submit" class="btn btn-primary">Submit</button>
