@@ -69,25 +69,29 @@ Vue.component("all-restaurants-app", {
 			</form>
 		</div>
 		<div class="row justify-content-center">
-			<div class="col-8 col-md-10 col-sm-12">
+			<div class="col-lg-8 col-md-10 col-sm-12">
 				<ul class="list-group">
-					<li v-on:click="viewRestaurant(restaurant)" class="list-group-item list-group-item-action li-container" v-for ="restaurant in filteredRestaurants">			
-						<div class="container">
-							<div class="row justify-content-between">
-								<div class="col-sm-4"> 
-									<img height="200" width="300" v-bind:src="getLogoPath(restaurant)"> 
-								</div>
-								<div class="col-sm-8"> 
-									<div class="d-flex w-100 justify-content-between">
-									<h5 class="mb-1"> {{restaurant.name}} </h5>
-									<small>{{restaurant.status}}</small>
+					<li>
+						<a href="#" v-on:click="viewRestaurant(restaurant)" class="list-group-item list-group-item-action li-container" v-for ="restaurant in filteredRestaurants">			
+							<div class="container">
+								<div class="row justify-content-between">
+									<div class="col-lg-2 col-md-4 col-sm-4"> 
+										<div class="circular">
+											<img v-bind:src="getLogoPath(restaurant)"> 
+										</div>
 									</div>
-									<p class="mb-1"> {{restaurant.location.address.street}} {{restaurant.location.address.number}}, {{restaurant.location.address.city}} {{restaurant.location.address.zipCode}} </p>
-									<small>{{restaurant.type}}  </small>
-									<small>{{restaurant.averageRating}} </small>
+									<div class="col-lg-10 col-md-8 col-sm-8"> 
+										<div class="d-flex w-100 justify-content-between">
+											<h4 class="mb-1"> {{restaurant.name}} </h4>
+											<small>{{restaurant.status}}</small>
+										</div>
+										<p class="mb-1 lead">{{restaurant.type}}  </p>
+										<p class="mb-1"> {{restaurant.location.address.street}} {{restaurant.location.address.number}}, {{restaurant.location.address.city}} {{restaurant.location.address.zipCode}} </p>
+										<small>Rating: {{restaurant.averageRating}} </small>
+									</div>
 								</div>
 							</div>
-						</div>	
+						</a>	
 					</li>
 				</ul>
 			</div>
