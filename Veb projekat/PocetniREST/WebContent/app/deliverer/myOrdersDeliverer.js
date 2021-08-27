@@ -101,7 +101,7 @@ Vue.component("my-orders-deliverer", {
 						{{i.count}} * {{i.item.name}}
 					</li>
 				</ul>
-				<button v-if="order.status == 'IN_TRANSPORT'" @click="deliverOrder(orderWithRestaurant.order)"> DELIVER </button>
+				<button v-if="orderWithRestaurant.order.status == 'IN_TRANSPORT'" @click="deliverOrder(orderWithRestaurant.order)"> DELIVER </button>
 			</li>
 		</ul>
 	</div>
@@ -127,6 +127,7 @@ Vue.component("my-orders-deliverer", {
   			return (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear() + "  " + strTime;
 		},
 		init: function() {
+			this.ordersWithRestaurant = []
 			axios
 				.get('rest/orders/getOrdersDeliverer')
 				.then(response => {

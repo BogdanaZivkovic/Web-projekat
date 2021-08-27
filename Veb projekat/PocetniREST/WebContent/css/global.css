@@ -39,6 +39,28 @@
   height: 100%;
 }
 
+.circular--small {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.circular--small img {
+  width: auto;
+  height: 100%;
+}
+
+.container-neutral {
+	background: #fff;
+	position: relative;
+	top: 5vh;
+	padding: 30px;
+	border-radius: 10px;
+	box-shadow: 0px 0px 10px 0px #000;
+}
+
 @media only screen and (max-width: 678px) {
 		.bg{
 			background-size:300%;

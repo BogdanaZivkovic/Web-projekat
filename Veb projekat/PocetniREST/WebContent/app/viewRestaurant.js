@@ -8,72 +8,60 @@ Vue.component("view-restaurant", {
 		}
 	},
 	template:`
-		<div>
-			<img height="200" width="350"  v-bind:src="getLogoPath(restaurant)">
-			<table>
-				<tr>
-					<td> Name: </td>
-					<td> {{restaurant.name}} </td>
-				</tr>
-				<tr>
-					<td> Type: </td>
-					<td> {{restaurant.type}} </td>
-				</tr>
-				<tr>
-					<td> Status: </td>
-					<td> {{restaurant.status}} </td>
-				</tr>
-				<tr>
-					<td> Location: </td>
-					<td v-if="restaurant.location != null"> {{restaurant.location.address.street}} {{restaurant.location.address.number}}, {{restaurant.location.address.zipCode}} {{restaurant.location.address.city}} </td>
-					<td v-else>-</td>
-				</tr>
-			</table>
-			<ul>
-				<li v-for="item in items">
-				<img height="100" width="100"  v-bind:src="getLogoPath(item)">
-					<table>
-						<tr>
-							<td> Name: </td>
-							<td> {{item.name}} </td>
-						</tr>
-						<tr>
-							<td> Price: </td>
-							<td> {{item.price}} </td>
-						</tr>
-						<tr>
-							<td> Type: </td>
-							<td> {{item.type}} </td>
-						</tr>
-						<tr>
-							<td> Quantity: </td>
-							<td> {{item.quantity}} </td>
-						</tr>
-						<tr>
-							<td> Description: </td>
-							<td> {{item.description}} </td>
-						</tr>
-					</table>
-				</li>
-			</ul>
-			<ul>
-				<li v-for="comment in comments">
-					<table>
-						<tr>
-							<td> Customer: </td>
-							<td> {{comment.customerUsername}} </td>
-						</tr>
-						<tr>
-							<td> Comment: </td>
-							<td> {{comment.commentText}} </td>
-						</tr>
-						<tr>
-							<td> Rating: </td>
-							<td> {{comment.rating}} </td>
-						</tr>
-					</table>
-				</li>
-			</ul>
+		<div class="container-fluid bg">
+			<div class="row justify-content-center">
+				<div class="col-lg-8 col-md-10 col-sm-12 container-neutral">
+					<div class="d-flex">
+						<div class="circular--small">
+							<img v-bind:src="getLogoPath(restaurant)">
+						</div>
+						<h2> {{restaurant.name}} </h2>
+					</div>
+					<div class="d-flex">
+						<i class="bi bi-star-fill" style="color:#ffc40c"></i>
+						<p style="color:#ffc40c"> {{restaurant.averageRating}} </p>
+					</div>
+					<p class="mb-1 lead">{{restaurant.type}}  </p>
+					<p class="mb-1"> {{restaurant.location.address.street}} {{restaurant.location.address.number}}, {{restaurant.location.address.city}} {{restaurant.location.address.zipCode}} </p>
+					<span v-if="restaurant.status == 'Open'" class="badge bg-success mb-2"> &check; Open </span>
+					<span v-if="restaurant.status == 'Closed'" class="badge bg-danger mb-2"> &#10005; Closed </span>
+					<ul class="list-group">
+						<li class="list-group-item" v-for="item in items">
+							<div class="container">
+								<div class="row justify-content-between">
+									<div class="col-lg-10 col-md-9 col-sm-8 d-flex flex-column">
+										<h5 class="mb-1"> {{item.name}} </h5>
+										<small class="mb-1">{{item.quantity}}</small>
+										<small>{{item.description}} </small>
+										<p class="mb-1 lead">{{item.price}} $</p>
+									</div>
+									<div class="col-lg-2 col-md-3 col-sm-4">
+										<img height="100" width="100" class="rounded float-end" v-bind:src="getLogoPath(item)">
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+					<ul>
+						<li v-for="comment in comments">
+							<table>
+								<tr>
+									<td> Customer: </td>
+									<td> {{comment.customerUsername}} </td>
+								</tr>
+								<tr>
+									<td> Comment: </td>
+									<td> {{comment.commentText}} </td>
+								</tr>
+								<tr>
+									<td> Rating: </td>
+									<td> {{comment.rating}} </td>
+								</tr>
+							</table>
+						</li>
+					</ul>
+				</div>
+			</div>
 		</div>
 	`,
 	methods: {

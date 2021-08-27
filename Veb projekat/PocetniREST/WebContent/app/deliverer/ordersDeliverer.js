@@ -128,6 +128,7 @@ Vue.component("orders-deliverer", {
   			return (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear() + "  " + strTime;
 		},
 		init: function() {
+			this.ordersWithRestaurant = []
 			axios
 				.get('rest/orders/getWaiting')
 				.then(response => {
