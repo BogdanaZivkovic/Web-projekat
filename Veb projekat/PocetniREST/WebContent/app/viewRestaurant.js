@@ -19,21 +19,22 @@ Vue.component("view-restaurant", {
 					</div>
 					<div class="d-flex">
 						<i class="bi bi-star-fill" style="color:#ffc40c"></i>
-						<p style="color:#ffc40c"> {{restaurant.averageRating}} </p>
+						<label style="color:#ffc40c"> {{restaurant.averageRating}} </label>
 					</div>
 					<p class="mb-1 lead">{{restaurant.type}}  </p>
 					<p class="mb-1"> {{restaurant.location.address.street}} {{restaurant.location.address.number}}, {{restaurant.location.address.city}} {{restaurant.location.address.zipCode}} </p>
 					<span v-if="restaurant.status == 'Open'" class="badge bg-success mb-2"> &check; Open </span>
 					<span v-if="restaurant.status == 'Closed'" class="badge bg-danger mb-2"> &#10005; Closed </span>
-					<ul class="list-group">
+					<h5 class="border-bottom"> Items </h5>
+					<ul class="list-group mb-2">
 						<li class="list-group-item" v-for="item in items">
 							<div class="container">
 								<div class="row justify-content-between">
 									<div class="col-lg-10 col-md-9 col-sm-8 d-flex flex-column">
-										<h5 class="mb-1"> {{item.name}} </h5>
-										<small class="mb-1">{{item.quantity}}</small>
+										<p class="fw-bold mb-1"> {{item.name}} </p>
+										<small>{{item.quantity}}</small>
 										<small>{{item.description}} </small>
-										<p class="mb-1 lead">{{item.price}} $</p>
+										<p class="lead mb-1">{{item.price}} $</p>
 									</div>
 									<div class="col-lg-2 col-md-3 col-sm-4">
 										<img height="100" width="100" class="rounded float-end" v-bind:src="getLogoPath(item)">
@@ -42,22 +43,17 @@ Vue.component("view-restaurant", {
 							</div>
 						</li>
 					</ul>
-					<ul>
-						<li v-for="comment in comments">
-							<table>
-								<tr>
-									<td> Customer: </td>
-									<td> {{comment.customerUsername}} </td>
-								</tr>
-								<tr>
-									<td> Comment: </td>
-									<td> {{comment.commentText}} </td>
-								</tr>
-								<tr>
-									<td> Rating: </td>
-									<td> {{comment.rating}} </td>
-								</tr>
-							</table>
+					<h5 class="border-bottom"> Comments </h5>
+					<ul class="list-group">
+						<li class="list-group-item" v-for="comment in comments">
+							<div class="d-flex justify-content-between border-bottom">
+								<label> {{comment.customerUsername}} </label>
+								<div class="d-flex">
+									<i class="bi bi-star-fill" style="color:#ffc40c"></i>
+									<label style="color:#ffc40c"> {{comment.rating}} </label>
+								</div>
+							</div>
+							<p> {{comment.commentText}} </p>
 						</li>
 					</ul>
 				</div>
