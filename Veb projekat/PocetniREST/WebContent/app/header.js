@@ -2,7 +2,7 @@ Vue.component("header-app", {
 	template:`
 	<div class="container">
 		<nav class="navbar navbar-expand-md navbar-light">
-		<a href="#" class="navbar-brand"> 
+		<a href="#" v-on:click="$router.push('/')" class="navbar-brand"> 
 			<img src="images/logo.png" alt="FDLogo" width="90" height="60" class="d-inline-block align-top"/> 
 			<span class="hidden"> FD </span> 
 		</a>

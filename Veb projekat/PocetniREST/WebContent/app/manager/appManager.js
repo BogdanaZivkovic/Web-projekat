@@ -10,6 +10,7 @@ const router = new VueRouter({
 	mode: 'hash',
 	  routes: [
 		{ path: '/', component: ProfileManager},
+		{path: '/profile', component: ProfileManager},
 		{path: '/restaurantmanager', component: ViewMyRestaurant},
 		{path: '/allrestaurantsmanager', component: RestaurantsManager},
 		{path: '/additem', name:'addItem', component: AddItemManager},

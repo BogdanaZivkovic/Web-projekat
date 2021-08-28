@@ -11,8 +11,8 @@ Vue.component("view-restaurant", {
 		<div class="container-fluid bg">
 			<div class="row justify-content-center">
 				<div class="col-lg-8 col-md-10 col-sm-12 container-neutral">
-					<div class="d-flex">
-						<div class="circular--small">
+					<div class="d-flex mb-2">
+						<div class="circular--small me-2">
 							<img v-bind:src="getLogoPath(restaurant)">
 						</div>
 						<h2> {{restaurant.name}} </h2>
