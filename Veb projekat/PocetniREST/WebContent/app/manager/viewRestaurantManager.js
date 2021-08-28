@@ -8,86 +8,70 @@ Vue.component("view-restaurant-manager", {
 		}
 	},
 	template:`
-	<div>
-		<h3> My restaurant </h3>
-		<img height="200" width="350" v-bind:src="getLogoPath(restaurant)">
-		<div v-if="restaurant.name != null">
-			<table>
-				<tr>
-					<td> Name: </td>
-					<td> {{restaurant.name}} </td>
-				</tr>
-				<tr>
-					<td> Type: </td>
-					<td> {{restaurant.type}} </td>
-				</tr>
-				<tr>
-					<td> Status: </td>
-					<td> {{restaurant.status}} </td>
-				</tr>
-				<tr>
-					<td> Location: </td>
-					<td v-if="restaurant.location != null"> {{restaurant.location.address.street}} {{restaurant.location.address.number}}, {{restaurant.location.address.zipCode}} {{restaurant.location.address.city}} </td>
-					<td v-else>-</td>
-				</tr>
-			</table>
-			<button @click="newItem"> New item </button>
-			<ul>
-				<li v-for="item in items">
-				<img height="100" width="100"  v-bind:src="getLogoPath(item)">
-					<table>
-						<tr>
-							<td> Name: </td>
-							<td> {{item.name}} </td>
-						</tr>
-						<tr>
-							<td> Price: </td>
-							<td> {{item.price}} </td>
-						</tr>
-						<tr>
-							<td> Type: </td>
-							<td> {{item.type}} </td>
-						</tr>
-						<tr>
-							<td> Quantity: </td>
-							<td> {{item.quantity}} </td>
-						</tr>
-						<tr>
-							<td> Description: </td>
-							<td> {{item.description}} </td>
-						</tr>
-					</table>
-					<button @click= "editItem(item)" > Edit </button>
-					<button @click= "deleteItem(item)"> Delete </button>
-				</li>
-			</ul>
-			<ul>
-				<li v-for="comment in comments">
-					<table>
-						<tr>
-							<td> Customer: </td>
-							<td> {{comment.customerUsername}} </td>
-						</tr>
-						<tr>
-							<td> Comment: </td>
-							<td> {{comment.commentText}} </td>
-						</tr>
-						<tr>
-							<td> Rating: </td>
-							<td> {{comment.rating}} </td>
-						</tr>
-						<tr>
-							<td> Status: </td>
-							<td> {{comment.status}} </td>
-						</tr>
-					</table>
-					<button v-if="comment.status.match('PENDING')" @click="acceptComment(comment)"> Accept </button>
-					<button v-if="comment.status.match('PENDING')" @click="rejectComment(comment)"> Reject </button>
-				</li>
-			</ul>
+	<div class="container-fluid bg">
+			<div class="row justify-content-center">
+				<div class="col-lg-8 col-md-10 col-sm-12 container-neutral">
+					<div class="d-flex mb-2">
+						<div class="circular--small me-2">
+							<img v-bind:src="getLogoPath(restaurant)">
+						</div>
+						<h2> {{restaurant.name}} </h2>
+					</div>
+					<div class="d-flex">
+						<i class="bi bi-star-fill" style="color:#ffc40c"></i>
+						<label style="color:#ffc40c"> {{restaurant.averageRating}} </label>
+					</div>
+					<p class="mb-1 lead">{{restaurant.type}}  </p>
+					<p class="mb-1"> {{restaurant.location.address.street}} {{restaurant.location.address.number}}, {{restaurant.location.address.city}} {{restaurant.location.address.zipCode}} </p>
+					<span v-if="restaurant.status == 'Open'" class="badge bg-success mb-2"> &check; Open </span>
+					<span v-if="restaurant.status == 'Closed'" class="badge bg-danger mb-2"> &#10005; Closed </span>
+					<div class="d-flex justify-content-between align-items-start border-bottom p-1 mb-2">
+						<h5> Items </h5>
+						<button class="btn btn-primary btn-sm" @click="newItem"> &plus; New </button>
+					</div>
+					<ul class="list-group mb-2">
+						<li class="list-group-item" v-for="item in items">
+							<div class="container">
+								<div class="row justify-content-between">
+									<div class="col-lg-2 col-md-3 col-sm-4">
+										<img height="100" width="100" class="rounded" v-bind:src="getLogoPath(item)">
+									</div>
+									<div class="col-lg-9 col-md-8 col-sm-7 d-flex flex-column">
+										<p class="fw-bold mb-1"> {{item.name}} </p>
+										<small>{{item.quantity}}</small>
+										<small>{{item.description}} </small>
+										<p class="lead mb-1">{{item.price}} $</p>
+									</div>
+									<div class="col-sm-1 text-end">
+										<button class = "m-1 btn btn-outline-secondary btn-sm" @click= "editItem(item)" > <i class="bi bi-pencil-square"></i> </button>
+										<button class = "m-1 btn btn-outline-danger btn-sm" @click= "deleteItem(item)"> <i class="bi bi-trash"></i> </button>
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+					<h5 class="border-bottom"> Comments </h5>
+					<ul class="list-group">
+						<li class="list-group-item" v-for="comment in comments">
+							<div class="d-flex justify-content-between border-bottom">
+								<label> {{comment.customerUsername}} </label>
+								<div class="d-flex">
+									<i class="bi bi-star-fill" style="color:#ffc40c"></i>
+									<label style="color:#ffc40c"> {{comment.rating}} </label>
+								</div>
+							</div>
+							<p> {{comment.commentText}} </p>
+							<div v-if="comment.status == 'PENDING'" class="d-grid gap-2 d-md-flex justify-content-md-end">
+  								<button @click="acceptComment(comment)" class="btn btn-outline-success btn-sm me-md-2" type="button"><i class="bi bi-check-lg"></i></i></button>
+  								<button @click="rejectComment(comment)" class="btn btn-outline-danger btn-sm" type="button"><i class="bi bi-x-lg"></i></i></button>
+							</div>
+							<small class = "float-end" v-if="comment.status == 'ACCEPTED'"> Accepted </small>
+							<small class = "float-end" v-if="comment.status == 'REJECTED'"> Rejected </small>
+						</li>
+					</ul>
+				</div>
+			</div>
 		</div>
-		<h3 v-else>You are not assigned to a restaurant</h3>
-	</div>
 	`,
 	methods: {
 		acceptComment: function(comment) {
@@ -122,6 +106,7 @@ Vue.component("view-restaurant-manager", {
 		},
 		init : function () {
 			this.items = [];
+			this.comments = [];
 			axios
 				.get('rest/restaurants/getMyRestaurant')
 				.then(response => {
