@@ -15,58 +15,87 @@ Vue.component("all-restaurants-app", {
 			restaurants: [],
 			images: [],
 			searchVisible: false,
-			sortVisible: false,
 			filterVisible: false
 		}
 	},
 	template: `
 	<div class="container-fluid bg">
-		<button @click="searchVisible=!searchVisible">Search</button>
-		<button @click="sortVisible=!sortVisible">Sort</button>
-		<button @click="filterVisible=!filterVisible">Filter</button>
-		<br><br>
-		<div v-if="searchVisible">
-			<form method='post'>
-				<input type="text" v-model="searchFields.name" placeholder="Restaurant name"></input>
-				<br><br>
-				<input type="text" v-model="searchFields.type" placeholder="Restaurant type"></input>
-				<br><br>
-				<input type="text" v-model="searchFields.location" placeholder="Restaurant location"></input>
-				<br><br>
-				<input type="text" v-model="searchFields.minRating" placeholder="Min rating"></input>
-				<input type="text" v-model="searchFields.maxRating" placeholder="Max rating"></input>
-				<br><br>
-			</form>
-		</div>
-		<div v-if="sortVisible">
-			<button @click="sortNameAsc"> Name ascending </button>
-			<button @click="sortNameDesc"> Name descending </button>
-			<br><br>
-			<button @click="sortLocationAsc"> Location ascending </button>
-			<button @click="sortLocationDesc"> Location descending </button>
-			<br><br>
-			<button @click="sortRatingAsc"> Rating ascending </button>
-			<button @click="sortRatingDesc"> Rating descending </button>
-			<br><br>
-		</div>
-		<div v-if="filterVisible">
-			<form method='post'>
-				<select v-model="filters.type">
-		    		<option disabled value="">Please select one</option>
-					<option value="">All</option>
-		    		<option>Chinese</option>
-		    		<option>Italian</option>
-					<option>Fast food</option>
-					<option>BBQ</option>
-					<option>Mexican</option>
-					<option>Gyros</option>
-				</select>
-				<select v-model="filters.status">
-					<option disabled value="">Please select one</option>
-					<option value=""> All </option>
-					<option> Open </option>
-				</select>
-			</form>
+		<div class="row justify-content-center" >
+			<div class="col-lg-6 col-md-6 col-sm-12 search-area ">
+				<div class="container">
+					<div class="row justify-content-between">
+						<div class="col-lg-10 col-md-10 col-sm-10">
+						<p>
+						<button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch">
+    					Search
+  						</button>
+						</p>
+						<div class="collapse" id="collapseSearch">
+							<div class="card card-colored">
+								<div class="row ms-1">
+								<input class="input-style" style="width: 160px;" type="text" v-model="searchFields.name" placeholder="Restaurant name">
+								<input class="input-style" style="width: 160px;" type="text" v-model="searchFields.type" placeholder="Restaurant type">
+								<input class="input-style" style="width: 160px;" type="text" v-model="searchFields.location" placeholder="Restaurant location">
+								</div>
+								<div class="row ms-1">
+								<input class="input-style" style="width: 130px;" type="number" min="0" max="5" v-model="searchFields.minRating" placeholder="Min rating">
+								<input class="input-style" style="width: 130px;" type="number" min="0" max="5" v-model="searchFields.maxRating" placeholder="Max rating">
+								</div>
+							</div>
+						</div>
+						</div>
+						<div class="col-lg-2 col-md-2 col-sm-2"> 		
+							<div class="dropdown">
+								<button class="btn dropdown-toggle float-right" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+								    Sort
+								</button>
+								<ul class="dropdown-menu dropdown-list" >
+								    <li><a class="dropdown-item" href="#" v-on:click="sortNameAsc">Name ascending</a></li>
+								    <li><a class="dropdown-item" href="#" v-on:click="sortNameDesc">Name descending </a></li>
+								    <li><a class="dropdown-item" href="#" v-on:click="sortLocationAsc">Location ascending</a></li>
+				 					<li><a class="dropdown-item" href="#" v-on:click="sortLocationDesc">Location descending</a></li>
+								 	<li><a class="dropdown-item" href="#" v-on:click="sortRatingAsc">Rating ascending</a></li>
+				 					<li><a class="dropdown-item" href="#" v-on:click="sortRatingDesc">Rating descending</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<p>
+						<button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+    					Filters
+  						</button>
+						</p>
+						<div class="collapse" id="collapseExample">
+								<div class="card card-colored">
+									<div class="row">
+							 		<div class="col-lg-6 col-md-6 col-sm-6">
+										<label> Restaurant type </label>
+										<select style="margin: 5px;" class="selectpicker select-nice"v-model="filters.type">
+											<option disabled value="">Please select one</option>
+											<option value="">All</option>
+											<option>Chinese</option>
+											<option>Italian</option>
+											<option>Fast food</option>
+											<option>BBQ</option>
+											<option>Mexican</option>
+											<option>Gyros</option>
+										</select>
+									</div>
+									<div class="col-lg-6 col-md-6 col-sm-6">
+									<label> Restaurant status </label>
+									<select style="margin: 5px;" class="selectpicker select-nice" v-model="filters.status">
+										<option disabled value="">Please select one</option>
+										<option value=""> All </option>
+										<option> Open </option>
+									</select>
+								</div>
+								</div>
+							</div>
+						</div>
+					</div>		
+				</div>
+			</div>
 		</div>
 		<div class="row justify-content-center">
 			<div class="col-lg-8 col-md-10 col-sm-12">
