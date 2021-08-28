@@ -18,7 +18,6 @@ Vue.component("restaurants-admin", {
 	},
 	template: `
 	<div class="container-fluid bg">
-	<button @click="$router.push('/restaurantadmin')"> New restaurant </button>
 	<div class="row justify-content-center" >
 			<div class="col-lg-6 col-md-6 col-sm-12 search-area ">
 				<div class="container">
@@ -96,27 +95,41 @@ Vue.component("restaurants-admin", {
 				</div>
 			</div>
 		</div>
+		<div class="row justify-content-center mb-2">
+			<div class="col-lg-8 col-md-10 col-sm-12">
+				<div class="row float-end me-2">
+					<button class="btn btn-primary" @click="$router.push('/restaurantadmin')"> + New restaurant </button>
+				</div>
+			</div>
+		</div>
 		<div class="row justify-content-center">
 			<div class="col-lg-8 col-md-10 col-sm-12">
 				<ul class="list-group">
 					<li>
 						<a href="#" v-on:click="viewRestaurant(restaurant)" class="list-group-item list-group-item-action li-container" v-for ="restaurant in filteredRestaurants">			
 							<div class="container">
-							<button @click="deleteRestaurant(restaurant)"> Delete </button>
 								<div class="row justify-content-between">
 									<div class="col-lg-2 col-md-4 col-sm-4"> 
 										<div class="circular">
 											<img v-bind:src="getLogoPath(restaurant)"> 
 										</div>
 									</div>
-									<div class="col-lg-10 col-md-8 col-sm-8"> 
+									<div class="col-lg-9 col-md-7 col-sm-7"> 
 										<div class="d-flex w-100 justify-content-between">
 											<h4 class="mb-1"> {{restaurant.name}} </h4>
-											<small>{{restaurant.status}}</small>
 										</div>
 										<p class="mb-1 lead">{{restaurant.type}}  </p>
 										<p class="mb-1"> {{restaurant.location.address.street}} {{restaurant.location.address.number}}, {{restaurant.location.address.city}} {{restaurant.location.address.zipCode}} </p>
 										<small>Rating: {{restaurant.averageRating}} </small>
+										<div class="d-flex w-100 justify-content-between mt-3">
+											<span v-if="restaurant.status == 'Open'" class="badge bg-success mb-2"> &check; Open </span>
+											<span v-if="restaurant.status == 'Closed'" class="badge bg-danger mb-2"> &#10005; Closed </span>
+										</div>
+									</div>
+									<div class="col-lg-1 col-md-1 col-sm-1 mt-3"> 
+										<button class="btn btn-outline-danger" @click="deleteRestaurant(restaurant)"> 
+											<i class="bi bi-trash"></i>
+										</button>
 									</div>
 								</div>
 							</div>
