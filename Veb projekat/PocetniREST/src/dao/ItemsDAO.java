@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import beans.Item;
 import dto.ItemDTO;
+import dto.ItemToEditDTO;
 
 public class ItemsDAO {
 	private HashMap<Integer, Item> items = new HashMap<Integer, Item>();
@@ -89,15 +90,14 @@ public class ItemsDAO {
 		return items;
 	}
 	
-	public void editItem(Item editedItem) {
-		Item itemToEdit = getItem(editedItem.getItemID());
-		itemToEdit.setName(editedItem.getName());
-		itemToEdit.setPrice(editedItem.getPrice());
-		itemToEdit.setType(editedItem.getType());
-		itemToEdit.setRestaurantName(editedItem.getRestaurantName());
-		itemToEdit.setQuantity(editedItem.getQuantity());
-		itemToEdit.setDescription(editedItem.getDescription());
-		itemToEdit.setLogoPath(editedItem.getLogoPath());
+	public void editItem(ItemToEditDTO editedItem) {
+		Item itemToEdit = getItem(editedItem.itemID);
+		itemToEdit.setName(editedItem.name);
+		itemToEdit.setPrice(editedItem.price);
+		itemToEdit.setType(editedItem.type);
+		itemToEdit.setRestaurantName(editedItem.restaurantName);
+		itemToEdit.setQuantity(editedItem.quantity);
+		itemToEdit.setDescription(editedItem.description);
 		saveItems();
 	}
 	

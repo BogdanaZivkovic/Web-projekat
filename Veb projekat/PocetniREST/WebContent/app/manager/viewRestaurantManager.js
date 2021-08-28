@@ -4,73 +4,180 @@ Vue.component("view-restaurant-manager", {
 			restaurant: {},
 			items: [],
 			images: [],
-			comments: []
+			comments: [],
+			newItem: {
+				name: "",
+				price: "",
+				type: "",
+				restaurantName: "",
+				quantity: "",
+				description: "",
+				logoPath: "",
+			}
 		}
 	},
 	template:`
-	<div class="container-fluid bg">
-			<div class="row justify-content-center">
-				<div class="col-lg-8 col-md-10 col-sm-12 container-neutral">
-					<div class="d-flex mb-2">
-						<div class="circular--small me-2">
-							<img v-bind:src="getLogoPath(restaurant)">
+	<div>
+		<div class="container-fluid bg">
+				<div class="row justify-content-center">
+					<div class="col-lg-8 col-md-10 col-sm-12 container-neutral">
+						<div class="d-flex mb-2">
+							<div class="circular--small me-2">
+								<img v-bind:src="getLogoPath(restaurant)">
+							</div>
+							<h2> {{restaurant.name}} </h2>
 						</div>
-						<h2> {{restaurant.name}} </h2>
-					</div>
-					<div class="d-flex">
-						<i class="bi bi-star-fill" style="color:#ffc40c"></i>
-						<label style="color:#ffc40c"> {{restaurant.averageRating}} </label>
-					</div>
-					<p class="mb-1 lead">{{restaurant.type}}  </p>
-					<p class="mb-1"> {{restaurant.location.address.street}} {{restaurant.location.address.number}}, {{restaurant.location.address.city}} {{restaurant.location.address.zipCode}} </p>
-					<span v-if="restaurant.status == 'Open'" class="badge bg-success mb-2"> &check; Open </span>
-					<span v-if="restaurant.status == 'Closed'" class="badge bg-danger mb-2"> &#10005; Closed </span>
-					<div class="d-flex justify-content-between align-items-start border-bottom p-1 mb-2">
-						<h5> Items </h5>
-						<button class="btn btn-primary btn-sm" @click="newItem"> &plus; New </button>
-					</div>
-					<ul class="list-group mb-2">
-						<li class="list-group-item" v-for="item in items">
-							<div class="container">
-								<div class="row justify-content-between">
-									<div class="col-lg-2 col-md-3 col-sm-4">
-										<img height="100" width="100" class="rounded" v-bind:src="getLogoPath(item)">
-									</div>
-									<div class="col-lg-9 col-md-8 col-sm-7 d-flex flex-column">
-										<p class="fw-bold mb-1"> {{item.name}} </p>
-										<small>{{item.quantity}}</small>
-										<small>{{item.description}} </small>
-										<p class="lead mb-1">{{item.price}} $</p>
-									</div>
-									<div class="col-sm-1 text-end">
-										<button class = "m-1 btn btn-outline-secondary btn-sm" @click= "editItem(item)" > <i class="bi bi-pencil-square"></i> </button>
-										<button class = "m-1 btn btn-outline-danger btn-sm" @click= "deleteItem(item)"> <i class="bi bi-trash"></i> </button>
+						<div class="d-flex">
+							<i class="bi bi-star-fill" style="color:#ffc40c"></i>
+							<label style="color:#ffc40c"> {{restaurant.averageRating}} </label>
+						</div>
+						<p class="mb-1 lead">{{restaurant.type}}  </p>
+						<p class="mb-1"> {{restaurant.location.address.street}} {{restaurant.location.address.number}}, {{restaurant.location.address.city}} {{restaurant.location.address.zipCode}} </p>
+						<span v-if="restaurant.status == 'Open'" class="badge bg-success mb-2"> &check; Open </span>
+						<span v-if="restaurant.status == 'Closed'" class="badge bg-danger mb-2"> &#10005; Closed </span>
+						<div class="d-flex justify-content-between align-items-start border-bottom p-1 mb-2">
+							<h5> Items </h5>
+							<button class="btn btn-primary btn-sm" @click="clearNewItem" data-bs-toggle="modal" data-bs-target="#newItem"> &plus; New </button>
+						</div>
+						<ul class="list-group mb-2">
+							<li class="list-group-item" v-for="item in items">
+								<div class="container">
+									<div class="row justify-content-between">
+										<div class="col-lg-2 col-md-3 col-sm-4">
+											<img height="100" width="100" class="rounded" v-bind:src="getLogoPath(item)">
+										</div>
+										<div class="col-lg-9 col-md-8 col-sm-7 d-flex flex-column">
+											<p class="fw-bold mb-1"> {{item.name}} </p>
+											<small>{{item.quantity}}</small>
+											<small>{{item.description}} </small>
+											<p class="lead mb-1">{{item.price}} $</p>
+										</div>
+										<div class="col-sm-1 text-end">
+											<button class = "m-1 btn btn-outline-secondary btn-sm" @click= "setNewItem(item)" data-bs-toggle="modal" data-bs-target="#editItem"> <i class="bi bi-pencil-square"></i> </button>
+											<button class = "m-1 btn btn-outline-danger btn-sm" @click= "deleteItem(item)"> <i class="bi bi-trash"></i> </button>
+										</div>
 									</div>
 								</div>
-							</div>
-						</li>
-					</ul>
-					<h5 class="border-bottom"> Comments </h5>
-					<ul class="list-group">
-						<li class="list-group-item" v-for="comment in comments">
-							<div class="d-flex justify-content-between border-bottom">
-								<label> {{comment.customerUsername}} </label>
-								<div class="d-flex">
-									<i class="bi bi-star-fill" style="color:#ffc40c"></i>
-									<label style="color:#ffc40c"> {{comment.rating}} </label>
+							</li>
+						</ul>
+						<h5 class="border-bottom"> Comments </h5>
+						<ul class="list-group">
+							<li class="list-group-item" v-for="comment in comments">
+								<div class="d-flex justify-content-between border-bottom">
+									<label> {{comment.customerUsername}} </label>
+									<div class="d-flex">
+										<i class="bi bi-star-fill" style="color:#ffc40c"></i>
+										<label style="color:#ffc40c"> {{comment.rating}} </label>
+									</div>
 								</div>
-							</div>
-							<p> {{comment.commentText}} </p>
-							<div v-if="comment.status == 'PENDING'" class="d-grid gap-2 d-md-flex justify-content-md-end">
-  								<button @click="acceptComment(comment)" class="btn btn-outline-success btn-sm me-md-2" type="button"><i class="bi bi-check-lg"></i></i></button>
-  								<button @click="rejectComment(comment)" class="btn btn-outline-danger btn-sm" type="button"><i class="bi bi-x-lg"></i></i></button>
-							</div>
-							<small class = "float-end" v-if="comment.status == 'ACCEPTED'"> Accepted </small>
-							<small class = "float-end" v-if="comment.status == 'REJECTED'"> Rejected </small>
-						</li>
-					</ul>
+								<p> {{comment.commentText}} </p>
+								<div v-if="comment.status == 'PENDING'" class="d-grid gap-2 d-md-flex justify-content-md-end">
+	  								<button @click="acceptComment(comment)" class="btn btn-outline-success btn-sm me-md-2" type="button"><i class="bi bi-check-lg"></i></i></button>
+	  								<button @click="rejectComment(comment)" class="btn btn-outline-danger btn-sm" type="button"><i class="bi bi-x-lg"></i></i></button>
+								</div>
+								<small class = "float-end" v-if="comment.status == 'ACCEPTED'"> Accepted </small>
+								<small class = "float-end" v-if="comment.status == 'REJECTED'"> Rejected </small>
+							</li>
+						</ul>
+					</div>
 				</div>
 			</div>
+			
+			<!-- Modal for new item -->
+			<div class="modal fade" id="newItem" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="newItemLabel" aria-hidden="true">
+			  <div class="modal-dialog modal-dialog-centered">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="newItemLabel">New item</h5>
+			        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			      </div>
+				  <form @submit="addItem" method='post'>
+				      <div class="modal-body">
+						  <div class="mb-3">
+						    <label for="nameInput" class="form-label">Item name</label>
+						    <input v-model="newItem.name" id="nameInput" type="text" class="form-control" placeholder="Item name" required>
+						  </div>
+						  <div class="mb-3">
+						    <label for="priceInput" class="form-label"> Price </label>
+						    <input v-model="newItem.price" id="priceInput" type="number" class="form-control" placeholder="Price" required>
+						  </div>
+						  <div class="mb-3">
+						    <label for="imageInput" class="form-label">Image</label>
+						    <input id="imageInput" type="file" class="form-control" onchange="encodeImageFileAsURLForChanging(this)" required>
+							<img hidden id="imgForChangeID"  src="" alt="Image of restaurant" width="11" height="11">
+						  </div>
+						  <div class="mb-3">
+					   		<label for="typeInput" class="form-label"> Type </label>
+					    	<select v-model="newItem.type" id="typeInput" class="form-select">
+								<option disabled value="">Please select one</option>
+							    <option>FOOD</option>
+							    <option>DRINK</option>
+							</select>
+					  	  </div>
+						  <div class="mb-3">
+						    <label for="quantityInput" class="form-label"> Quantity </label>
+						    <input v-model="newItem.quantity" id="quantityInput" type="text" class="form-control" placeholder="Quantity">
+						  </div>
+						  <div class="mb-3">
+						    <label for="descriptionInput" class="form-label"> Description </label>
+						    <textarea v-model="newItem.description" id="descriptionInput" class="form-control"></textarea>
+						  </div>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+				        <button type='submit' class="btn btn-primary"> Confirm </button>
+				      </div>
+				</form>
+			    </div>
+			  </div>
+			</div>
+			
+			
+			<!-- Modal for editing an item -->
+			<div class="modal fade" id="editItem" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editItemLabel" aria-hidden="true">
+			  <div class="modal-dialog modal-dialog-centered">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="editItemLabel">Edit item</h5>
+			        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			      </div>
+				  <form @submit="editItem" method='post'>
+				      <div class="modal-body">
+						  <div class="mb-3">
+						    <label for="nameInput" class="form-label">Item name</label>
+						    <input v-model="newItem.name" id="nameInput" type="text" class="form-control" placeholder="Item name" required>
+						  </div>
+						  <div class="mb-3">
+						    <label for="priceInput" class="form-label"> Price </label>
+						    <input v-model="newItem.price" id="priceInput" type="number" class="form-control" placeholder="Price" required>
+						  </div>
+						  <div class="mb-3">
+					   		<label for="typeInput" class="form-label"> Type </label>
+					    	<select v-model="newItem.type" id="typeInput" class="form-select">
+								<option disabled value="">Please select one</option>
+							    <option>FOOD</option>
+							    <option>DRINK</option>
+							</select>
+					  	  </div>
+						  <div class="mb-3">
+						    <label for="quantityInput" class="form-label"> Quantity </label>
+						    <input v-model="newItem.quantity" id="quantityInput" type="text" class="form-control" placeholder="Quantity">
+						  </div>
+						  <div class="mb-3">
+						    <label for="descriptionInput" class="form-label"> Description </label>
+						    <textarea v-model="newItem.description" id="descriptionInput" class="form-control"></textarea>
+						  </div>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+				        <button type='submit' class="btn btn-primary"> Confirm </button>
+				      </div>
+				</form>
+			    </div>
+			  </div>
+			</div>
+			
+			
 		</div>
 	`,
 	methods: {
@@ -88,21 +195,58 @@ Vue.component("view-restaurant-manager", {
 					"commentID":comment.commentID,
 					"status":"REJECTED"
 				})
-				.then(response => (this.init()))
+				.then(response => {
+					this.init();
+				})
 		},
-		newItem: function () {
-			let data = this.restaurant.name;
-      		this.$router.push({
-        		name: "addItem", //use name for router push
-       			params: { data }
-      		});
+		clearNewItem: function() {
+			this.newItem = {
+				name: "",
+				price: "",
+				type: "",
+				restaurantName: "",
+				quantity: "",
+				description: "",
+				logoPath: "",
+			};
 		},
-		editItem: function (item) {
-			let data = item;
-			this.$router.push({
-				name: "editItem",
-				params: { data }
-			});
+		addItem : function() {
+			
+			this.newItem.logoPath = document.getElementById("imgForChangeID").src;
+			
+			axios
+			.post('rest/items/addItem', {
+				"name":''+this.newItem.name, 
+				"price":''+this.newItem.price, 
+				"type":''+this.newItem.type, 
+				"quantity":''+this.newItem.quantity, 
+				"restaurantName":''+this.restaurant.name,
+				"description":''+this.newItem.description,
+				"logoPath":''+this.newItem.logoPath
+			})
+			.then(response => {
+				$('#newItem').modal('hide');
+				this.init();
+				})
+		},
+		setNewItem: function(item) {
+			this.newItem = item;
+		},
+		editItem: function() {
+			axios
+			.post('rest/items/editItem', {
+				"itemID":''+this.newItem.itemID,
+				"name":''+this.newItem.name, 
+				"price":''+this.newItem.price, 
+				"type":''+this.newItem.type, 
+				"quantity":''+this.newItem.quantity, 
+				"restaurantName":''+this.restaurant.name,
+				"description":''+this.newItem.description
+			})
+			.then(response => {
+				$('#editItem').modal('hide');
+				this.init();
+				})
 		},
 		init : function () {
 			this.items = [];
@@ -173,3 +317,21 @@ Vue.component("view-restaurant-manager", {
 		this.init();
 	}
 });
+
+
+/**
+ * ref: https://stackoverflow.com/questions/6150289/how-can-i-convert-an-image-into-base64-string-using-javascript
+ * @param {*} element 
+ */
+function encodeImageFileAsURLForChanging(element) {
+    var file = element.files[0];
+    var reader = new FileReader();
+    reader.onloadend = function () {
+        console.log("\n ENKODIRANJE SLIKE \n");
+        document.getElementById('imgForChangeID')
+            .setAttribute(
+                'src', reader.result
+            );
+    }
+    reader.readAsDataURL(file);
+}

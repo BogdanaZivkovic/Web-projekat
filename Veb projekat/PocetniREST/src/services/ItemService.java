@@ -20,6 +20,7 @@ import dao.ItemsDAO;
 import dao.RestaurantsDAO;
 import dto.ItemDTO;
 import dto.ItemIDDTO;
+import dto.ItemToEditDTO;
 
 @Path("/items")
 public class ItemService {
@@ -74,8 +75,8 @@ public class ItemService {
 	@Path("editItem")
 	@Produces(MediaType.TEXT_HTML)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response editItem(Item item) {
-		getItems().editItem(item);
+	public Response editItem(ItemToEditDTO dto) {
+		getItems().editItem(dto);
 		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
 	}
 
