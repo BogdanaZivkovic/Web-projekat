@@ -61,6 +61,7 @@ public class ShoppingCartService {
 		ShoppingCart sc = getShoppingCart();
 		if (!sc.getRestaurantName().equals(dto.name)) {
 			sc.getItems().clear();
+			sc.setTotalPrice(0);
 			sc.setRestaurantName(dto.name);
 		}
 		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();

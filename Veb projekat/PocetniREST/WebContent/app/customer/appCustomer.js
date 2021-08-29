@@ -10,6 +10,7 @@ const router = new VueRouter({
 	mode: 'hash',
 	  routes: [
 		{ path: '/', component: ProfileCustomer},
+		{path: '/profile', component: ProfileCustomer},
 		{path: '/restaurants', component: RestaurantsCustomer},
 		{path: '/restaurant', name: 'viewRestaurant',component: ViewRestaurantCustomer},
 		{path: '/sc', name:'shoppingCart', component: ShoppingCart},

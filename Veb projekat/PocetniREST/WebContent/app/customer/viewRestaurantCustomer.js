@@ -4,80 +4,86 @@ Vue.component("view-restaurant-customer", {
 			restaurant: {},
 			items: [],
 			images: [],
-			comments: []
+			comments: [],
+			sc: [],
+			totalPrice: 0.0
 		}
 	},
 	template:`
-		<div>
-			<table>
-				<tr>
-					<td> Name: </td>
-					<td> {{restaurant.name}} </td>
-				</tr>
-				<tr>
-					<td> Type: </td>
-					<td> {{restaurant.type}} </td>
-				</tr>
-				<tr>
-					<td> Status: </td>
-					<td> {{restaurant.status}} </td>
-				</tr>
-				<tr>
-					<td> Location: </td>
-					<td v-if="restaurant.location != null"> {{restaurant.location.address.street}} {{restaurant.location.address.number}}, {{restaurant.location.address.zipCode}} {{restaurant.location.address.city}} </td>
-					<td v-else>-</td>
-				</tr>
-			</table>
-			<ul>
-				<li v-for="i in items">
-				<img height="100" width="100"  v-bind:src="getLogoPath(i.item)">
-					<table>
-						<tr>
-							<td> Name: </td>
-							<td> {{i.item.name}} </td>
-						</tr>
-						<tr>
-							<td> Price: </td>
-							<td> {{i.item.price}} </td>
-						</tr>
-						<tr>
-							<td> Type: </td>
-							<td> {{i.item.type}} </td>
-						</tr>
-						<tr>
-							<td> Quantity: </td>
-							<td> {{i.item.quantity}} </td>
-						</tr>
-						<tr>
-							<td> Description: </td>
-							<td> {{i.item.description}} </td>
-						</tr>
-					</table>
-					<input v-if="restaurant.status.match('Open')" type="number" v-model="i.count" placeHolder="Count" min="1">
-					<button v-if="restaurant.status.match('Open')" @click="selectItem(i)"> Add </button>
-					<label v-if="restaurant.status.match('Closed')"> Restaurant is closed. You can't add items from this restaurant into your shopping cart. </label>
-				</li>
-			</ul>
-			<button @click="viewShoppingCart"> Shopping cart </button>
-			<ul>
-				<li v-for="comment in comments">
-					<table>
-						<tr>
-							<td> Customer: </td>
-							<td> {{comment.customerUsername}} </td>
-						</tr>
-						<tr>
-							<td> Comment: </td>
-							<td> {{comment.commentText}} </td>
-						</tr>
-						<tr>
-							<td> Rating: </td>
-							<td> {{comment.rating}} </td>
-						</tr>
-					</table>
-				</li>
-			</ul>
+	<div>
+		<div class="container-fluid bg">
+			<div class="row justify-content-center">
+				<div class="col-lg-8 col-md-10 col-sm-12 container-neutral">
+					<div class="d-flex mb-2">
+						<div class="circular--small me-2">
+							<img v-bind:src="getLogoPath(restaurant)">
+						</div>
+						<h2> {{restaurant.name}} </h2>
+					</div>
+					<div class="d-flex">
+						<i class="bi bi-star-fill" style="color:#ffc40c"></i>
+						<label style="color:#ffc40c"> {{restaurant.averageRating}} </label>
+					</div>
+					<p class="mb-1 lead">{{restaurant.type}}  </p>
+					<p class="mb-1"> {{restaurant.location.address.street}} {{restaurant.location.address.number}}, {{restaurant.location.address.city}} {{restaurant.location.address.zipCode}} </p>
+					<span v-if="restaurant.status == 'Open'" class="badge bg-success mb-2"> &check; Open </span>
+					<span v-if="restaurant.status == 'Closed'" class="badge bg-danger mb-2"> &#10005; Closed </span>
+					<h5 class="border-bottom"> Items </h5>
+					<ul class="list-group mb-2">
+						<li class="list-group-item" v-for="i in items">
+							<div class="container">
+								<div class="row justify-content-between">
+									<div class="col-lg-10 col-md-9 col-sm-8 d-flex flex-column">
+										<p class="fw-bold mb-1"> {{i.item.name}} </p>
+										<small>{{i.item.quantity}}</small>
+										<small>{{i.item.description}} </small>
+										<p class="lead mb-1">{{i.item.price}} $</p>
+									</div>
+									<div class="col-lg-2 col-md-3 col-sm-4">
+										<img height="100" width="100" class="rounded float-end" v-bind:src="getLogoPath(i.item)">
+									</div>
+									<div class="row">
+										<div class="col-sm-12 text-end">
+											<input v-if="restaurant.status.match('Open')" type="number" v-model="i.count" placeHolder="Count" min="1">
+											<button class="btn btn-success" v-if="restaurant.status.match('Open')" @click="selectItem(i)"> Add </button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+					<h5 class="border-bottom"> Comments </h5>
+					<ul class="list-group">
+						<li class="list-group-item" v-for="comment in comments">
+							<div class="d-flex justify-content-between border-bottom">
+								<label> {{comment.customerUsername}} </label>
+								<div class="d-flex">
+									<i class="bi bi-star-fill" style="color:#ffc40c"></i>
+									<label style="color:#ffc40c"> {{comment.rating}} </label>
+								</div>
+							</div>
+							<p> {{comment.commentText}} </p>
+						</li>
+					</ul>
+				</div>
+			</div>
 		</div>
+
+		<div v-if="sc.length > 0" class="fixed-bottom">
+			<div class="d-grid gap-2 col-lg-4 col-md-5 col-sm-6 mx-auto">
+  				<button class="btn btn-warning btn-lg" type="button">
+					<div class="d-flex justify-content-between">
+					<span class="badge bg-light text-dark">{{this.sc.length}}</span>
+					<p class="m-0">Shopping cart</p>
+					<p class="m-0">{{this.totalPrice}}$</p>
+					</div>
+				</button>
+			</div>
+		</div>
+
+		<!-- MODALS -->
+		
+	</div>
 	`,
 	methods: {
 		viewShoppingCart : function () {
@@ -92,6 +98,17 @@ Vue.component("view-restaurant-customer", {
 			.post('rest/shoppingCart/add', {
 				item: shoppingCartItem.item,
 				"count":''+shoppingCartItem.count
+			})
+			.then(response => {
+				//this.sc.push(shoppingCartItem);
+				//this.totalPrice += shoppingCartItem.item.price * shoppingCartItem.count;
+				axios
+				.get('rest/shoppingCart/getJustSc')
+				.then(response=>(this.sc = response.data))
+					
+				axios
+				.get('rest/shoppingCart/getScTotal')
+				.then(response=>(this.totalPrice = response.data))
 			})
 		},
 		getLogoPath: function (item) {
@@ -137,6 +154,15 @@ Vue.component("view-restaurant-customer", {
 		axios
 			.post('rest/shoppingCart/initSc', {
 				name:''+this.restaurant.name
+			})
+			.then(response => {
+				axios
+				.get('rest/shoppingCart/getJustSc')
+				.then(response => (this.sc = response.data))
+				
+				axios
+				.get('rest/shoppingCart/getScTotal')
+				.then( response => (this.totalPrice = response.data))
 			})
 		axios
 			.get('rest/comments/getAccepted')
