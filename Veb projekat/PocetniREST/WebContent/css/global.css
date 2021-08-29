@@ -100,6 +100,35 @@ input{
   height: 100%;
 }
 
+table{
+  width:100%;
+  table-layout: fixed;
+  background: rgba(255, 255, 255);
+  border-radius: 10px;
+}
+
+th, td {
+	padding: 20px;
+	text-align:center;
+}
+
+
+.row-nice {
+	padding: 10px;
+}
+
+
+.fifteen {
+	width: 15%;
+}
+.ten {
+	width: 10%;
+}
+
+.five {
+	width: 5%;	
+}
+
 .container-neutral {
 	background: #fff;
 	position: relative;

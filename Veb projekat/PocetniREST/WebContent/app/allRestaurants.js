@@ -112,7 +112,8 @@ Vue.component("all-restaurants-app", {
 									<div class="col-lg-10 col-md-8 col-sm-8"> 
 										<div class="d-flex w-100 justify-content-between">
 											<h4 class="mb-1"> {{restaurant.name}} </h4>
-											<small>{{restaurant.status}}</small>
+											<span v-if="restaurant.status == 'Open'" class="badge bg-success mb-2"> &check; Open </span>
+											<span v-if="restaurant.status == 'Closed'" class="badge bg-danger mb-2"> &#10005; Closed </span>
 										</div>
 										<p class="mb-1 lead">{{restaurant.type}}  </p>
 										<p class="mb-1"> {{restaurant.location.address.street}} {{restaurant.location.address.number}}, {{restaurant.location.address.city}} {{restaurant.location.address.zipCode}} </p>

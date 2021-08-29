@@ -16,75 +16,127 @@ Vue.component("users-admin", {
 		}
 	},
 	template: `
-	<div>
-		<button @click="$router.push('/adduseradmin')"> ADD </button>
-		<br><br>
-		<button @click="searchVisible=!searchVisible">Search</button>
-		<button @click="sortVisible=!sortVisible">Sort</button>
-		<button @click="filterVisible=!filterVisible">Filter</button>
-		<br><br>
-		<div v-if="searchVisible">
-			<form method='post'>
-				<input type="text" v-model="searchFields.name" placeholder="User name"></input>
-				<br><br>
-				<input type="text" v-model="searchFields.surname" placeholder="User surname"></input>
-				<br><br>
-				<input type="text" v-model="searchFields.userName" placeholder="User username"></input>
-				<br><br>
-			</form>
-		</div>
-		<div v-if="sortVisible">
-			<button @click="sortNameAsc"> Name ascending </button>
-			<button @click="sortNameDesc"> Name descending </button>
-			<br><br>
-			<button @click="sortSurnameAsc"> Surname ascending </button>
-			<button @click="sortSurnameDesc"> Surname descending </button>
-			<br><br>
-			<button @click="sortUserNameAsc"> Username ascending </button>
-			<button @click="sortUserNameDesc"> Username descending </button>
-			<br><br>
-		</div>
-		<div v-if="filterVisible">
-			<form method='post'>
-				<select v-model="filters.role">
-		    		<option disabled value="">Please select one</option>
-					<option value="">All</option>
-		    		<option>CUSTOMER</option>
-					<option>MANAGER</option>
-					<option>DELIVERER</option>
-					<option>ADMINISTRATOR</option>
-				</select>
-			</form>
-		</div>
-		<table>
-			<tr>
-				<th> Usermame </th>
-				<th> Password </th>
-				<th> Name </th>
-				<th> Surname </th>
-				<th> Gender </th>
-				<th> Date of birth </th>
-				<th> Role </th>
-				<th> Blocked </th>
-				<th> Delete </th>
-				<th> Block </th>
-			</tr>
-			<tr v-for="user in filteredUsers">
-				<td> {{user.userName}} </td>
-				<td> {{user.password}} </td>
-				<td> {{user.name}} </td>
-				<td> {{ user.surname }} </td>
-				<td> {{ user.gender }} </td>
-				<td> {{user.dateOfBirth}} </td>
-				<td> {{ user.role }} </td>
-				<td> {{ user.isBlocked }} </td>
-				<td v-if = "!user.role.match('ADMINISTRATOR')"> <button @click="deleteUser(user)"> Delete </button> </td>
-				<div v-if = "!user.role.match('ADMINISTRATOR')">
-					<td v-if = "!user.isBlocked"> <button @click="blockUser(user)"> Block </button> </td>
-					<td v-else> <button @click="unblockUser(user)"> Unblock </button> </td>
+	<div class="container-fluid bg">
+	<div class="row justify-content-center" >
+			<div class="col-lg-6 col-md-6 col-sm-12 search-area ">
+				<div class="container">
+					<div class="row justify-content-between">
+						<div class="col-lg-10 col-md-10 col-sm-10">
+						<p>
+						<button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch">
+    					Search
+  						</button>
+						</p>
+						<div class="collapse" id="collapseSearch">
+							<div class="card card-colored">
+								<div class="row ms-1">
+								<input class="input-style" style="width: 160px;" type="text" v-model="searchFields.name" placeholder="Name">
+								<input class="input-style" style="width: 160px;" type="text" v-model="searchFields.surname" placeholder="Surname">
+								<input class="input-style" style="width: 160px;" type="text" v-model="searchFields.userName" placeholder="Username">
+								</div>
+							</div>
+						</div>
+						</div>
+						<div class="col-lg-2 col-md-2 col-sm-2"> 		
+							<div class="dropdown">
+								<button class="btn dropdown-toggle float-right" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+								    Sort
+								</button>
+								<ul class="dropdown-menu dropdown-list" >
+								    <li><a class="dropdown-item" href="#" v-on:click="sortNameAsc">Name ascending</a></li>
+								    <li><a class="dropdown-item" href="#" v-on:click="sortNameDesc">Name descending </a></li>
+								    <li><a class="dropdown-item" href="#" v-on:click="sortSurnameAsc">Surname ascending</a></li>
+				 					<li><a class="dropdown-item" href="#" v-on:click="sortSurnameDesc">Surname descending</a></li>
+								 	<li><a class="dropdown-item" href="#" v-on:click="sortUserNameAsc">Username ascending</a></li>
+				 					<li><a class="dropdown-item" href="#" v-on:click="sortUserNameDesc">Username descending</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<p>
+						<button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+    					Filters
+  						</button>
+						</p>
+						<div class="collapse" id="collapseExample">
+							<div class="card card-colored">
+								<div class="row ms-1">
+									<div class="col">
+										<label> User role: </label>
+										<select style="margin: 5px;" class="selectpicker select-nice" v-model="filters.role">
+										    <option disabled value="">Please select one</option>
+											<option value="">All</option>
+										    <option>CUSTOMER</option>
+											<option>MANAGER</option>
+											<option>DELIVERER</option>
+											<option>ADMINISTRATOR</option>			
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>	
 				</div>
-			</tr>
-		</table>
+			</div>
+		</div>
+		<div class="row justify-content-center mb-2">
+			<div class="col-lg-9 col-md-10 col-sm-12">
+				<div class="row float-end me-2">
+					<button class="btn btn-primary" @click="$router.push('/adduseradmin')"> + New user </button>
+				</div>
+			</div>
+		</div>
+		<div class="row justify-content-center mb-2">
+			<div class="col-lg-9 col-md-10 col-sm-12">
+				<table>
+				<colgroup>
+					    <col class="ten" />
+					    <col class="ten" />
+					    <col class="ten" />
+					    <col class="ten" />
+						<col class="ten" />
+					    <col class="fifteen" />
+					    <col class="ten" />
+					    <col class="ten" />
+						<col class="five" />
+					    <col class="ten" />
+					  	</colgroup>
+					<tr>
+						<th> Usermame </th>
+						<th> Password </th>
+						<th> Name </th>
+						<th> Surname </th>
+						<th> Gender </th>
+						<th> Date of birth </th>
+						<th> Role </th>
+						<th> Blocked </th>
+						<th>       </th>
+						<th>       </th>
+					</tr>
+					<tr v-for="user in filteredUsers">
+						<td> {{user.userName}} </td>
+						<td> {{user.password}} </td>
+						<td> {{user.name}} </td>
+						<td> {{ user.surname }} </td>
+						<td> {{ user.gender }} </td>
+						<td> {{user.dateOfBirth}} </td>
+						<td> {{ user.role }} </td>
+						<td> {{ user.isBlocked }} </td>
+						<td v-if = "!user.role.match('ADMINISTRATOR')"> 	
+							<button class="btn btn-outline-danger" @click="deleteUser(user)"> 
+							<i class="bi bi-trash"></i>
+							</button> 
+						</td>
+						<div v-if = "!user.role.match('ADMINISTRATOR')">
+						
+						<td v-if = "!user.isBlocked"> <button class="btn btn-dark" @click="blockUser(user)"> Block </button> </td>
+						<td v-else> <button @click="unblockUser(user)"> Unblock </button> </td>
+						</div>
+					</tr>
+				</table>
+			</div>
+		</div>
 	</div>
 	`,
 	methods: {
