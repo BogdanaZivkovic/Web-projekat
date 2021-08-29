@@ -138,7 +138,7 @@ Vue.component("users-admin", {
 						<div v-if = "!user.role.match('ADMINISTRATOR')">
 						
 						<td v-if = "!user.isBlocked"> <button class="btn btn-dark" @click="blockUser(user)"> Block </button> </td>
-						<td v-else> <button @click="unblockUser(user)"> Unblock </button> </td>
+						<td v-else> <button class="btn btn-dark" @click="unblockUser(user)"> Unblock </button> </td>
 						</div>
 					</tr>
 				</table>
