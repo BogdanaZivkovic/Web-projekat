@@ -82,8 +82,8 @@ public class ShoppingCartService {
 	@Path("/removeItem")
 	@Produces(MediaType.TEXT_HTML)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response removeItem(ShoppingCartItem shoppingCartItem) {
-		getShoppingCart().removeItem(shoppingCartItem);
+	public Response removeItem(ItemIDDTO dto) {
+		getShoppingCart().removeItem(dto.itemID);
 		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
 	}
 
