@@ -117,6 +117,34 @@ public class ShoppingCartService {
 				.entity(totalPrice)
 				.build();
 	}
+	
+	@GET
+	@Path("/getDiscount")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getDiscount() {
+		String ret = "0%";
+		for(User user : getUsers().getValues()) {
+			if(user.getUserName().matches(getShoppingCart().getCustomerUsername())) {
+				
+				if(user.getCustomerType().matches("GOLD")) {
+					ret = "15%";
+				}
+				
+				else if(user.getCustomerType().matches("SILVER")) {
+					ret = "10%";
+				}
+				
+				else if(user.getCustomerType().matches("BRONZE")) {
+					ret = "5%";
+				}	
+			}
+		}
+		
+		return Response
+				.status(Response.Status.ACCEPTED).entity("SUCCESS")
+				.entity(ret)
+				.build();
+	}
 
 	private ShoppingCart getShoppingCart() {
 		ShoppingCart sc = (ShoppingCart) request.getSession().getAttribute("shoppingCart");

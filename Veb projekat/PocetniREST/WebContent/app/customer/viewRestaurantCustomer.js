@@ -6,7 +6,8 @@ Vue.component("view-restaurant-customer", {
 			images: [],
 			comments: [],
 			sc: [],
-			totalPrice: 0.0
+			totalPrice: 0.0,
+			discount: ''
 		}
 	},
 	template:`
@@ -71,7 +72,7 @@ Vue.component("view-restaurant-customer", {
 
 		<div v-if="sc.length > 0" class="fixed-bottom">
 			<div class="d-grid gap-2 col-lg-4 col-md-5 col-sm-6 mx-auto">
-  				<button class="btn btn-warning btn-lg" type="button">
+  				<button class="btn btn-warning btn-lg" type="button" data-bs-toggle="modal" data-bs-target="#shoppingCart">
 					<div class="d-flex justify-content-between">
 					<span class="badge bg-light text-dark">{{this.sc.length}}</span>
 					<p class="m-0">Shopping cart</p>
@@ -83,15 +84,54 @@ Vue.component("view-restaurant-customer", {
 
 		<!-- MODALS -->
 		
+		<!-- Modal for shopping cart -->
+			<div class="modal fade" id="shoppingCart" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="shoppingCartLabel" aria-hidden="true">
+			  <div class="modal-dialog modal-dialog-centered">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="shoppingCartLabel"> Shopping cart </h5>
+			        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			      </div>
+				  <div class="modal-body">
+					<ul class="list-group">
+						<li class="list-group-item" v-for = "i in sc">
+							<div class="d-flex justify-content-between">
+								<div class="d-flex flex-row">
+									<p class="fw-bold mb-1 me-2"> {{i.item.name}} </p>
+									<p> x{{i.count}} </p>
+								</div>
+								<p> {{i.count*i.item.price}}$ </p>
+							</div>
+						</li>
+						<div class="d-flex justify-content-between border-bottom">
+							<p class="fw-bold mb-1 ms-3"> Discount: </p>
+							<p class="fw-bold mb-1 me-3"> {{discount}} </p>
+						</div>
+						<div class="d-flex justify-content-between">
+							<p class="fw-bold mb-1 ms-3"> Total: </p>
+							<p class="fw-bold mb-1 me-3"> {{totalPrice}}$ </p>
+						</div>
+				 	</ul>
+				  </div>
+				  <div class="modal-footer">
+				  	<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+				  	<button type="button" class="btn btn-warning" @click="createOrders"> Order </button>
+				  </div>
+			    </div>
+			  </div>
+			</div>
+		
 	</div>
 	`,
 	methods: {
-		viewShoppingCart : function () {
-			let data = this.restaurant;
-      		this.$router.push({
-        		name: "shoppingCart",
-       			params: { data }
-      		});
+		createOrders : function () {
+			axios
+			.post('rest/orders/create')
+			.then(response => {
+				$('#shoppingCart').modal('hide');
+				this.sc = [];
+				this.totalPrice = 0.0;
+			})
 		},
 		selectItem : function (shoppingCartItem) {
 			axios
@@ -100,8 +140,6 @@ Vue.component("view-restaurant-customer", {
 				"count":''+shoppingCartItem.count
 			})
 			.then(response => {
-				//this.sc.push(shoppingCartItem);
-				//this.totalPrice += shoppingCartItem.item.price * shoppingCartItem.count;
 				axios
 				.get('rest/shoppingCart/getJustSc')
 				.then(response=>(this.sc = response.data))
@@ -123,18 +161,18 @@ Vue.component("view-restaurant-customer", {
 
 					 return retImage;
 
-			 },
-			 getImageBase64FromId: function (idOfImage) {
-					 let base64Image;
+		},
+		getImageBase64FromId: function (idOfImage) {
+					let base64Image;
 
-					 for (let el of this.images) {
-							 if (el.id == idOfImage) {
-									 base64Image = el.base64;
-									 break;
-							 }
+					for (let el of this.images) {
+						 if (el.id == idOfImage) {
+								 base64Image = el.base64;
+								 break;
+						 }
 					 }
 					 return base64Image;
-			 }
+		}
 	},
 	mounted() {
 		this.restaurant = this.$route.params.data;
@@ -173,5 +211,8 @@ Vue.component("view-restaurant-customer", {
 					}
 				})						
 			})
+		axios
+				.get('rest/shoppingCart/getDiscount')
+				.then( response => (this.discount = response.data))
 	}
 });
