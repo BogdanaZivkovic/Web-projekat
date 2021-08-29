@@ -10,55 +10,62 @@ Vue.component("users-admin", {
 				role:''
 			},
 			users: [],
-			searchVisible: false,
-			sortVisible: false,
-			filterVisible: false
+			newUser: {
+				userName: "",
+				password: "",
+				name: "",
+				surname: "",
+				gender: "",
+				dateOfBirth: "",
+				role:""
+			}
 		}
 	},
 	template: `
-	<div class="container-fluid bg">
-	<div class="row justify-content-center" >
-			<div class="col-lg-6 col-md-6 col-sm-12 search-area ">
-				<div class="container">
-					<div class="row justify-content-between">
-						<div class="col-lg-10 col-md-10 col-sm-10">
-						<p>
-						<button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch">
-    					Search
-  						</button>
-						</p>
-						<div class="collapse" id="collapseSearch">
-							<div class="card card-colored">
-								<div class="row ms-1">
-								<input class="input-style" style="width: 160px;" type="text" v-model="searchFields.name" placeholder="Name">
-								<input class="input-style" style="width: 160px;" type="text" v-model="searchFields.surname" placeholder="Surname">
-								<input class="input-style" style="width: 160px;" type="text" v-model="searchFields.userName" placeholder="Username">
+	<div>
+		<div class="container-fluid bg">
+			<div class="row justify-content-center" >
+				<div class="col-lg-6 col-md-6 col-sm-12 search-area ">
+					<div class="container">
+						<div class="row justify-content-between">
+							<div class="col-lg-10 col-md-10 col-sm-10">
+							<p>
+							<button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch">
+	    					Search
+	  						</button>
+							</p>
+							<div class="collapse" id="collapseSearch">
+								<div class="card card-colored">
+									<div class="row ms-1">
+									<input class="input-style" style="width: 160px;" type="text" v-model="searchFields.name" placeholder="Name">
+									<input class="input-style" style="width: 160px;" type="text" v-model="searchFields.surname" placeholder="Surname">
+									<input class="input-style" style="width: 160px;" type="text" v-model="searchFields.userName" placeholder="Username">
+									</div>
+								</div>
+							</div>
+							</div>
+							<div class="col-lg-2 col-md-2 col-sm-2"> 		
+								<div class="dropdown">
+									<button class="btn dropdown-toggle float-right" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+									    Sort
+									</button>
+									<ul class="dropdown-menu dropdown-list" >
+									    <li><a class="dropdown-item" href="#" v-on:click="sortNameAsc">Name ascending</a></li>
+									    <li><a class="dropdown-item" href="#" v-on:click="sortNameDesc">Name descending </a></li>
+									    <li><a class="dropdown-item" href="#" v-on:click="sortSurnameAsc">Surname ascending</a></li>
+					 					<li><a class="dropdown-item" href="#" v-on:click="sortSurnameDesc">Surname descending</a></li>
+									 	<li><a class="dropdown-item" href="#" v-on:click="sortUserNameAsc">Username ascending</a></li>
+					 					<li><a class="dropdown-item" href="#" v-on:click="sortUserNameDesc">Username descending</a></li>
+									</ul>
 								</div>
 							</div>
 						</div>
-						</div>
-						<div class="col-lg-2 col-md-2 col-sm-2"> 		
-							<div class="dropdown">
-								<button class="btn dropdown-toggle float-right" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-								    Sort
-								</button>
-								<ul class="dropdown-menu dropdown-list" >
-								    <li><a class="dropdown-item" href="#" v-on:click="sortNameAsc">Name ascending</a></li>
-								    <li><a class="dropdown-item" href="#" v-on:click="sortNameDesc">Name descending </a></li>
-								    <li><a class="dropdown-item" href="#" v-on:click="sortSurnameAsc">Surname ascending</a></li>
-				 					<li><a class="dropdown-item" href="#" v-on:click="sortSurnameDesc">Surname descending</a></li>
-								 	<li><a class="dropdown-item" href="#" v-on:click="sortUserNameAsc">Username ascending</a></li>
-				 					<li><a class="dropdown-item" href="#" v-on:click="sortUserNameDesc">Username descending</a></li>
-								</ul>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<p>
-						<button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-    					Filters
-  						</button>
-						</p>
+						<div class="row">
+							<p>
+							<button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+	    					Filters
+	  						</button>
+							</p>
 						<div class="collapse" id="collapseExample">
 							<div class="card card-colored">
 								<div class="row ms-1">
@@ -83,7 +90,7 @@ Vue.component("users-admin", {
 		<div class="row justify-content-center mb-2">
 			<div class="col-lg-9 col-md-10 col-sm-12">
 				<div class="row float-end me-2">
-					<button class="btn btn-primary" @click="$router.push('/adduseradmin')"> + New user </button>
+					<button class="btn btn-primary" @click="clearNewUser" data-bs-toggle="modal" data-bs-target="#newUser"> &plus; New user </button>
 				</div>
 			</div>
 		</div>
@@ -138,8 +145,93 @@ Vue.component("users-admin", {
 			</div>
 		</div>
 	</div>
+	
+			<div class="modal fade" id="newUser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="newUserLabel" aria-hidden="true">
+			  <div class="modal-dialog modal-dialog-centered">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="newUserLabel">New user</h5>
+			        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			      </div>
+				  <form @submit="register(newUser)" method='post'>
+				      <div class="modal-body">
+						  	<div class="mb-3">
+						    <label for="nameInput" class="form-label">Name</label>
+						    <input v-model="newUser.name" id="nameInput" type="text" class="form-control" placeholder="Name" required>
+							</div>
+						  	<div class="mb-3">
+						    <label for="surnameInput" class="form-label"> Surname </label>
+						    <input v-model="newUser.surname" id="surnameInput" type="text" class="form-control" placeholder="Surname" required>
+						  	</div>
+						  	<div class="mb-3">
+						    <label for="usernameInput" class="form-label"> Username </label>
+						    <input v-model="newUser.userName" id="usernameInput" type="text" class="form-control" placeholder="Username" required>
+						  	</div>
+							<div class="mb-3">
+						    <label for="passwordInput" class="form-label"> Password </label>
+						    <input v-model="newUser.password" id="passwordInput" type="text" class="form-control" placeholder="Password" required>
+						  	</div>
+						  	<div class="mb-3">
+					   		<label for="genderInput" class="form-label"> Gender </label>
+					    	<select v-model="newUser.gender" id="genderInput" class="form-select">
+								<option disabled value="">Please select one</option>
+							    <option>Male</option>
+							    <option>Female</option>
+							</select>
+					  	 	</div>
+						  <div class="mb-3">
+						    <label for="dateOfBirthInput" class="form-label"> Date of birth </label>
+							<input type="date" v-model="newUser.dateOfBirth" min="1950-01-01" max="2020-01-01" id="dateOfBirthInput" class="form-control">
+						  </div>
+						  <div class="mb-3">
+						    <label for="roleInput" class="form-label"> Role </label>
+						    <select v-model="newUser.role" id="roleInput" class="form-select">
+								<option disabled value="">Please select one</option>
+							    <option>CUSTOMER</option>
+		   						<option>MANAGER</option>
+								<option>DELIVERER</option>
+							</select>
+						  </div>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+				        <button type='submit' class="btn btn-primary"> Confirm </button>
+				      </div>
+				</form>
+				</div>
+			</div>
+		</div>
+	</div>
 	`,
 	methods: {
+		clearNewUser: function() {
+			this.newUser = {
+				name: "",
+				price: "",
+				type: "",
+				restaurantName: "",
+				quantity: "",
+				description: "",
+				logoPath: "",
+			};
+		},
+		register : function (newUser) {
+			axios
+			.post('rest/users/registration', {
+				"userName":''+newUser.userName, 
+				"password":''+newUser.password, 
+				"name":''+newUser.name, 
+				"surname":''+newUser.surname, 
+				"gender":''+newUser.gender, 
+				"dateOfBirth":''+newUser.dateOfBirth, 
+				"role":''+newUser.role
+			})
+			.then(response => {
+				$('#newUser').modal('hide');
+				this.init();
+				})
+		},
+		
 		matchesSearch: function (user) {
 			if(!user.name.toLowerCase().match(this.searchFields.name.toLowerCase()))
 				return false;

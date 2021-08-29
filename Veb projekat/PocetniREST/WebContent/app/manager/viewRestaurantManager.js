@@ -174,11 +174,9 @@ Vue.component("view-restaurant-manager", {
 				      </div>
 				</form>
 			    </div>
-			  </div>
 			</div>
-			
-			
 		</div>
+	</div>
 	`,
 	methods: {
 		acceptComment: function(comment) {

@@ -7,6 +7,21 @@
 	background-attachment: fixed;
 }
 
+.bg-profile{
+	background: url('../images/profile2.jpg') no-repeat;
+	width: 100%;
+	height: 100vh;
+	background-size: 100%;
+	background-attachment: fixed;
+}
+
+.profile-form {
+	position: relative;
+	top: 10vh;
+	background: rgba(0, 0, 0, 0.2);
+	padding: 30px;
+}
+
 .form-container{
 	position: relative;
 	top: 15vh;
@@ -20,7 +35,6 @@
 	position: relative;
 	z-index: 1;
 	margin: 20px;
-	background: #DBFF9B ;
 	background: rgba(215, 255, 156, 0.4);
 	padding: 30px;
 	border-radius: 10px;
