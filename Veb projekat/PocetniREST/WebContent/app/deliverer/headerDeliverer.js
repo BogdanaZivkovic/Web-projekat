@@ -20,13 +20,16 @@ Vue.component("header-deliverer", {
 		<div class="collapse navbar-collapse" id="toggleMobileMenu">
 			<ul class="navbar-nav text-center">
 				<li>
-					<router-link class="nav-link" to="/" exact> Profile </router-link>
+					<router-link class="nav-link" to="/profile" exact> Profile </router-link>
 				</li>
 				<li>
 					<router-link class="nav-link" to="/orders" exact> Orders </router-link> 
 				</li>
 				<li>
 					<router-link class="nav-link" to="/myorders" exact> Deliveries </router-link>
+				</li>
+				<li>
+					<router-link class="nav-link" to="/restaurants" exact> Restaurants </router-link>
 				</li>
 				<li>
 					<a href="#" class="nav-link" v-on:click="logout"> Log out </a>
