@@ -7,7 +7,21 @@ Vue.component("view-restaurant-customer", {
 			comments: [],
 			sc: [],
 			totalPrice: 0.0,
-			discount: ''
+			discount: '',
+			editedScItem: {
+				item: {
+					itemID:0,
+					name: "",
+					price: 0.0,
+					type: "",
+					restaurantName: "",
+					quantity: "",
+					description: "",
+					isDeleted: false,
+					logoPath: "",
+				},
+				count: 0
+			}
 		}
 	},
 	template:`
@@ -84,7 +98,7 @@ Vue.component("view-restaurant-customer", {
 
 		<!-- MODALS -->
 		
-		<!-- Modal for shopping cart -->
+			<!-- Modal for shopping cart -->
 			<div class="modal fade" id="shoppingCart" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="shoppingCartLabel" aria-hidden="true">
 			  <div class="modal-dialog modal-dialog-centered">
 			    <div class="modal-content">
@@ -102,8 +116,10 @@ Vue.component("view-restaurant-customer", {
 								</div>
 								<p> {{i.count*i.item.price}}$ </p>
 							</div>
-							<button class = "m-1 btn btn-outline-secondary btn-sm"> <i class="bi bi-pencil-square"></i> </button>
-							<button class = "m-1 btn btn-outline-danger btn-sm" @click= "deleteItem(i)"> <i class="bi bi-trash"></i> </button>
+							<div class="d-flex flex-row-reverse">
+								<button class = "m-1 btn btn-outline-secondary btn-sm" @click="openEditModal(i)" data-bs-toggle="modal" data-bs-target="#editItem"> <i class="bi bi-pencil-square"></i> </button>
+								<button class = "m-1 btn btn-outline-secondary btn-sm" @click= "deleteItem(i)"> <i class="bi bi-x-square"></i> </button>
+							</div>
 						</li>
 						<div class="d-flex justify-content-between border-bottom">
 							<p class="fw-bold mb-1 ms-3"> Discount: </p>
@@ -122,10 +138,53 @@ Vue.component("view-restaurant-customer", {
 			    </div>
 			  </div>
 			</div>
+			
+			
+			<!-- Modal for editing an item -->
+			<div class="modal fade" id="editItem" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editItemLabel" aria-hidden="true">
+			  <div class="modal-dialog modal-dialog-centered">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="editItemLabel"> Change quantity </h5>
+			        <button type="button" class="btn-close" @click="closeEditModal" data-bs-toggle="modal" data-bs-target="#shoppingCart" aria-label="Close"></button>
+			      </div>
+					  <div class="modal-body">
+						<div class="d-flex justify-content-between align-items-center">
+							<p class="fw-bold mb-1 me-2"> {{editedScItem.item.name}} </p>
+							<input type="number" v-model="editedScItem.count" min="1">
+							<p class="mb-1"> {{editedScItem.count*editedScItem.item.price}}$ </p>
+						</div>
+					  </div>
+					  <div class="modal-footer">
+					  	<button type="button" class="btn btn-outline-secondary" @click="closeEditModal" data-bs-toggle="modal" data-bs-target="#shoppingCart">Cancel</button>
+					  	<button type="button" @click="editQuantity" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#shoppingCart"> OK </button>
+					  </div>
+			    </div>
+			  </div>
+			</div>
+
 		
 	</div>
 	`,
 	methods: {
+		editQuantity : function () {
+			axios
+			.post('rest/shoppingCart/editQuantity', {
+				item: this.editedScItem.item,
+				"count":''+this.editedScItem.count
+			})
+			.then(response => {
+				this.getShoppingCart();
+				$('#editItem').modal('hide');
+			})
+		},
+		closeEditModal: function() {
+			$('#editItem').modal('hide');
+		},
+		openEditModal: function(shoppingCartItem) {
+			this.editedScItem = Object.assign({}, shoppingCartItem);
+			$('#shoppingCart').modal('hide');
+		},
 		getShoppingCart: function () {
 			axios
 				.get('rest/shoppingCart/getJustSc')
