@@ -74,12 +74,12 @@ public class ShoppingCart {
 		}
 	}
 	
-	public void removeItem(ShoppingCartItem sci) {
-		for (ShoppingCartItem shoppingCartItem : items) {
-			if(shoppingCartItem.getItem().getItemID() == sci.getItem().getItemID()) {
-				totalPrice -= sci.getTotal();
+	public void removeItem(int itemID) {
+		for (ShoppingCartItem shoppingCartItem : items) {			
+			if(shoppingCartItem.getItem().getItemID() == itemID) {
+				totalPrice -= shoppingCartItem.getTotal();
 				items.remove(shoppingCartItem);
-				
+				break;
 			}
 		}
 	}

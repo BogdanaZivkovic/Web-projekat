@@ -61,6 +61,7 @@ public class ShoppingCartService {
 		ShoppingCart sc = getShoppingCart();
 		if (!sc.getRestaurantName().equals(dto.name)) {
 			sc.getItems().clear();
+			sc.setTotalPrice(0);
 			sc.setRestaurantName(dto.name);
 		}
 		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
@@ -81,8 +82,8 @@ public class ShoppingCartService {
 	@Path("/removeItem")
 	@Produces(MediaType.TEXT_HTML)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response removeItem(ShoppingCartItem shoppingCartItem) {
-		getShoppingCart().removeItem(shoppingCartItem);
+	public Response removeItem(ItemIDDTO dto) {
+		getShoppingCart().removeItem(dto.itemID);
 		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
 	}
 
@@ -114,6 +115,34 @@ public class ShoppingCartService {
 		return Response
 				.status(Response.Status.ACCEPTED).entity("SUCCESS")
 				.entity(totalPrice)
+				.build();
+	}
+	
+	@GET
+	@Path("/getDiscount")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getDiscount() {
+		String ret = "0%";
+		for(User user : getUsers().getValues()) {
+			if(user.getUserName().matches(getShoppingCart().getCustomerUsername())) {
+				
+				if(user.getCustomerType().matches("GOLD")) {
+					ret = "15%";
+				}
+				
+				else if(user.getCustomerType().matches("SILVER")) {
+					ret = "10%";
+				}
+				
+				else if(user.getCustomerType().matches("BRONZE")) {
+					ret = "5%";
+				}	
+			}
+		}
+		
+		return Response
+				.status(Response.Status.ACCEPTED).entity("SUCCESS")
+				.entity(ret)
 				.build();
 	}
 
