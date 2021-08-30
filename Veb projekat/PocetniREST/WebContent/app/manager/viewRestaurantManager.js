@@ -230,7 +230,7 @@ Vue.component("view-restaurant-manager", {
 				})
 		},
 		setNewItem: function(item) {
-			this.newItem = item;
+			this.newItem = Object.assign({}, item);
 		},
 		editItem: function() {
 			axios
