@@ -119,7 +119,7 @@ Vue.component("restaurants-admin", {
 		<div class="row justify-content-center mb-2">
 			<div class="col-lg-8 col-md-10 col-sm-12">
 				<div class="row float-end me-2">
-					<button class="btn btn-primary" @click="clearModal" data-bs-toggle="modal" data-bs-target="#exampleModal"> + New restaurant </button>
+					<button class="btn btn-primary" @click="clearModal" data-bs-toggle="modal" data-bs-target="#restaurantModal"> + New restaurant </button>
 				</div>
 			</div>
 		</div>
@@ -164,11 +164,11 @@ Vue.component("restaurants-admin", {
 	
 	
 	<!-- Modal -->
-	<div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal fade" id="restaurantModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="restaurantModalLabel" aria-hidden="true">
 	  <div class="modal-dialog modal-dialog-centered">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <h5 class="modal-title" id="exampleModalLabel">New restaurant</h5>
+	        <h5 class="modal-title" id="restaurantModalLabel">New restaurant</h5>
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 		<form @submit="createRestaurant(newRestaurant, newUser)" method='post'>
@@ -248,16 +248,16 @@ Vue.component("restaurants-admin", {
 						    	<label for="dateOfBirthInput" class="form-label"> Date of birth </label>
 								<input type="date" v-model="newUser.dateOfBirth" min="1950-01-01" max="2020-01-01" id="dateOfBirthInput" class="form-control">
 						  	</div>
-						</div>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-	        <button type="submit" class="btn btn-primary"> Confirm </button>
-	      </div>
-		</form>
-	    </div>
-	  </div>
-	</div>
+						</div>	
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				        <button type="submit" class="btn btn-primary"> Confirm </button>
+				      </div>
+					</form>
+				    </div>
+				  </div>
+				</div>
 
 	
 	</div>
@@ -308,7 +308,7 @@ Vue.component("restaurants-admin", {
 				
 			})
 			.then(response => {
-				$('#exampleModal').modal('hide');
+				$('#restaurantModal').modal('hide');
 				//this.init();
 			})
 			}
@@ -339,7 +339,7 @@ Vue.component("restaurants-admin", {
 				})
 			])
 			.then(response => {
-				$('#exampleModal').modal('hide');
+				$('#restaurantModal').modal('hide');
 				//this.init();
 			})
 		}
