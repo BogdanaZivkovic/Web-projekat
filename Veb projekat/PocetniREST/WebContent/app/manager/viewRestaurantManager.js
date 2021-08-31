@@ -33,8 +33,10 @@ Vue.component("view-restaurant-manager", {
 						</div>
 						<p class="mb-1 lead">{{restaurant.type}}  </p>
 						<p class="mb-1"> {{restaurant.location.address.street}} {{restaurant.location.address.number}}, {{restaurant.location.address.city}} {{restaurant.location.address.zipCode}} </p>
-						<span v-if="restaurant.status == 'Open'" class="badge bg-success mb-2"> &check; Open </span>
-						<span v-if="restaurant.status == 'Closed'" class="badge bg-danger mb-2"> &#10005; Closed </span>
+						
+						<button @click="closeRestaurant" class="btn btn-success btn-sm mb-2" v-if="restaurant.status == 'Open'"> &check; Open </button>
+						<button @click="openRestaurant" class="btn btn-danger btn-sm mb-2" v-if="restaurant.status == 'Closed'"> &#10005; Closed </button>
+						
 						<div class="d-flex justify-content-between align-items-start border-bottom p-1 mb-2">
 							<h5> Items </h5>
 							<button class="btn btn-primary btn-sm" @click="clearNewItem" data-bs-toggle="modal" data-bs-target="#newItem"> &plus; New </button>
@@ -180,6 +182,22 @@ Vue.component("view-restaurant-manager", {
 	</div>
 	`,
 	methods: {
+		closeRestaurant: function() {
+			axios
+			.post('rest/restaurants/changeStatus', {
+				"name":''+this.restaurant.name,
+				"status":"Closed"
+			})
+			.then(response => (this.init()))
+		},
+		openRestaurant: function() {
+			axios
+			.post('rest/restaurants/changeStatus', {
+				"name":''+this.restaurant.name,
+				"status":"Open"
+			})
+			.then(response => (this.init()))
+		},
 		deleteComment: function(comment) {
 			axios
 				.post('rest/comments/delete', {
