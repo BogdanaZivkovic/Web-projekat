@@ -30,6 +30,7 @@ Vue.component("login-app", {
     `,
 	methods: {
 		login : function (newUser) {
+			event.preventDefault();
 			axios
 			.post('rest/users/login', {
 				"userName":''+newUser.userName, 
@@ -38,6 +39,11 @@ Vue.component("login-app", {
 			.then(response => {
 				location.href = response.data;
 			})
+			.catch(function (error) {
+			    if (error.response) {
+			    	toast("Invalid username/password!");
+			    }
+			});
 		}
 	},
 });
