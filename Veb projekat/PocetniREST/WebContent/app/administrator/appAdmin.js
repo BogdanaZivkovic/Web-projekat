@@ -9,13 +9,13 @@ const SusUsers = {template:'<sus-users-admin></sus-users-admin>'}
 const router = new VueRouter({
 	mode: 'hash',
 	  routes: [
-		{ path: '/', component: ProfileAdmin},
+		{path: '/', component: ProfileAdmin},
 		{path: '/usersadmin', component: UsersAdmin},
 		{path: '/restaurantadmin', component: RestaurantAdmin},
 		{path: '/restaurantsadmin', component: RestaurantsAdmin},
 		{path: '/adduseradmin', component: AddUserAdmin},
 		{path: '/viewrestaurant', name:'viewRestaurant', component: ViewRestaurantAdmin},
-		{path: '/sususers', component: SusUsers}
+		{path: '/sususers', component: SusUsers},
 	]
 });
 
