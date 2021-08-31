@@ -21,7 +21,7 @@ Vue.component("login-app", {
 				    <input id="passwordInput" type="password" v-model="newUser.password" class="form-control" placeholder="Password" required>
 				  </div>
 					<div class="d-grid gap-2 col-6 mx-auto">
-					  <button type="submit" class="btn btn-primary">Submit</button>
+					  <button type="submit" class="btn btn-primary"> Login </button>
 					</div>
 				</form>
 			</div>
