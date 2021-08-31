@@ -24,47 +24,10 @@ public class RestaurantsDAO {
 	private String path = System.getProperty("catalina.base") + File.separator + "data" + File.separator + "restaurants.json";
 
 	public RestaurantsDAO() {
-		/*BufferedReader in = null;
-		try {
-			File file = new File(path);
-			System.out.println(file.getCanonicalPath());
-			in = new BufferedReader(new FileReader(file));
-			readRestaurants(in);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		finally {
-			if ( in != null ) {
-				try {
-					in.close();
-				}
-				catch (Exception e) { }
-			}
-		}*/
 		readRestaurants();
 	}
 
 	private void readRestaurants() {
-		/*String line, name = "", type = "", status = "";
-		StringTokenizer st;
-		try {
-			while ((line = in.readLine()) != null) {
-				line = line.trim();
-				if (line.equals("") || line.indexOf('#') == 0)
-					continue;
-				st = new StringTokenizer(line, ";");
-				while (st.hasMoreTokens()) {
-					name = st.nextToken().trim();
-					type = st.nextToken().trim();
-					status = st.nextToken().trim();
-					managerUsername = st.nextToken().trim();
-				}
-				Restaurant restaurant = new Restaurant(name, type, status, managerUsername);
-				restaurants.put(name, restaurant);
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}*/
 		ObjectMapper objectMapper = new ObjectMapper();
 
 		File file = new File(this.path);
@@ -90,24 +53,6 @@ public class RestaurantsDAO {
 
 
 	public void saveRestaurants() {
-		/*BufferedWriter out = null;
-		try {
-			out = Files.newBufferedWriter(Paths.get(path), StandardCharsets.UTF_8);
-			for (Restaurant restaurant : restaurants.values()) {
-				out.write(writeRestaurant(restaurant));
-				out.newLine();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (out != null) {
-				try {
-					out.flush();
-					out.close();
-				} catch (Exception e) {
-				}
-			}
-		}*/
 		List<Restaurant> allRestaurants = new ArrayList<Restaurant>();
 		for (Restaurant r : getValues()) {
 			allRestaurants.add(r);
@@ -122,16 +67,6 @@ public class RestaurantsDAO {
 		}
 	}
 
-	/*private String writeRestaurant(Restaurant restaurant) {
-		StringBuilder sb = new StringBuilder();
-
-		sb.append(restaurant.getName() + ";");
-		sb.append(restaurant.getType() + ";");
-		sb.append(restaurant.getStatus() + ";");
-		sb.append(restaurant.getManagerUsername() + ";");
-
-		return sb.toString();
-	}*/
 
 	public Collection<Restaurant> getValues() {
 		return restaurants.values();

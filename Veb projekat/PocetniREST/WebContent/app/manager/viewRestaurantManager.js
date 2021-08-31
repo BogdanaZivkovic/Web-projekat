@@ -71,12 +71,13 @@ Vue.component("view-restaurant-manager", {
 									</div>
 								</div>
 								<p> {{comment.commentText}} </p>
-								<div v-if="comment.status == 'PENDING'" class="d-grid gap-2 d-md-flex justify-content-md-end">
-	  								<button @click="acceptComment(comment)" class="btn btn-outline-success btn-sm me-md-2" type="button"><i class="bi bi-check-lg"></i></i></button>
-	  								<button @click="rejectComment(comment)" class="btn btn-outline-danger btn-sm" type="button"><i class="bi bi-x-lg"></i></i></button>
+								<div class="d-grid gap-2 d-md-flex justify-content-md-end align-items-center">
+	  								<button v-if="comment.status == 'PENDING'" @click="acceptComment(comment)" class="btn btn-outline-success btn-sm me-md-2" type="button"><i class="bi bi-check-lg"></i></button>
+	  								<button v-if="comment.status == 'PENDING'" @click="rejectComment(comment)" class="btn btn-outline-danger btn-sm" type="button"><i class="bi bi-x-lg"></i></button>
+									<small class = "float-end" v-if="comment.status == 'ACCEPTED'"> Accepted </small>
+									<small class = "float-end" v-if="comment.status == 'REJECTED'"> Rejected </small>
+									<button v-if="comment.status == 'ACCEPTED' || comment.status == 'REJECTED'" @click="deleteComment(comment)" class="btn btn-outline-secondary btn-sm me-md-2" type="button"><i class="bi bi-trash"></i></button>
 								</div>
-								<small class = "float-end" v-if="comment.status == 'ACCEPTED'"> Accepted </small>
-								<small class = "float-end" v-if="comment.status == 'REJECTED'"> Rejected </small>
 							</li>
 						</ul>
 					</div>
@@ -179,6 +180,13 @@ Vue.component("view-restaurant-manager", {
 	</div>
 	`,
 	methods: {
+		deleteComment: function(comment) {
+			axios
+				.post('rest/comments/delete', {
+					"commentID":comment.commentID
+				})
+				.then(response => (this.init()))
+		},
 		acceptComment: function(comment) {
 			axios
 				.post('rest/comments/changeStatus', {
