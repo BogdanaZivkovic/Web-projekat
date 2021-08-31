@@ -114,14 +114,14 @@ input{
   height: 100%;
 }
 
-table{
+.table-style{
   width:100%;
   table-layout: fixed;
   background: rgba(255, 255, 255);
   border-radius: 10px;
 }
 
-th, td {
+th, .td-style {
 	padding: 20px;
 	text-align:center;
 }

@@ -39,11 +39,13 @@ Vue.component("edit-user", {
 							<label class="form-label">Date of birth:</label>
 							<input type="date" class="form-control" v-model="user.dateOfBirth" min="1950-01-01" max="2020-01-01">		
 							<br><br>
+						</div>
 						<div class="d-grid gap-2 col-6 mx-auto">
 							<button class="btn btn-primary" type='submit'> Update </button> 
+						</div>
 						</form>
 					</div>
-				<div>
+				</div>
 			</div>
 		</div>
     </div>

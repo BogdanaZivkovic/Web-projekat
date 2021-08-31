@@ -81,7 +81,7 @@ Vue.component("sus-users-admin", {
 			</div>
 			<div class="row justify-content-center mb-2">
 			<div class="col-lg-9 col-md-10 col-sm-12">
-				<table>
+				<table class="table-style">
 					<colgroup>
 					    <col class="ten" />
 					    <col class="ten" />
@@ -107,20 +107,20 @@ Vue.component("sus-users-admin", {
 						<th>       </th>
 					</tr>
 					<tr v-for="user in filteredUsers">
-						<td> {{user.userName}} </td>
-						<td> {{user.password}} </td>
-						<td> {{user.name}} </td>
-						<td> {{ user.surname }} </td>
-						<td> {{ user.gender }} </td>
-						<td> {{user.dateOfBirth}} </td>
-						<td> {{ user.role }} </td>
-						<td> {{ user.isBlocked }} </td>
-						<td v-if = "!user.role.match('ADMINISTRATOR')"> 
+						<td class="td-style"> {{user.userName}} </td>
+						<td class="td-style"> {{user.password}} </td>
+						<td class="td-style"> {{user.name}} </td>
+						<td class="td-style"> {{ user.surname }} </td>
+						<td class="td-style"> {{ user.gender }} </td>
+						<td class="td-style"> {{user.dateOfBirth}} </td>
+						<td class="td-style"> {{ user.role }} </td>
+						<td class="td-style"> {{ user.isBlocked }} </td>
+						<td class="td-style" v-if = "!user.role.match('ADMINISTRATOR')"> 
 							<button class="btn btn-outline-danger" @click="deleteUser(user)"> 
 								<i class="bi bi-trash"></i>
 							</button> 
 						</td>
-						<td v-if = "!user.isBlocked"> 
+						<td class="td-style" v-if = "!user.isBlocked"> 
 							<button class="btn btn-dark"@click="blockUser(user)"> Block </button> 
 						</td>
 						<td v-else> <button class="btn btn-dark" @click="unblockUser(user)"> Unblock </button> </td>
