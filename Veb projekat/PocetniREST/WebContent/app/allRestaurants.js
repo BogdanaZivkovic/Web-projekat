@@ -67,8 +67,8 @@ Vue.component("all-restaurants-app", {
   						</button>
 						</p>
 						<div class="collapse" id="collapseExample">
-								<div class="card card-colored">
-									<div class="row">
+							<div class="card card-colored">
+								<div class="row">
 							 		<div class="col-lg-6 col-md-6 col-sm-6">
 										<label> Restaurant type </label>
 										<select style="margin: 5px;" class="selectpicker select-nice"v-model="filters.type">
@@ -89,7 +89,7 @@ Vue.component("all-restaurants-app", {
 										<option value=""> All </option>
 										<option> Open </option>
 									</select>
-								</div>
+									</div>
 								</div>
 							</div>
 						</div>

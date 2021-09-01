@@ -15,7 +15,14 @@ Vue.component("orders-customer", {
 				status:''
 			},
 			images: [],
-			viewedItem: {}
+			viewedItem: {},
+			viewedOrder: {},
+			comment: {
+				customerUsername: "",
+				restaurantName: "",
+				commentText: "",
+				rating: ""
+			}
 		}
 	},
 	template:`
@@ -84,6 +91,8 @@ Vue.component("orders-customer", {
 												<option>Mexican</option>
 												<option>Gyros</option>
 											</select>
+										</div>
+										<div class="col-lg-6 col-md-6 col-sm-6">
 											<label> Order status: </label>
 											<select class="selectpicker select-nice" v-model="filter.status">
 												<option disabled value="">Please select one</option>
@@ -117,7 +126,7 @@ Vue.component("orders-customer", {
 									</div>
 									<div class="col-lg-2 col-md-3 col-sm-4 mt-2 p-2 text-end">
 										<button class="btn btn-success" v-if="orderWithRestaurant.order.status == 'PROCESSING'" @click="cancelOrder(orderWithRestaurant.order)"> CANCEL </button>
-										<button class="btn btn-success" v-if="orderWithRestaurant.order.status == 'DELIVERED' && orderWithRestaurant.order.commented==false " @click="comment(orderWithRestaurant.order)"> Leave a comment </button>	
+										<button class="btn btn-success" v-if="orderWithRestaurant.order.status == 'DELIVERED' && orderWithRestaurant.order.commented==false " @click="setViewedOrder(orderWithRestaurant.order)" data-bs-toggle="modal" data-bs-target="#exampleModal2"> Comment </button>	
 									</div>
 								</div>
 								<div class="row justify-content-between">
@@ -173,9 +182,52 @@ Vue.component("orders-customer", {
 		    	</div>
 		  	</div>
 		</div>
+		
+		<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+		    	<div class="modal-content">
+					<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel"> Leave a comment </h5>
+		        		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>	
+					<div class="modal-body">
+						<div class="row m-2">
+						<textarea style="font-size: 16px;" v-model="comment.commentText" rows="4" cols="50"></textarea>
+						</div>
+						<div class="row m-2">
+						<input type="number" style="width: 160px;" min="0" max="5" v-model="comment.rating" placeholder="Rating" required>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-primary" @click="leaveComment(comment)"> Comment </button>
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Cancel </button>
+					</div>
+				</div>
+			</div>
+		</div>	
 	</div>
 	`,
 	methods: {
+		leaveComment : function (comment) {
+			
+			axios
+				.post('rest/comments/addComment', {
+					"customerUsername":''+this.viewedOrder.userName, 
+					"restaurantName":''+this.viewedOrder.restaurantName,
+					"commentText":''+comment.commentText,
+					"rating":''+comment.rating
+				
+				})
+				
+			axios.post('rest/orders/changeCommented', {
+				"orderID":''+this.viewedOrder.orderID
+			})
+			.then(response => {
+				$('#exampleModal2').modal('hide');
+				toast("Your left a comment.");
+				this.init();
+				});
+		},
 		calculateDiscount: function(order){
 			var sum = 0
   			for(let i=0; i<order.items.length; i++) {
@@ -183,6 +235,9 @@ Vue.component("orders-customer", {
 				}
 			return 100 - order.price/sum*100;
 			
+		},
+		setViewedOrder: function(order){
+			this.viewedOrder = Object.assign({}, order);
 		},
 		setViewedItem: function(item){
 			this.viewedItem = Object.assign({}, item);
