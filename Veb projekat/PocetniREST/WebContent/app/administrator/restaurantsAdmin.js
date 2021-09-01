@@ -171,7 +171,7 @@ Vue.component("restaurants-admin", {
 	        <h5 class="modal-title" id="restaurantModalLabel">New restaurant</h5>
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
-		<form @submit="createRestaurant(newRestaurant, newUser)" method='post'>
+		<form @submit="createRestaurant(newRestaurant)" method='post'>
 	      <div class="modal-body">
 	       				  <div class="mb-3">
 						    <label for="nameInput" class="form-label">Restaurant name</label>
@@ -179,7 +179,7 @@ Vue.component("restaurants-admin", {
 						  </div>
 						  <div class="mb-3">
 					   		<label for="typeInput" class="form-label"> Type </label>
-					    	<select v-model="newRestaurant.type" id="typeInput" class="form-select">
+					    	<select v-model="newRestaurant.type" id="typeInput" class="form-select" required>
 								<option disabled value="">Please select one</option>
 							    <option>Chinese</option>
 							    <option>Italian</option>
@@ -210,59 +210,111 @@ Vue.component("restaurants-admin", {
 						    <label for="zipCodeInput" class="form-label"> Zip code </label>
 						    <input v-model="newRestaurant.zipCode" id="zipCodeInput" type="text" class="form-control" placeholder="ZIP code" required>
 						  </div>
-						  <div v-if="managers.length!=0" class="mb-3">
+						  <div class="mb-3">
 						    <label for="managerInput" class="form-label"> Manager </label>
-						    <select v-model="newRestaurant.managerUsername" id="managerInput" class="form-select">
+						    <select v-if="managers.length!=0" v-model="newRestaurant.managerUsername" id="managerInput" class="form-select" required>
 								<option v-for="manager in managers" v-bind:value=manager.userName>
                        				{{ manager.name + " " + manager.surname}}
                    				</option>
 							</select>
-						  </div>
-						  <div v-if="managers.length==0">
-							<p> There are no available managers. Register a new manager for this restaurant. </p>
-							<div class="mb-3">
-						   		<label for="managerNameInput" class="form-label">Name</label>
-						    	<input v-model="newUser.name" id="managerNameInput" type="text" class="form-control" placeholder="Name" required>
-							</div>
-						  	<div class="mb-3">
-						    	<label for="surnameInput" class="form-label"> Surname </label>
-						    	<input v-model="newUser.surname" id="surnameInput" type="text" class="form-control" placeholder="Surname" required>
-						  	</div>
-						  	<div class="mb-3">
-						    	<label for="usernameInput" class="form-label"> Username </label>
-						    	<input v-model="newUser.userName" id="usernameInput" type="text" class="form-control" placeholder="Username" required>
-						  	</div>
-							<div class="mb-3">
-						    	<label for="passwordInput" class="form-label"> Password </label>
-						    	<input v-model="newUser.password" id="passwordInput" type="text" class="form-control" placeholder="Password" required>
-						  	</div>
-						  	<div class="mb-3">
-					   			<label for="genderInput" class="form-label"> Gender </label>
-					    		<select v-model="newUser.gender" id="genderInput" class="form-select">
-									<option disabled value="">Please select one</option>
-							    	<option>Male</option>
-							    	<option>Female</option>
-								</select>
-					  	 	</div>
-						  	<div class="mb-3">
-						    	<label for="dateOfBirthInput" class="form-label"> Date of birth </label>
-								<input type="date" v-model="newUser.dateOfBirth" min="1950-01-01" max="2020-01-01" id="dateOfBirthInput" class="form-control">
-						  	</div>
-						</div>	
+							<p v-else> There are no available managers. <a href="#" v-on:click="userModalOpening" data-bs-toggle="modal" data-bs-target="#userModal"> Register new manager. </a> </p>
+						  </div>	
 				      </div>
 				      <div class="modal-footer">
 				        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-				        <button type="submit" class="btn btn-primary"> Confirm </button>
+				        <button type="submit" class="btn btn-primary" :disabled = "managers.length == 0"> Confirm </button>
 				      </div>
 					</form>
 				    </div>
 				  </div>
 				</div>
 
-	
+				
+			<div class="modal fade" id="userModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="newUserLabel" aria-hidden="true">
+			  <div class="modal-dialog modal-dialog-centered">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="newUserLabel">New user</h5>
+			        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			      </div>
+				  <form @submit="register(newUser)" method='post'>
+				      <div class="modal-body">
+						  	<div class="mb-3">
+						    <label for="managerMameInput" class="form-label">Name</label>
+						    <input v-model="newUser.name" id="managerMameInput" type="text" class="form-control" placeholder="Name">
+							</div>
+						  	<div class="mb-3">
+						    <label for="surnameInput" class="form-label"> Surname </label>
+						    <input v-model="newUser.surname" id="surnameInput" type="text" class="form-control" placeholder="Surname">
+						  	</div>
+						  	<div class="mb-3">
+						    <label for="usernameInput" class="form-label"> Username </label>
+						    <input v-model="newUser.userName" id="usernameInput" type="text" class="form-control" placeholder="Username" required>
+						  	</div>
+							<div class="mb-3">
+						    <label for="passwordInput" class="form-label"> Password </label>
+						    <input v-model="newUser.password" id="passwordInput" type="text" class="form-control" placeholder="Password" required>
+						  	</div>
+						  	<div class="mb-3">
+					   		<label for="genderInput" class="form-label"> Gender </label>
+					    	<select v-model="newUser.gender" id="genderInput" class="form-select">
+								<option disabled value="">Please select one</option>
+							    <option>Male</option>
+							    <option>Female</option>
+							</select>
+					  	 	</div>
+						  <div class="mb-3">
+						    <label for="dateOfBirthInput" class="form-label"> Date of birth </label>
+							<input type="date" v-model="newUser.dateOfBirth" min="1950-01-01" max="2020-01-01" id="dateOfBirthInput" class="form-control">
+						  </div>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+				        <button type='submit' class="btn btn-primary"> Confirm </button>
+				      </div>
+				</form>
+				</div>
+			</div>
+		</div>
+				
 	</div>
 	`,
     methods: {
+		register : function (newUser) {
+			event.preventDefault();
+			axios
+			.post('rest/users/registration', {
+				"userName":''+newUser.userName, 
+				"password":''+newUser.password, 
+				"name":''+newUser.name, 
+				"surname":''+newUser.surname, 
+				"gender":''+newUser.gender, 
+				"dateOfBirth":''+newUser.dateOfBirth, 
+				"role":''+newUser.role
+			})
+			.then(response => {
+				$('#userModal').modal('hide');
+				this.managers.push(newUser);
+				$('#restaurantModal').modal('toggle');
+				toast("User " + newUser.userName + " successfully registered.");
+			})
+			.catch(function (error) {
+			    if (error.response) {
+			    	toast("User " + newUser.userName + " already exists.");
+			    }
+			});
+		},
+		userModalOpening: function () {
+			$('#restaurantModal').modal('hide');
+			this.newUser = {
+				userName: "",
+				password: "",
+				name: "",
+				surname: "",
+				gender: "",
+				dateOfBirth: ""
+			};
+		},
 		clearModal: function () {
 			axios
           	.get('rest/users/getAvailableManagers')
@@ -289,11 +341,12 @@ Vue.component("restaurants-admin", {
 				dateOfBirth: ""
 			};
 		},
-		createRestaurant : function (newRestaurant, newUser) {
+		createRestaurant : function (newRestaurant) {
+			
+			event.preventDefault();
 			
 			this.newRestaurant.logoPath = document.getElementById("imgForChangeID").src;
 			
-			if(this.managers.length != 0) {
 			axios
 			.post('rest/restaurants/create', {
 				"name":''+newRestaurant.name, 
@@ -309,40 +362,14 @@ Vue.component("restaurants-admin", {
 			})
 			.then(response => {
 				$('#restaurantModal').modal('hide');
-				//this.init();
+				this.init();
+				toast("Restaurant " + newRestaurant.name + " successfully created.");
 			})
-			}
-			
-			else {
-				axios.all([
-			axios
-			.post('rest/restaurants/create', {
-				"name":''+newRestaurant.name, 
-				"type":''+newRestaurant.type, 
-				"status":''+"Open",
-				"managerUsername":''+newUser.userName,
-				"street":''+newRestaurant.street,
-				"number":''+newRestaurant.number,
-				"city":''+newRestaurant.city,
-				"zipCode":''+newRestaurant.zipCode,
-				"logoPath":''+newRestaurant.logoPath
-				}),
-			axios
-			.post('rest/users/registration', {
-				"userName":''+newUser.userName, 
-				"password":''+newUser.password, 
-				"name":''+newUser.name, 
-				"surname":''+newUser.surname, 
-				"gender":''+newUser.gender, 
-				"dateOfBirth":''+newUser.dateOfBirth, 
-				"role":''+"MANAGER"
-				})
-			])
-			.then(response => {
-				$('#restaurantModal').modal('hide');
-				//this.init();
-			})
-		}
+			.catch(function (error) {
+			    if (error.response) {
+			    	toast("Restaurant " + newRestaurant.name + " already exists.");
+			    }
+			});
 		},
 		matchesSearch: function (restaurant) {
 			if(!restaurant.name.toLowerCase().match(this.searchFields.name.toLowerCase()))
