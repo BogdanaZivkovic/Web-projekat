@@ -220,6 +220,7 @@ Vue.component("orders-manager", {
 				.then(response => {
 					this.init();
 					$('#requestsModal').modal('hide');
+					toast("Delivery assigned to " + request + ".");
 				});
 		},
 		prepareOrder: function (order) {
@@ -228,7 +229,10 @@ Vue.component("orders-manager", {
 					'orderID':''+order.orderID,
 					'status':'IN_PREPARATION'
 				})
-				.then(response => {this.init()})
+				.then(response => {
+					this.init();
+					toast("Order accepted.");
+				});
 		},
 		orderReady: function (order) {
 			axios
@@ -236,7 +240,10 @@ Vue.component("orders-manager", {
 					'orderID':''+order.orderID,
 					'status':'WAITING_FOR_DELIVERY'
 				})
-				.then(response => {this.init()})
+				.then(response => {
+					this.init()
+					toast("Order ready.");
+				});
 		},
 		formatDate: function(dateMillisec) {
 			var date = new Date(dateMillisec)

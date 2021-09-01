@@ -181,7 +181,10 @@ Vue.component("orders-deliverer", {
 				.post('rest/orders/requestDelivery', {
 					orderID:''+order.orderID
 				})
-				.then(response => (this.init()))
+				.then(response => {
+					this.init();
+					toast("Request for delivery sent.");
+				});
 		},
 		formatDate: function(dateMillisec) {
 			var date = new Date(dateMillisec)

@@ -192,7 +192,10 @@ Vue.component("my-orders-deliverer", {
 					'orderID':''+order.orderID,
 					'status':'DELIVERED'
 				})
-				.then(response => (this.init()))
+				.then(response => {
+					this.init();
+					toast("Order delivered.")
+				});
 		},
 		formatDate: function(dateMillisec) {
 			var date = new Date(dateMillisec)
