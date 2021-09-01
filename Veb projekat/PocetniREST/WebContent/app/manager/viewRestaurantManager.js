@@ -33,8 +33,10 @@ Vue.component("view-restaurant-manager", {
 						</div>
 						<p class="mb-1 lead">{{restaurant.type}}  </p>
 						<p class="mb-1"> {{restaurant.location.address.street}} {{restaurant.location.address.number}}, {{restaurant.location.address.city}} {{restaurant.location.address.zipCode}} </p>
-						<span v-if="restaurant.status == 'Open'" class="badge bg-success mb-2"> &check; Open </span>
-						<span v-if="restaurant.status == 'Closed'" class="badge bg-danger mb-2"> &#10005; Closed </span>
+						
+						<button @click="closeRestaurant" class="btn btn-success btn-sm mb-2" v-if="restaurant.status == 'Open'"> &check; Open </button>
+						<button @click="openRestaurant" class="btn btn-danger btn-sm mb-2" v-if="restaurant.status == 'Closed'"> &#10005; Closed </button>
+						
 						<div class="d-flex justify-content-between align-items-start border-bottom p-1 mb-2">
 							<h5> Items </h5>
 							<button class="btn btn-primary btn-sm" @click="clearNewItem" data-bs-toggle="modal" data-bs-target="#newItem"> &plus; New </button>
@@ -71,12 +73,13 @@ Vue.component("view-restaurant-manager", {
 									</div>
 								</div>
 								<p> {{comment.commentText}} </p>
-								<div v-if="comment.status == 'PENDING'" class="d-grid gap-2 d-md-flex justify-content-md-end">
-	  								<button @click="acceptComment(comment)" class="btn btn-outline-success btn-sm me-md-2" type="button"><i class="bi bi-check-lg"></i></i></button>
-	  								<button @click="rejectComment(comment)" class="btn btn-outline-danger btn-sm" type="button"><i class="bi bi-x-lg"></i></i></button>
+								<div class="d-grid gap-2 d-md-flex justify-content-md-end align-items-center">
+	  								<button v-if="comment.status == 'PENDING'" @click="acceptComment(comment)" class="btn btn-outline-success btn-sm me-md-2" type="button"><i class="bi bi-check-lg"></i></button>
+	  								<button v-if="comment.status == 'PENDING'" @click="rejectComment(comment)" class="btn btn-outline-danger btn-sm" type="button"><i class="bi bi-x-lg"></i></button>
+									<small class = "float-end" v-if="comment.status == 'ACCEPTED'"> Accepted </small>
+									<small class = "float-end" v-if="comment.status == 'REJECTED'"> Rejected </small>
+									<button v-if="comment.status == 'ACCEPTED' || comment.status == 'REJECTED'" @click="deleteComment(comment)" class="btn btn-outline-secondary btn-sm me-md-2" type="button"><i class="bi bi-trash"></i></button>
 								</div>
-								<small class = "float-end" v-if="comment.status == 'ACCEPTED'"> Accepted </small>
-								<small class = "float-end" v-if="comment.status == 'REJECTED'"> Rejected </small>
 							</li>
 						</ul>
 					</div>
@@ -91,7 +94,7 @@ Vue.component("view-restaurant-manager", {
 			        <h5 class="modal-title" id="newItemLabel">New item</h5>
 			        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			      </div>
-				  <form @submit="addItem" method='post'>
+				  <form @submit="addItem(newItem)" method='post'>
 				      <div class="modal-body">
 						  <div class="mb-3">
 						    <label for="nameInput" class="form-label">Item name</label>
@@ -141,7 +144,7 @@ Vue.component("view-restaurant-manager", {
 			        <h5 class="modal-title" id="editItemLabel">Edit item</h5>
 			        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			      </div>
-				  <form @submit="editItem" method='post'>
+				  <form @submit="editItem(newItem)" method='post'>
 				      <div class="modal-body">
 						  <div class="mb-3">
 						    <label for="nameInput" class="form-label">Item name</label>
@@ -179,13 +182,50 @@ Vue.component("view-restaurant-manager", {
 	</div>
 	`,
 	methods: {
+		closeRestaurant: function() {
+			axios
+			.post('rest/restaurants/changeStatus', {
+				"name":''+this.restaurant.name,
+				"status":"Closed"
+			})
+			.then(response => {
+				this.init();
+				toast("Your restaurant is now closed.");
+			});
+		},
+		openRestaurant: function() {
+			axios
+			.post('rest/restaurants/changeStatus', {
+				"name":''+this.restaurant.name,
+				"status":"Open"
+			})
+			.then(response => {
+				this.init();
+				toast("Your restaurant is now open.");
+			});
+		},
+		deleteComment: function(comment) {
+			if (confirm('Are you sure?') == true) {
+				axios
+					.post('rest/comments/delete', {
+						"commentID":comment.commentID
+					})
+					.then(response => {
+						this.init();
+						toast("Comment deleted.");
+					});
+			}
+		},
 		acceptComment: function(comment) {
 			axios
 				.post('rest/comments/changeStatus', {
 					"commentID":comment.commentID,
 					"status":"ACCEPTED"
 				})
-				.then(response => (this.init()))
+				.then(response => {
+					this.init();
+					toast("Comment accepted.");
+				});
 		},
 		rejectComment: function(comment) {
 			axios
@@ -195,7 +235,8 @@ Vue.component("view-restaurant-manager", {
 				})
 				.then(response => {
 					this.init();
-				})
+					toast("Comment rejected.");
+				});
 		},
 		clearNewItem: function() {
 			this.newItem = {
@@ -208,43 +249,59 @@ Vue.component("view-restaurant-manager", {
 				logoPath: "",
 			};
 		},
-		addItem : function() {
+		addItem : function(newItem) {
 			
-			this.newItem.logoPath = document.getElementById("imgForChangeID").src;
+			event.preventDefault();
+			
+			newItem.logoPath = document.getElementById("imgForChangeID").src;
 			
 			axios
 			.post('rest/items/addItem', {
-				"name":''+this.newItem.name, 
-				"price":''+this.newItem.price, 
-				"type":''+this.newItem.type, 
-				"quantity":''+this.newItem.quantity, 
+				"name":''+newItem.name, 
+				"price":''+newItem.price, 
+				"type":''+newItem.type, 
+				"quantity":''+newItem.quantity, 
 				"restaurantName":''+this.restaurant.name,
-				"description":''+this.newItem.description,
-				"logoPath":''+this.newItem.logoPath
+				"description":''+newItem.description,
+				"logoPath":''+newItem.logoPath
 			})
 			.then(response => {
 				$('#newItem').modal('hide');
 				this.init();
-				})
+				toast("Item: " + newItem.name + " added.");
+			})
+			.catch(function (error) {
+			    if (error.response) {
+			    	toast("Item: " + newItem.name + " already exists.");
+			    }
+			});
 		},
 		setNewItem: function(item) {
 			this.newItem = Object.assign({}, item);
 		},
-		editItem: function() {
+		editItem: function(newItem) {
+			event.preventDefault();
+			
 			axios
 			.post('rest/items/editItem', {
-				"itemID":''+this.newItem.itemID,
-				"name":''+this.newItem.name, 
-				"price":''+this.newItem.price, 
-				"type":''+this.newItem.type, 
-				"quantity":''+this.newItem.quantity, 
+				"itemID":''+newItem.itemID,
+				"name":''+newItem.name, 
+				"price":''+newItem.price, 
+				"type":''+newItem.type, 
+				"quantity":''+newItem.quantity, 
 				"restaurantName":''+this.restaurant.name,
-				"description":''+this.newItem.description
+				"description":''+newItem.description
 			})
 			.then(response => {
 				$('#editItem').modal('hide');
 				this.init();
-				})
+				toast("Item: " + newItem.name + " changed.");
+			})
+			.catch(function (error) {
+			    if (error.response) {
+			    	toast("Item: " + newItem.name + " already exists.");
+			    }
+			});
 		},
 		init : function () {
 			this.items = [];
@@ -283,7 +340,10 @@ Vue.component("view-restaurant-manager", {
 				.post('rest/items/delete', {
 					"itemID":''+item.itemID
 				})
-				.then(response => (this.init()))
+				.then(response => {
+					this.init();
+					toast("Item: " + item.name + " deleted.");
+				})
 			}
 		},
 		getLogoPath: function (sth) {

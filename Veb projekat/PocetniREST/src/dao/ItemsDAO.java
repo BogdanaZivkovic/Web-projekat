@@ -108,6 +108,13 @@ public class ItemsDAO {
 		return true;
 	}
 	
+	public Boolean isEditedItemUnique(ItemToEditDTO dto) {
+		for(Item item: getActiveItems())
+			if(item.getRestaurantName().equals(dto.restaurantName) && item.getName().equals(dto.name) && item.getItemID() != dto.itemID)
+				return false;
+		return true;
+	}
+	
 	public Collection<Item> getActiveItems() {
 		Collection<Item> ret = new ArrayList<Item>();
 		for(Item item : getValues())

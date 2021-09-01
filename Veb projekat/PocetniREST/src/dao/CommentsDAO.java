@@ -71,7 +71,21 @@ public class CommentsDAO {
 	public Comment getComment(int id) {
 		return comments.get(id);
 	}
+	
+	public Collection<Comment> getActiveComments() {
+		Collection<Comment> ret = new ArrayList<Comment>();
+		for(Comment comment : getValues())
+			if(!comment.getIsDeleted())
+				ret.add(comment);
+		return ret;
+	}
 
+	public Comment getActiveComment(int id) {
+		Comment comment = getComment(id);
+		if(comment == null || comment.getIsDeleted())
+			return null;
+		return comment;
+	}
 
 	public void addComment(CommentDTO dto) {
 		Comment comment = new Comment(comments.size()+1, dto.customerUsername, dto.restaurantName, dto.commentText, dto.rating);
@@ -81,11 +95,16 @@ public class CommentsDAO {
 	
 	public Collection<Comment> getAccepted() {
 		Collection<Comment> ret = new ArrayList<Comment>();
-		for(Comment comment : comments.values()) {
+		for(Comment comment : getActiveComments()) {
 			if(comment.getStatus().equals("ACCEPTED")) {
 				ret.add(comment);
 			}
 		}
 		return ret;
+	}
+	
+	public void deleteComment(int commentID) {
+		getComment(commentID).setIsDeleted(true);
+		saveComments();
 	}
 }

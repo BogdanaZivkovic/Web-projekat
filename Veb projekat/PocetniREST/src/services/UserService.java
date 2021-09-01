@@ -47,7 +47,7 @@ public class UserService {
 		}
 		users.addUser(dto);
 		System.out.println(dto.userName);
-		return Response.status(Response.Status.ACCEPTED).entity("/PocetniREST/").build();
+		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
 	}
 	
 	@POST

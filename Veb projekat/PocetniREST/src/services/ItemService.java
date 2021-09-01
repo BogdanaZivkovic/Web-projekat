@@ -76,6 +76,10 @@ public class ItemService {
 	@Produces(MediaType.TEXT_HTML)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response editItem(ItemToEditDTO dto) {
+		if(!getItems().isEditedItemUnique(dto)) {
+			return Response.status(Response.Status.BAD_REQUEST)
+					.entity("Your restaurant already has that item").build();
+		}
 		getItems().editItem(dto);
 		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
 	}

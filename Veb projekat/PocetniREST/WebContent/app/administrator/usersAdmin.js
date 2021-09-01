@@ -216,6 +216,7 @@ Vue.component("users-admin", {
 			};
 		},
 		register : function (newUser) {
+			event.preventDefault();
 			axios
 			.post('rest/users/registration', {
 				"userName":''+newUser.userName, 
@@ -229,7 +230,13 @@ Vue.component("users-admin", {
 			.then(response => {
 				$('#newUser').modal('hide');
 				this.init();
-				})
+				toast("User " + newUser.userName + " successfully registered.");
+			})
+			.catch(function (error) {
+			    if (error.response) {
+			    	toast("User " + newUser.userName + " already exists.");
+			    }
+			});
 		},
 		
 		matchesSearch: function (user) {
@@ -285,7 +292,10 @@ Vue.component("users-admin", {
 				.post('rest/users/delete', {
 					"userName":''+user.userName
 				})
-				.then(response => (this.init()))
+				.then(response => {
+					this.init();
+					toast("User " + user.userName + " deleted.");
+				});
 			}
 		},
 		blockUser : function (user) {
@@ -294,7 +304,10 @@ Vue.component("users-admin", {
 				.post('rest/users/block', {
 					"userName":''+user.userName
 				})
-				.then(response => (this.init()))
+				.then(response => {
+					this.init();
+					toast("User " + user.userName + " blocked.");
+				});
 			}
 		},
 		unblockUser : function (user) {
@@ -303,7 +316,10 @@ Vue.component("users-admin", {
 				.post('rest/users/unblock', {
 					"userName":''+user.userName
 				})
-				.then(response => (this.init()))
+				.then(response => {
+					this.init();
+					toast("User " + user.userName + " unblocked.");
+				});
 			}
 		}
 	},

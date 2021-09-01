@@ -6,6 +6,7 @@ public class Restaurant {
 
 	private String name;
 	private String type;
+	//Open, Closed
 	private String status;
 	private Location location;
 	private String managerUsername;

@@ -36,7 +36,7 @@ public class ProfileService {
 	
 	@POST
 	@Path("/update")
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.TEXT_HTML)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateUser(UserDTO dto) {
 		UsersDAO users = getUsers();

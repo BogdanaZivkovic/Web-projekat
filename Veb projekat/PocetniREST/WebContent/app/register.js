@@ -45,7 +45,7 @@ Vue.component("register-app", {
 				    	<input id="dateInput" type="date" v-model="newUser.dateOfBirth" class="form-control" placeholder="Date of birth">
 				 	 </div>
 					<div class="d-grid gap-2 col-6 mx-auto">
-					  <button type="submit" class="btn btn-primary">Submit</button>
+					  <button type="submit" class="btn btn-primary"> Register </button>
 					</div>
 				</form>
 			</div>
@@ -54,6 +54,7 @@ Vue.component("register-app", {
     `,
 	methods: {
 		register : function (newUser) {
+			event.preventDefault();
 			axios
 			.post('rest/users/registration', {
 				"userName":''+newUser.userName, 
@@ -65,8 +66,14 @@ Vue.component("register-app", {
 				"role":"CUSTOMER"
 			})
 			.then(response => {
-				location.href = response.data;
+				router.push('login');
+				toast("User " + newUser.userName + " successfully registered.");
 			})
+			.catch(function (error) {
+			    if (error.response) {
+			    	toast("User " + newUser.userName + " already exists.");
+			    }
+			});
 		}
 	},
 });

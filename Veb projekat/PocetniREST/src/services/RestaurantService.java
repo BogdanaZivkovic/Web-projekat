@@ -20,6 +20,7 @@ import dao.ImagesDAO;
 import dao.RestaurantsDAO;
 import dto.RestaurantDTO;
 import dto.RestaurantNameDTO;
+import dto.RestaurantStatusDTO;
 
 @Path("/restaurants")
 public class RestaurantService {
@@ -78,6 +79,17 @@ public class RestaurantService {
 				.build();
 	}
 
+	@POST
+	@Path("/changeStatus")
+	@Produces(MediaType.TEXT_HTML)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response changeStatus(RestaurantStatusDTO dto) {
+		getRestaurants().getActiveRestaurant(dto.name).setStatus(dto.status);
+		getRestaurants().saveRestaurants();
+		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
+	}
+	
+	
 	@POST
 	@Path("/delete")
 	@Produces(MediaType.TEXT_HTML)

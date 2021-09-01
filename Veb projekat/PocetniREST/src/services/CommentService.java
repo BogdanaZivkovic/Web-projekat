@@ -18,6 +18,7 @@ import beans.Restaurant;
 import dao.CommentsDAO;
 import dao.RestaurantsDAO;
 import dto.CommentDTO;
+import dto.CommentIDDTO;
 import dto.CommentStatusDTO;
 
 @Path("/comments")
@@ -34,7 +35,7 @@ public class CommentService {
 	public Response getJustComments() {
 		return Response
 				.status(Response.Status.ACCEPTED).entity("SUCCESS")
-				.entity(getComments().getValues())
+				.entity(getComments().getActiveComments())
 				.build();
 	}
 
@@ -64,7 +65,7 @@ public class CommentService {
 		Double sum = 0.0;
 		Double count = 0.0;
 
-		for (Comment comment : comments.getValues()) {
+		for (Comment comment : comments.getActiveComments()) {
 			if(comment.getRestaurantName().matches(restaurant.getName())) {
 				sum += comment.getRating();
 				count += 1.0;
@@ -83,8 +84,17 @@ public class CommentService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response changeStatus(CommentStatusDTO dto) {
-		getComments().getComment(dto.commentID).setStatus(dto.status);
+		getComments().getActiveComment(dto.commentID).setStatus(dto.status);
 		getComments().saveComments();
+		return Response.status(Response.Status.ACCEPTED).build();
+	}
+	
+	@POST
+	@Path("/delete")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response deleteComment(CommentIDDTO dto) {
+		getComments().deleteComment(dto.commentID);
 		return Response.status(Response.Status.ACCEPTED).build();
 	}
 

@@ -184,7 +184,10 @@ Vue.component("sus-users-admin", {
 				.post('rest/users/delete', {
 					"userName":''+user.userName
 				})
-				.then(response => (this.init()))
+				.then(response => {
+					this.init();
+					toast("User " + user.userName + " deleted.");
+				});
 			}
 		},
 		blockUser : function (user) {
@@ -193,7 +196,10 @@ Vue.component("sus-users-admin", {
 				.post('rest/users/block', {
 					"userName":''+user.userName
 				})
-				.then(response => (this.init()))
+				.then(response => {
+					this.init();
+					toast("User " + user.userName + " blocked.");
+				});
 			}
 		},
 		unblockUser : function (user) {
@@ -202,7 +208,10 @@ Vue.component("sus-users-admin", {
 				.post('rest/users/unblock', {
 					"userName":''+user.userName
 				})
-				.then(response => (this.init()))
+				.then(response => {
+					this.init();
+					toast("User " + user.userName + " unblocked.");
+				});
 			}
 		}
 	},

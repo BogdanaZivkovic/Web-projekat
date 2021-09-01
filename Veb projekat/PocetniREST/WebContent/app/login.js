@@ -21,7 +21,7 @@ Vue.component("login-app", {
 				    <input id="passwordInput" type="password" v-model="newUser.password" class="form-control" placeholder="Password" required>
 				  </div>
 					<div class="d-grid gap-2 col-6 mx-auto">
-					  <button type="submit" class="btn btn-primary">Submit</button>
+					  <button type="submit" class="btn btn-primary"> Login </button>
 					</div>
 				</form>
 			</div>
@@ -30,6 +30,7 @@ Vue.component("login-app", {
     `,
 	methods: {
 		login : function (newUser) {
+			event.preventDefault();
 			axios
 			.post('rest/users/login', {
 				"userName":''+newUser.userName, 
@@ -38,6 +39,11 @@ Vue.component("login-app", {
 			.then(response => {
 				location.href = response.data;
 			})
+			.catch(function (error) {
+			    if (error.response) {
+			    	toast("Invalid username/password!");
+			    }
+			});
 		}
 	},
 });
