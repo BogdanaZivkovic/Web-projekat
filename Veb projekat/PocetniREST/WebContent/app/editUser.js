@@ -9,8 +9,7 @@ Vue.component("edit-user", {
 		<div class="container-fluid bg-profile">
 			<div class="row justify-content-center">
 				<div class="col-12 col-sm-6 col-md-3">
-					<div class="container">
-				        <form @submit="updateUser(user)" class="form-container" method='post'>
+					<form @submit="updateUser(user)" class="form-container" method='post'>
 						<div class="mb-3">
 						<label style="font-size:24px;"> Welcome &nbsp</label>
 						<label style="color:rgba(58, 112, 27);font-size:24px;"><b>{{user.userName}}</b> </label>
@@ -43,8 +42,7 @@ Vue.component("edit-user", {
 						<div class="d-grid gap-2 col-6 mx-auto">
 							<button class="btn btn-primary" type='submit'> Update </button> 
 						</div>
-						</form>
-					</div>
+					</form>
 				</div>
 			</div>
 		</div>
@@ -52,6 +50,7 @@ Vue.component("edit-user", {
     `,
 	methods: {
 		updateUser : function (user) {
+			event.preventDefault();
 			axios
 			.post('rest/profile/update', {
 				"userName":''+user.userName, 
@@ -62,7 +61,9 @@ Vue.component("edit-user", {
 				"dateOfBirth":''+user.dateOfBirth, 
 				"role":''+user.role
 			})
-			.then(response => (this.init()))
+			.then(response => {
+				toast("Your profile has been updated.");
+			});
 		}		
 	},
 	mounted() {
