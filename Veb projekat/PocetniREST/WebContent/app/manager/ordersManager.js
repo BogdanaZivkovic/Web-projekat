@@ -13,7 +13,8 @@ Vue.component("orders-manager", {
 				status:''
 			},
 			images: [],
-			viewedItem: {}
+			viewedItem: {},
+			viewedOrder: {}
 		}
 	},
 	template:`
@@ -93,20 +94,21 @@ Vue.component("orders-manager", {
 						<li class="list-group-item li-container" v-for = "order in filteredOrders">
 							<div class="container">
 								<div class="row">
-									<div class="col-lg-11 col-md-10 col-sm-9">
+									<div class="col-lg-10 col-md-9 col-sm-8">
 										<h5> {{order.restaurantName}} </h5>
-										<p class="mb-1"> <i> {{order.status}} <i> </p>
+										<p class="mb-1"> <i> {{order.status}} </i> </p>
 										<p class="mb-1"> {{formatDate(order.dateAndTime)}} </p>
 									</div>
-									<div class="col-lg-1 col-md-2 col-sm-3 mt-2 p-2">
+									<div class="col-lg-2 col-md-3 col-sm-4 mt-2 p-2 text-end">
 										<button class="btn btn-success" v-if="order.status.match('PROCESSING')" @click="prepareOrder(order)"> ACCEPT </button>
 										<button class="btn btn-success" v-if="order.status.match('IN_PREPARATION')" @click="orderReady(order)"> READY </button>
-										<ul v-if="order.status.match('WAITING_FOR_DELIVERY')">
-										<li v-for = "request in order.requests">
-										{{request}}
-										<button class="btn btn-success" @click = "approveDelivery(order, request)"> APPROVE </button>
-										</li>
-										</ul>
+										<button class="btn btn-success position-relative" v-if="order.status.match('WAITING_FOR_DELIVERY') && order.requests.length > 0" @click="setViewedOrder(order)" data-bs-toggle="modal" data-bs-target="#requestsModal">
+											Requests
+											<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+										    	{{order.requests.length}}
+										    	<span class="visually-hidden">unread messages</span>
+											</span>
+										</button>
 									</div>
 								</div>
 								<div class="row justify-content-between">
@@ -161,10 +163,44 @@ Vue.component("orders-manager", {
 		      		</div>
 		    	</div>
 		  	</div>
-		</div>		
+		</div>
+		
+		
+		
+		<!-- Modal -->
+		<div class="modal fade" id="requestsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="requestsLabel" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="requestsLabel"> Order requests </h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+				<ul class="list-unstyled list-group m-2">
+					<li v-for = "request in viewedOrder.requests" class="list-group-item p-2">
+						<div class="d-flex justify-content-between">
+							<p class="mb-1 ms-2"> 
+								<b> {{request}} </b>  
+							</p>
+							<button class="btn btn-outline-success btn-sm" @click = "approveDelivery(viewedOrder, request)"> <i class="bi bi-check2"></i> </button>
+						</div>
+					</li>
+				</ul>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		
+		
 	</div>
 	`,
 	methods: {
+		setViewedOrder: function (order) {
+			this.viewedOrder = Object.assign({}, order);
+		},
 		calculateDiscount: function(order){
 			var sum = 0
   			for(let i=0; i<order.items.length; i++) {
@@ -182,7 +218,10 @@ Vue.component("orders-manager", {
 					'orderID':''+order.orderID,
 					'userName':''+request
 				})
-				.then(response => {this.init()})
+				.then(response => {
+					this.init();
+					$('#requestsModal').modal('hide');
+				});
 		},
 		prepareOrder: function (order) {
 			axios
