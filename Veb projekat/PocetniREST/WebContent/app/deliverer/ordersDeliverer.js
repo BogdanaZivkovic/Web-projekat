@@ -100,7 +100,7 @@ Vue.component("orders-deliverer", {
 								<div class="row">
 									<div class="col-lg-11 col-md-10 col-sm-9">
 										<h5> {{orderWithRestaurant.order.restaurantName}} </h5>
-										<p class="mb-1"> <i> {{orderWithRestaurant.order.status}} <i> </p>
+										<p class="mb-1"> <i> {{orderWithRestaurant.order.status}} </i> </p>
 										<p class="mb-1"> {{formatDate(orderWithRestaurant.order.dateAndTime)}} </p>
 										<small> {{orderWithRestaurant.restaurant.type}} </small>
 									</div>
