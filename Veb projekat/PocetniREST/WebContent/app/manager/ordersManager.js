@@ -12,7 +12,8 @@ Vue.component("orders-manager", {
 				type:'',
 				status:''
 			},
-			images: []
+			images: [],
+			viewedItem: {}
 		}
 	},
 	template:`
@@ -87,69 +88,94 @@ Vue.component("orders-manager", {
 				</div>
 			</div>
 			<div class="row justify-content-center">
-			<div class="col-lg-8 col-md-10 col-sm-12">
-				<ul class="list-group">
-					<li class="list-group-item list-group-item-action li-container" v-for = "order in filteredOrders">
+				<div class="col-lg-7 col-md-8 col-sm-10">
+					<ul class="list-group">
+						<li class="list-group-item li-container" v-for = "order in filteredOrders">
+							<div class="container">
+								<div class="row">
+									<div class="col-lg-11 col-md-10 col-sm-9">
+										<h5> {{order.restaurantName}} </h5>
+										<p class="mb-1"> <i> {{order.status}} <i> </p>
+										<p class="mb-1"> {{formatDate(order.dateAndTime)}} </p>
+									</div>
+									<div class="col-lg-1 col-md-2 col-sm-3 mt-2 p-2">
+										<button class="btn btn-success" v-if="order.status.match('PROCESSING')" @click="prepareOrder(order)"> ACCEPT </button>
+										<button class="btn btn-success" v-if="order.status.match('IN_PREPARATION')" @click="orderReady(order)"> READY </button>
+										<ul v-if="order.status.match('WAITING_FOR_DELIVERY')">
+										<li v-for = "request in order.requests">
+										{{request}}
+										<button class="btn btn-success" @click = "approveDelivery(order, request)"> APPROVE </button>
+										</li>
+										</ul>
+									</div>
+								</div>
+								<div class="row justify-content-between">
+									<div class="col-lg-6 col-md-7 col-sm-8">
+										<ul class="list-unstyled list-group m-2">
+											<li>
+												<a href="#" class="list-group-item list-group-item-action p-2" v-on:click="setViewedItem(i.item)" data-bs-toggle="modal" data-bs-target="#exampleModal" v-for = "i in order.items">
+													<div class="d-flex justify-content-between">
+														<p class="mb-1 ms-2"> 
+															<b> {{i.count}} x {{i.item.name}} &nbsp &nbsp &nbsp</b>  
+														</p>
+														<p class="mb-1 text-right"> 
+															{{i.count*i.item.price}} $
+														</p>
+													</div>
+												</a>
+											</li>
+										</ul>
+									</div>
+								</div>
+								<div class="row">
+									<small m-2> <b> Discount: {{calculateDiscount(order)}} % </b> </small>
+									<p class="mb-1 lead"> Total price: {{order.price}} $ </p>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>		
+		
+		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+		    	<div class="modal-content">
+		      		<div class="modal-header">
+		        		<h5 class="modal-title" id="exampleModalLabel">{{this.viewedItem.name}}</h5>
+		        		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		     		</div>
+		      		<div class="modal-body">
 						<div class="container">
 							<div class="row">
-								<div class="col-lg-11 col-md-11 col-sm-11">
-									<h5> Restaurant: {{order.restaurantName}} </h5>
-									<p class="mb-1 lead"> Status: {{order.status}} </p>
-									<p class="mb-1"> Date and time: {{formatDate(order.dateAndTime)}} </p>
-									<p class="mb-1"> Price: {{order.price}} </p>
+								<div class="col-lg-3 col-md-3 col-sm-3">
+									<img height="100" width="100" class="rounded" v-bind:src="getLogoPath(this.viewedItem)">
 								</div>
-								<div class="col-lg-1 col-md-1 col-sm-1">
-									<button class="btn btn-success mt-2" v-if="order.status.match('PROCESSING')" @click="prepareOrder(order)"> ACCEPT </button>
-									<button class="btn btn-success mt-2" v-if="order.status.match('IN_PREPARATION')" @click="orderReady(order)"> READY </button>
-									<ul v-if="order.status.match('WAITING_FOR_DELIVERY')">
-									<li v-for = "request in order.requests">
-									{{request}}
-									<button class="btn btn-success mt-2" @click = "approveDelivery(order, request)"> APPROVE </button>
-									</li>
-									</ul>
+								<div class="col-lg-9 col-md-9 col-sm-9 d-flex flex-column">
+									<p class="fw-bold mb-1">{{this.viewedItem.quantity}}</p>
+									<small>{{this.viewedItem.description}} </small>
+									<p style="color:rgba(58, 112, 27);" class="lead mb-1">{{this.viewedItem.price}} $</p>
 								</div>
-							</div>
-							<div class="row">
-								<ul class="list-unstyled">
-									<li v-for = "i in order.items">
-										<div id="accordion">
-								  			<div class="card">
-									    		<div class="card-header">
-									      			<h5 class="mb-0">
-									        		<button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-									          		{{i.count}} * {{i.item.name}}
-									        		</button>
-									      			</h5>
-									    		</div>
-								    			<div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-									      			<div class="card-body">
-									        		 	<div class="row justify-content-between">
-															<div class="col-lg-2 col-md-3 col-sm-4">
-																<img height="100" width="100" class="rounded" v-bind:src="getLogoPath(i.item)">
-															</div>
-															<div class="col-lg-9 col-md-8 col-sm-7 d-flex flex-column">
-																<p class="fw-bold mb-1"> {{i.item.name}} </p>
-																<small>{{i.item.quantity}}</small>
-																<small>{{i.item.description}} </small>
-																<p class="lead mb-1">{{i.item.price}} $</p>
-															</div>
-														</div>
-									      			</div>
-												</div>
-								    		</div>
-								  		</div>
-									</li>
-								</ul>
 							</div>
 						</div>
-					</li>
-				</ul>
-			</div>
-		</div>
-		</div>	
+		      		</div>
+		    	</div>
+		  	</div>
+		</div>		
 	</div>
 	`,
 	methods: {
+		calculateDiscount: function(order){
+			var sum = 0
+  			for(let i=0; i<order.items.length; i++) {
+  			sum += order.items[i].item.price * order.items[i].count;
+				}
+			return 100 - order.price/sum*100;
+			
+		},
+		setViewedItem: function(item){
+			this.viewedItem = Object.assign({}, item);
+		},
 		approveDelivery : function (order, request) {
 			axios
 				.post('rest/orders/approveDelivery', {
