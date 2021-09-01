@@ -94,7 +94,7 @@ Vue.component("view-restaurant-manager", {
 			        <h5 class="modal-title" id="newItemLabel">New item</h5>
 			        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			      </div>
-				  <form @submit="addItem" method='post'>
+				  <form @submit="addItem(newItem)" method='post'>
 				      <div class="modal-body">
 						  <div class="mb-3">
 						    <label for="nameInput" class="form-label">Item name</label>
@@ -144,7 +144,7 @@ Vue.component("view-restaurant-manager", {
 			        <h5 class="modal-title" id="editItemLabel">Edit item</h5>
 			        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			      </div>
-				  <form @submit="editItem" method='post'>
+				  <form @submit="editItem(newItem)" method='post'>
 				      <div class="modal-body">
 						  <div class="mb-3">
 						    <label for="nameInput" class="form-label">Item name</label>
@@ -188,7 +188,10 @@ Vue.component("view-restaurant-manager", {
 				"name":''+this.restaurant.name,
 				"status":"Closed"
 			})
-			.then(response => (this.init()))
+			.then(response => {
+				this.init();
+				toast("Your restaurant is now closed.");
+			});
 		},
 		openRestaurant: function() {
 			axios
@@ -196,14 +199,22 @@ Vue.component("view-restaurant-manager", {
 				"name":''+this.restaurant.name,
 				"status":"Open"
 			})
-			.then(response => (this.init()))
+			.then(response => {
+				this.init();
+				toast("Your restaurant is now open.");
+			});
 		},
 		deleteComment: function(comment) {
-			axios
-				.post('rest/comments/delete', {
-					"commentID":comment.commentID
-				})
-				.then(response => (this.init()))
+			if (confirm('Are you sure?') == true) {
+				axios
+					.post('rest/comments/delete', {
+						"commentID":comment.commentID
+					})
+					.then(response => {
+						this.init();
+						toast("Comment deleted.");
+					});
+			}
 		},
 		acceptComment: function(comment) {
 			axios
@@ -211,7 +222,10 @@ Vue.component("view-restaurant-manager", {
 					"commentID":comment.commentID,
 					"status":"ACCEPTED"
 				})
-				.then(response => (this.init()))
+				.then(response => {
+					this.init();
+					toast("Comment accepted.");
+				});
 		},
 		rejectComment: function(comment) {
 			axios
@@ -221,7 +235,8 @@ Vue.component("view-restaurant-manager", {
 				})
 				.then(response => {
 					this.init();
-				})
+					toast("Comment rejected.");
+				});
 		},
 		clearNewItem: function() {
 			this.newItem = {
@@ -234,43 +249,59 @@ Vue.component("view-restaurant-manager", {
 				logoPath: "",
 			};
 		},
-		addItem : function() {
+		addItem : function(newItem) {
 			
-			this.newItem.logoPath = document.getElementById("imgForChangeID").src;
+			event.preventDefault();
+			
+			newItem.logoPath = document.getElementById("imgForChangeID").src;
 			
 			axios
 			.post('rest/items/addItem', {
-				"name":''+this.newItem.name, 
-				"price":''+this.newItem.price, 
-				"type":''+this.newItem.type, 
-				"quantity":''+this.newItem.quantity, 
+				"name":''+newItem.name, 
+				"price":''+newItem.price, 
+				"type":''+newItem.type, 
+				"quantity":''+newItem.quantity, 
 				"restaurantName":''+this.restaurant.name,
-				"description":''+this.newItem.description,
-				"logoPath":''+this.newItem.logoPath
+				"description":''+newItem.description,
+				"logoPath":''+newItem.logoPath
 			})
 			.then(response => {
 				$('#newItem').modal('hide');
 				this.init();
-				})
+				toast("Item: " + newItem.name + " added.");
+			})
+			.catch(function (error) {
+			    if (error.response) {
+			    	toast("Item: " + newItem.name + " already exists.");
+			    }
+			});
 		},
 		setNewItem: function(item) {
 			this.newItem = Object.assign({}, item);
 		},
-		editItem: function() {
+		editItem: function(newItem) {
+			event.preventDefault();
+			
 			axios
 			.post('rest/items/editItem', {
-				"itemID":''+this.newItem.itemID,
-				"name":''+this.newItem.name, 
-				"price":''+this.newItem.price, 
-				"type":''+this.newItem.type, 
-				"quantity":''+this.newItem.quantity, 
+				"itemID":''+newItem.itemID,
+				"name":''+newItem.name, 
+				"price":''+newItem.price, 
+				"type":''+newItem.type, 
+				"quantity":''+newItem.quantity, 
 				"restaurantName":''+this.restaurant.name,
-				"description":''+this.newItem.description
+				"description":''+newItem.description
 			})
 			.then(response => {
 				$('#editItem').modal('hide');
 				this.init();
-				})
+				toast("Item: " + newItem.name + " changed.");
+			})
+			.catch(function (error) {
+			    if (error.response) {
+			    	toast("Item: " + newItem.name + " already exists.");
+			    }
+			});
 		},
 		init : function () {
 			this.items = [];
@@ -309,7 +340,10 @@ Vue.component("view-restaurant-manager", {
 				.post('rest/items/delete', {
 					"itemID":''+item.itemID
 				})
-				.then(response => (this.init()))
+				.then(response => {
+					this.init();
+					toast("Item: " + item.name + " deleted.");
+				})
 			}
 		},
 		getLogoPath: function (sth) {
