@@ -109,13 +109,13 @@ Vue.component("my-orders-deliverer", {
 						<li class="list-group-item li-container" v-for = "orderWithRestaurant in filteredOrdersWithRestaurant">
 							<div class="container">
 								<div class="row">
-									<div class="col-lg-11 col-md-10 col-sm-9">
+									<div class="col-lg-10 col-md-9 col-sm-8">
 										<h5> {{orderWithRestaurant.order.restaurantName}} </h5>
 										<p class="mb-1"> <i> {{orderWithRestaurant.order.status}} </i> </p>
 										<p class="mb-1"> {{formatDate(orderWithRestaurant.order.dateAndTime)}} </p>
 										<small> {{orderWithRestaurant.restaurant.type}} </small>
 									</div>
-									<div class="col-lg-1 col-md-2 col-sm-3 mt-2 p-2">
+									<div class="col-lg-2 col-md-3 col-sm-4 mt-2 p-2 text-end">
 										<button class="btn btn-success" v-if="orderWithRestaurant.order.status == 'IN_TRANSPORT'" @click="deliverOrder(orderWithRestaurant.order)"> DELIVER </button>
 									</div>
 								</div>
