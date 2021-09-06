@@ -252,6 +252,18 @@ public class OrderService {
 				.entity(sussyUsers)
 				.build();
 	}
+	
+	@POST
+	@Path("deleteForUser")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response deleteOrderForUser(OrderIDDTO dto) {
+		User loggedUser = (User) request.getSession().getAttribute("loggedUser");
+		User user = getUsers().getUser(loggedUser.getUserName());
+		user.getOrderIDs().remove(dto.orderID);
+		getUsers().saveUsers();
+		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
+	}
 
 	private ShoppingCart getShoppingCart() {
 		ShoppingCart sc = (ShoppingCart) request.getSession().getAttribute("shoppingCart");
