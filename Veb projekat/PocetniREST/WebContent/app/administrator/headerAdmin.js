@@ -20,7 +20,7 @@ Vue.component("header-admin", {
 		<div class="collapse navbar-collapse" id="toggleMobileMenu">
 			<ul class="navbar-nav text-center">
 				<li>
-					<router-link class="nav-link" to="/" exact> Profile </router-link>
+					<router-link class="nav-link" to="/profile" exact> Profile </router-link>
 				</li>
 				<li>
 					<router-link class="nav-link" to="/usersadmin" exact> Users </router-link> 

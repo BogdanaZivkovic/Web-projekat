@@ -9,7 +9,7 @@ const OrdersManager = {template:'<orders-manager></orders-manager>'}
 const router = new VueRouter({
 	mode: 'hash',
 	  routes: [
-		{ path: '/', component: ProfileManager},
+		{ path: '/', component: RestaurantsManager},
 		{path: '/profile', component: ProfileManager},
 		{path: '/restaurantmanager', component: ViewMyRestaurant},
 		{path: '/allrestaurantsmanager', component: RestaurantsManager},

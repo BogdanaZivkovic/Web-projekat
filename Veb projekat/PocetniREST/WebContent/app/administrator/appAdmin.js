@@ -9,7 +9,8 @@ const SusUsers = {template:'<sus-users-admin></sus-users-admin>'}
 const router = new VueRouter({
 	mode: 'hash',
 	  routes: [
-		{path: '/', component: ProfileAdmin},
+		{path: '/', component: RestaurantsAdmin},
+		{ path: '/profile', component: ProfileAdmin},
 		{path: '/usersadmin', component: UsersAdmin},
 		{path: '/restaurantadmin', component: RestaurantAdmin},
 		{path: '/restaurantsadmin', component: RestaurantsAdmin},

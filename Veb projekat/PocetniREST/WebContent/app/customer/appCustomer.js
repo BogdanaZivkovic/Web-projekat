@@ -9,7 +9,7 @@ const CommentCustomer = {template:'<comment-customer></comment-customer>'}
 const router = new VueRouter({
 	mode: 'hash',
 	  routes: [
-		{ path: '/', component: ProfileCustomer},
+		{ path: '/', component: RestaurantsCustomer},
 		{path: '/profile', component: ProfileCustomer},
 		{path: '/restaurants', component: RestaurantsCustomer},
 		{path: '/restaurant', name: 'viewRestaurant',component: ViewRestaurantCustomer},

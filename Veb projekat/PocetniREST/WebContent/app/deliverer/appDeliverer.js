@@ -7,7 +7,7 @@ const ViewRestaurantDeliverer = {template:'<view-restaurant></view-restaurant>'}
 const router = new VueRouter({
 	mode: 'hash',
 	  routes: [
-		{ path: '/', component: ProfileDeliverer},
+		{ path: '/', component: RestaurantsDeliverer},
 		{ path: '/orders', component: OrdersDeliverer},
 		{ path: '/myorders', component: MyOrders},
 		{ path: '/profile', component: ProfileDeliverer},

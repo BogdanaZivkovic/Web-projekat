@@ -11,10 +11,6 @@ Vue.component("edit-user", {
 				<div class="col-12 col-sm-6 col-md-3">
 					<form @submit="updateUser(user)" class="form-container" method='post'>
 						<div class="mb-3">
-						<label style="font-size:24px;"> Welcome &nbsp</label>
-						<label style="color:rgba(58, 112, 27);font-size:24px;"><b>{{user.userName}}</b> </label>
-						</div>
-						<div class="mb-3">
 							<label class="form-label"> Current password: </label>
 							<input type="text" v-model="user.password" class="form-control" placeholder="Password">
 						</div>

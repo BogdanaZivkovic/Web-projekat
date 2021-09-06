@@ -6,7 +6,7 @@ const ViewRestaurant = {template: '<view-restaurant></view-restaurant>'}
 const router = new VueRouter({
 	  mode: 'hash',
 	  routes: [
-	    { path: '/', component: Login},
+	    { path: '/', component: AllRestaurants},
 		{ path: '/login', component: Login},
 		{ path: '/register', component: Register},
 		{ path: '/restaurants', component: AllRestaurants},
