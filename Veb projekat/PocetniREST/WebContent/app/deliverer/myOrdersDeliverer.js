@@ -139,7 +139,10 @@ Vue.component("my-orders-deliverer", {
 								</div>
 								<div class="row">
 									<small m-2> <b> Discount: {{calculateDiscount(orderWithRestaurant.order)}} % </b> </small>
-									<p class="mb-1 lead"> Total price: {{orderWithRestaurant.order.price}} $ </p>
+									<div class="d-flex justify-content-between">
+										<p class="mb-1 lead"> Total price: {{orderWithRestaurant.order.price}} $ </p>
+										<button class = "mb-1 btn btn-outline-secondary btn-sm" @click= "deleteOrder(orderWithRestaurant.order)"> <i class="bi bi-trash"></i> </button>
+									</div>
 								</div>
 							</div>
 						</li>
@@ -175,6 +178,18 @@ Vue.component("my-orders-deliverer", {
 	</div>
 	`,
 	methods: {
+		deleteOrder: function (order) {
+			if (confirm('Are you sure?') == true) {
+				axios
+				.post('rest/orders/deleteForUser', {
+					"orderID": order.orderID
+				})
+				.then(response => {
+					this.init();
+					toast("Order deleted.");
+				});
+			}
+		},
 		calculateDiscount: function(order){
 			var sum = 0
   			for(let i=0; i<order.items.length; i++) {

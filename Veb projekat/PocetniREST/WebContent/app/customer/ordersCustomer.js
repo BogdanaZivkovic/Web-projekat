@@ -214,14 +214,16 @@ Vue.component("orders-customer", {
 	`,
 	methods: {
 		deleteOrder: function (order) {
-			axios
-			.post('rest/orders/deleteForUser', {
-				"orderID": order.orderID
-			})
-			.then(response => {
-				this.init();
-				toast("Order deleted.");
-			});
+			if (confirm('Are you sure?') == true) {
+				axios
+				.post('rest/orders/deleteForUser', {
+					"orderID": order.orderID
+				})
+				.then(response => {
+					this.init();
+					toast("Order deleted.");
+				});
+			}
 		},
 		leaveComment : function (comment) {
 			

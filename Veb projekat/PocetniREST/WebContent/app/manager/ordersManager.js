@@ -130,7 +130,10 @@ Vue.component("orders-manager", {
 								</div>
 								<div class="row">
 									<small m-2> <b> Discount: {{calculateDiscount(order)}} % </b> </small>
-									<p class="mb-1 lead"> Total price: {{order.price}} $ </p>
+									<div class="d-flex justify-content-between">
+										<p class="mb-1 lead"> Total price: {{order.price}} $ </p>
+										<button class = "mb-1 btn btn-outline-secondary btn-sm" @click= "deleteOrder(order)"> <i class="bi bi-trash"></i> </button>
+									</div>
 								</div>
 							</div>
 						</li>
@@ -197,6 +200,18 @@ Vue.component("orders-manager", {
 	</div>
 	`,
 	methods: {
+		deleteOrder: function (order) {
+			if (confirm('Are you sure?') == true) {
+				axios
+				.post('rest/orders/deleteForRestaurant', {
+					"orderID": order.orderID
+				})
+				.then(response => {
+					this.init();
+					toast("Order deleted.");
+				});
+			}
+		},
 		setViewedOrder: function (order) {
 			this.viewedOrder = Object.assign({}, order);
 		},

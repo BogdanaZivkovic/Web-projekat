@@ -264,6 +264,18 @@ public class OrderService {
 		getUsers().saveUsers();
 		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
 	}
+	
+	@POST
+	@Path("deleteForRestaurant")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response deleteOrderForRestaurant(OrderIDDTO dto) {
+		User user = (User) request.getSession().getAttribute("loggedUser");
+		Restaurant restaurant = getRestaurants().getRestaurantByManager(user.getUserName());
+		restaurant.getOrderIDs().remove(dto.orderID);
+		getRestaurants().saveRestaurants();
+		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
+	}
 
 	private ShoppingCart getShoppingCart() {
 		ShoppingCart sc = (ShoppingCart) request.getSession().getAttribute("shoppingCart");
