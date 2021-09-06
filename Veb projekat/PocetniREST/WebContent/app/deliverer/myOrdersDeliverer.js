@@ -211,7 +211,7 @@ Vue.component("my-orders-deliverer", {
 		init: function() {
 			this.ordersWithRestaurant = []
 			axios
-				.get('rest/orders/getOrdersDeliverer')
+				.get('rest/orders/getMyOrders')
 				.then(response => {
 					this.orders = response.data;
 					axios

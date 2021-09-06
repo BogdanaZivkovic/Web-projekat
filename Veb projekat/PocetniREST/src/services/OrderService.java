@@ -71,13 +71,18 @@ public class OrderService {
 		else if (user.getPoints() >= customerTypes.getCustomerType("BRONZE").getPoints()) {
 			user.setCustomerType("BRONZE");
 		}
-		
-		getUsers().saveUsers();
 
-		getOrders().createOrder(sc);
+		String orderID = getOrders().createOrder(sc);
 		sc.getItems().clear();
 		sc.setTotalPrice(0.0);
-
+		
+		user.getOrderIDs().add(orderID);
+		getUsers().saveUsers();
+		
+		Restaurant restaurant = getRestaurants().getRestaurant(sc.getRestaurantName());
+		restaurant.getOrderIDs().add(orderID);
+		getRestaurants().saveRestaurants();
+		
 		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
 	}
 
@@ -98,7 +103,11 @@ public class OrderService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getMyOrders() {
 		User user = (User) request.getSession().getAttribute("loggedUser");
-		Collection<Order> orders = getOrders().getOrdersForUser(user.getUserName());
+		//Collection<Order> orders = getOrders().getOrdersForUser(user.getUserName());
+		Collection<Order> orders = new ArrayList<Order>();
+		for(String orderID : user.getOrderIDs()) {
+			orders.add(getOrders().getOrder(orderID));
+		}
 		return Response
 				.status(Response.Status.ACCEPTED).entity("SUCCESS")
 				.entity(orders)
@@ -112,7 +121,11 @@ public class OrderService {
 		User user = (User) request.getSession().getAttribute("loggedUser");
 		RestaurantsDAO restaurants = getRestaurants();
 		Restaurant restaurant =  restaurants.getRestaurantByManager(user.getUserName());
-		Collection<Order> orders = getOrders().getOrdersForRestaurant(restaurant.getName());
+		//Collection<Order> orders = getOrders().getOrdersForRestaurant(restaurant.getName());
+		Collection<Order> orders = new ArrayList<Order>();
+		for(String orderID : restaurant.getOrderIDs()) {
+			orders.add(getOrders().getOrder(orderID));
+		}
 		return Response
 				.status(Response.Status.ACCEPTED).entity("SUCCESS")
 				.entity(orders)
@@ -169,10 +182,16 @@ public class OrderService {
 		order.setStatus("IN_TRANSPORT");
 		order.setDeliverer(dto.userName);
 		getOrders().saveOrders();
+		
+		User deliverer = getUsers().getUser(dto.userName);
+		deliverer.getOrderIDs().add(dto.orderID);
+		getUsers().saveUsers();
+		
 		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
 	}
 
-	@GET
+	//delete
+	/*@GET
 	@Path("/getOrdersDeliverer")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getOrdersDeliverer() {
@@ -182,7 +201,7 @@ public class OrderService {
 				.status(Response.Status.ACCEPTED).entity("SUCCESS")
 				.entity(orders)
 				.build();
-	}
+	}*/
 
 	@POST
 	@Path("/removePoints")

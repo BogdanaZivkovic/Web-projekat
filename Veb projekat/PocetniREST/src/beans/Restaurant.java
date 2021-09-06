@@ -1,6 +1,7 @@
 package beans;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class Restaurant {
 
@@ -14,6 +15,7 @@ public class Restaurant {
 	private ArrayList<Integer> itemIDs;
 	private Boolean isDeleted;
 	private Double averageRating;
+	private Collection<String> orderIDs;
 
 	public Restaurant() {
 
@@ -30,6 +32,7 @@ public class Restaurant {
 		this.itemIDs = new ArrayList<Integer>();
 		isDeleted = false;
 		averageRating = 0.0;
+		orderIDs = new ArrayList<String>();
 	}
 
 	public String getName() {
@@ -106,5 +109,13 @@ public class Restaurant {
 
 	public void setAverageRating(Double averageRating) {
 		this.averageRating = averageRating;
+	}
+
+	public Collection<String> getOrderIDs() {
+		return orderIDs;
+	}
+
+	public void setOrderIDs(Collection<String> orderIDs) {
+		this.orderIDs = orderIDs;
 	}
 }

@@ -224,7 +224,7 @@ Vue.component("orders-customer", {
 			})
 			.then(response => {
 				$('#exampleModal2').modal('hide');
-				toast("Your left a comment.");
+				toast("Comment delivered.");
 				this.init();
 				});
 		},
@@ -242,26 +242,24 @@ Vue.component("orders-customer", {
 		setViewedItem: function(item){
 			this.viewedItem = Object.assign({}, item);
 		},
-		comment: function(order) {
-			let data = order
-			this.$router.push({
-				name: "commentCustomer",
-				params: { data }
-			});
-		},
 		cancelOrder: function (order) {
-			axios
-				.post('rest/orders/changeStatus', {
-					'orderID':''+order.orderID,
-					'status':'CANCELED'
-				})
-				
-			axios
-				.post('rest/orders/removePoints', {
-					'orderID':''+order.orderID,
-					'status':'CANCELED'
-				})
-				.then(response => {this.init()})
+			if (confirm('Are you sure?') == true) {
+				axios
+					.post('rest/orders/changeStatus', {
+						'orderID':''+order.orderID,
+						'status':'CANCELED'
+					});
+					
+				axios
+					.post('rest/orders/removePoints', {
+						'orderID':''+order.orderID,
+						'status':'CANCELED'
+					})
+					.then(response => {
+						this.init();
+						toast("Order cancelled.");
+					});
+				}
 		},
 		formatDate: function(dateMillisec) {
 			var date = new Date(dateMillisec)

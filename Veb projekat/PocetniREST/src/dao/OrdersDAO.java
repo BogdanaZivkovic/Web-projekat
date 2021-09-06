@@ -3,7 +3,6 @@ package dao;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -78,7 +77,7 @@ public class OrdersDAO {
 		return orders.get(id);
 	}
 	
-	public void createOrder(ShoppingCart sc) {
+	public String createOrder(ShoppingCart sc) {
 		String orderID = UUID.randomUUID().toString().substring(0, 10);
 		while(orders.containsKey(orderID)) {
 			orderID = UUID.randomUUID().toString().substring(0, 10);
@@ -87,23 +86,25 @@ public class OrdersDAO {
 		orders.put(orderID, order);
 		
 		saveOrders();
+		return orderID;
 	}
-	
-	public Collection<Order> getOrdersForUser(String userName) {
+	//delete
+	/*public Collection<Order> getOrdersForUser(String userName) {
 		Collection<Order> ret = new ArrayList<Order>();
 		for(Order order: getValues())
 			if(order.getUserName().equals(userName))
 				ret.add(order);
 		return ret;
-	}
+	}*/
 	
-	public Collection<Order> getOrdersForRestaurant(String restaurantName) {
+	//delete
+	/*public Collection<Order> getOrdersForRestaurant(String restaurantName) {
 		Collection<Order> ret = new ArrayList<Order>();
 		for(Order order: getValues())
 			if(order.getRestaurantName().equals(restaurantName))
 				ret.add(order);
 		return ret;
-	}
+	}*/
 	
 	public Collection<Order> getWaiting() {
 		Collection<Order> ret = new ArrayList<Order>();
@@ -117,14 +118,14 @@ public class OrdersDAO {
 		getOrder(dto.orderID).setStatus(dto.status);
 		saveOrders();
 	}
-	
-	public Collection<Order> getOrdersForDeliverer(String userName) {
+	//delete
+	/*public Collection<Order> getOrdersForDeliverer(String userName) {
 		Collection<Order> ret = new ArrayList<Order>();
 		for(Order order: getValues())
 			if(order.getDeliverer().equals(userName))
 				ret.add(order);
 		return ret;
-	}
+	}*/
 	
 	public boolean isUserSussy(String username) {
 		int count = 0;

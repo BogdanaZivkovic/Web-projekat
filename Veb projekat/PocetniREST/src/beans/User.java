@@ -1,5 +1,8 @@
 package beans;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 public class User {
 	private String userName;
 	private String password;
@@ -12,6 +15,8 @@ public class User {
 	private double points;
 	private String customerType;
 	private Boolean isBlocked;
+	//orders for customer, approved deliveries for deliverer
+	private Collection<String> orderIDs;
 	
 	public User() {
 		
@@ -30,6 +35,7 @@ public class User {
 		this.points = 0.0;
 		customerType = "";
 		isBlocked = false;
+		orderIDs = new ArrayList<String>();
 	}
 	
 	public String getUserName() {
@@ -120,4 +126,13 @@ public class User {
 	public void setIsBlocked(Boolean isBlocked) {
 		this.isBlocked = isBlocked;
 	}
+
+	public Collection<String> getOrderIDs() {
+		return orderIDs;
+	}
+
+	public void setOrderIDs(Collection<String> orderIDs) {
+		this.orderIDs = orderIDs;
+	}
+	
 }
