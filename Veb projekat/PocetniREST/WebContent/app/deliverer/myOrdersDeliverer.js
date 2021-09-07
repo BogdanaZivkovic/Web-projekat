@@ -34,16 +34,16 @@ Vue.component("my-orders-deliverer", {
 								<div class="collapse" id="collapseSearch">
 									<div class="card card-colored">
 										<div class="row ms-1">
-										<input class="input-style" style="width: 160px;" type="text" v-model="search.restaurant" placeholder="Restaurant">
-										<input class="input-style" style="width: 160px;" type="number" v-model="search.minPrice" placeholder="Min price">
-										<input class="input-style" style="width: 160px;" type="number" v-model="search.maxPrice" placeholder="Max price">
+											<input class="input-style" style="width: 160px;" type="text" v-model="search.restaurant" placeholder="Restaurant">
+											<input class="input-style" style="width: 160px;" type="number" v-model="search.minPrice" placeholder="Min price">
+											<input class="input-style" style="width: 160px;" type="number" v-model="search.maxPrice" placeholder="Max price">
 										</div>
-									</div>
-									<div class="row ms-1">
-										<label> Min date: </label>
-										<input class="input-style" style="width: 200px;" type="date" v-model="search.minDate" placeholder="Min date">
-										<label> Max date: </label>
-										<input class="input-style" style="width: 200px;" type="date" v-model="search.maxDate" placeholder="Max date">
+										<div class="row ms-1">
+											<label> Min date: </label>
+											<input class="input-style" style="width: 200px;" type="date" v-model="search.minDate" placeholder="Min date">
+											<label> Max date: </label>
+											<input class="input-style" style="width: 200px;" type="date" v-model="search.maxDate" placeholder="Max date">
+										</div>
 									</div>
 								</div>
 							</div>
@@ -84,8 +84,10 @@ Vue.component("my-orders-deliverer", {
 												<option>Mexican</option>
 												<option>Gyros</option>
 											</select>
+										</div>
+										<div class="col-lg-6 col-md-6 col-sm-6">
 											<label> Order status: </label>
-											<select v-model="filter.status">
+											<select style="margin: 5px;" class="selectpicker select-nice" v-model="filter.status">
 												<option disabled value="">Please select one</option>
 												<option value="">All</option>
 												<option> PROCESSING </option>

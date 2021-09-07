@@ -33,15 +33,15 @@ Vue.component("orders-manager", {
 								<div class="collapse" id="collapseSearch">
 									<div class="card card-colored">
 										<div class="row ms-1">
-										<input class="input-style" style="width: 160px;" type="number" v-model="search.minPrice" placeholder="Min price">
-										<input class="input-style" style="width: 160px;" type="number" v-model="search.maxPrice" placeholder="Max price">
+											<input class="input-style" style="width: 160px;" type="number" v-model="search.minPrice" placeholder="Min price">
+											<input class="input-style" style="width: 160px;" type="number" v-model="search.maxPrice" placeholder="Max price">
 										</div>
-									</div>
-									<div class="row ms-1">
-										<label> Min date: </label>
-										<input class="input-style" style="width: 200px;" type="date" v-model="search.minDate" placeholder="Min date">
-										<label> Max date: </label>
-										<input class="input-style" style="width: 200px;" type="date" v-model="search.maxDate" placeholder="Max date">
+										<div class="row ms-1">
+											<label> Min date: </label>
+											<input class="input-style" style="width: 200px;" type="date" v-model="search.minDate" placeholder="Min date">
+											<label> Max date: </label>
+											<input class="input-style" style="width: 200px;" type="date" v-model="search.maxDate" placeholder="Max date">
+										</div>
 									</div>
 								</div>
 							</div>
