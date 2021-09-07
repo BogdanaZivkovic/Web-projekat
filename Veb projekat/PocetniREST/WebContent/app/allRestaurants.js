@@ -119,7 +119,10 @@ Vue.component("all-restaurants-app", {
 										</div>
 										<p class="mb-1 lead">{{restaurant.type}}  </p>
 										<p class="mb-1"> {{restaurant.location.address.street}} {{restaurant.location.address.number}}, {{restaurant.location.address.city}} {{restaurant.location.address.zipCode}} </p>
-										<label style="color:#ffc40c"> {{restaurant.averageRating.toFixed(2)}} </label>
+										<div class="d-flex">
+											<i class="bi bi-star-fill" style="color:#ffc40c"></i>
+											<label style="color:#ffc40c">&nbsp{{restaurant.averageRating.toFixed(2)}} </label>
+										</div>
 									</div>
 								</div>
 							</div>
