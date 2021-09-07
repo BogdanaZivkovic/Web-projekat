@@ -103,23 +103,25 @@ Vue.component("all-restaurants-app", {
 					<li>
 						<a href="#" v-on:click="viewRestaurant(restaurant)" class="list-group-item list-group-item-action li-container" v-for ="restaurant in filteredRestaurants">			
 							<div class="container">
-								<div class="row justify-content-between">
-									<div class="col-lg-2 col-md-4 col-sm-4"> 
-										<div class="circular">
-											<img v-bind:src="getLogoPath(restaurant)"> 
+									<div class="row">
+										<div class="col-lg-2 col-md-3 col-sm-4"> 
+											<div class="circular">
+												<img class="img-responsive" v-bind:src="getLogoPath(restaurant)"> 
+											</div>
+										</div>
+										<div class="col-lg-1 col-md-1 col-sm-1"> 
+										</div>
+										<div class="col-lg-9 col-md-8 col-sm-7"> 
+											<div class="d-flex w-100 justify-content-between ms-2">
+												<h4 class="mb-1"> {{restaurant.name}} </h4>
+												<span v-if="restaurant.status == 'Open'" class="badge bg-success mb-2"> &check; Open </span>
+												<span v-if="restaurant.status == 'Closed'" class="badge bg-danger mb-2"> &#10005; Closed </span>
+											</div>
+											<p class="mb-1 lead">{{restaurant.type}}  </p>
+											<p class="mb-1"> {{restaurant.location.address.street}} {{restaurant.location.address.number}}, {{restaurant.location.address.city}} {{restaurant.location.address.zipCode}} </p>
+											<label style="color:#ffc40c"> {{restaurant.averageRating.toFixed(2)}} </label>
 										</div>
 									</div>
-									<div class="col-lg-10 col-md-8 col-sm-8"> 
-										<div class="d-flex w-100 justify-content-between">
-											<h4 class="mb-1"> {{restaurant.name}} </h4>
-											<span v-if="restaurant.status == 'Open'" class="badge bg-success mb-2"> &check; Open </span>
-											<span v-if="restaurant.status == 'Closed'" class="badge bg-danger mb-2"> &#10005; Closed </span>
-										</div>
-										<p class="mb-1 lead">{{restaurant.type}}  </p>
-										<p class="mb-1"> {{restaurant.location.address.street}} {{restaurant.location.address.number}}, {{restaurant.location.address.city}} {{restaurant.location.address.zipCode}} </p>
-										<small>Rating: {{restaurant.averageRating}} </small>
-									</div>
-								</div>
 							</div>
 						</a>	
 					</li>

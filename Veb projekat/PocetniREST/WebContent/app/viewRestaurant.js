@@ -19,7 +19,7 @@ Vue.component("view-restaurant", {
 					</div>
 					<div class="d-flex">
 						<i class="bi bi-star-fill" style="color:#ffc40c"></i>
-						<label style="color:#ffc40c"> {{restaurant.averageRating}} </label>
+						<label style="color:#ffc40c"> {{restaurant.averageRating.toFixed(2)}} </label>
 					</div>
 					<p class="mb-1 lead">{{restaurant.type}}  </p>
 					<p class="mb-1"> {{restaurant.location.address.street}} {{restaurant.location.address.number}}, {{restaurant.location.address.city}} {{restaurant.location.address.zipCode}} </p>

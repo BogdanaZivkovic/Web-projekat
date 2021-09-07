@@ -141,7 +141,7 @@ Vue.component("restaurants-admin", {
 										</div>
 										<p class="mb-1 lead">{{restaurant.type}}  </p>
 										<p class="mb-1"> {{restaurant.location.address.street}} {{restaurant.location.address.number}}, {{restaurant.location.address.city}} {{restaurant.location.address.zipCode}} </p>
-										<small>Rating: {{restaurant.averageRating}} </small>
+										<small>Rating: {{restaurant.averageRating.toFixed(2)}} </small>
 										<div class="d-flex w-100 justify-content-between mt-3">
 											<span v-if="restaurant.status == 'Open'" class="badge bg-success mb-2"> &check; Open </span>
 											<span v-if="restaurant.status == 'Closed'" class="badge bg-danger mb-2"> &#10005; Closed </span>
