@@ -33,7 +33,9 @@ Vue.component("view-restaurant-manager", {
 						</div>
 						<p class="mb-1 lead">{{restaurant.type}}  </p>
 						<p class="mb-1"> {{restaurant.location.address.street}} {{restaurant.location.address.number}}, {{restaurant.location.address.city}} {{restaurant.location.address.zipCode}} </p>
-						
+						<div class="container-for-map mb-1">
+							<div id="map" class="map"></div>
+						</div>
 						<button @click="closeRestaurant" class="btn btn-success btn-sm mb-2" v-if="restaurant.status == 'Open'"> &check; Open </button>
 						<button @click="openRestaurant" class="btn btn-danger btn-sm mb-2" v-if="restaurant.status == 'Closed'"> &#10005; Closed </button>
 						
@@ -182,6 +184,32 @@ Vue.component("view-restaurant-manager", {
 	</div>
 	`,
 	methods: {
+		createMap : function () {
+				var coord = ol.proj.fromLonLat([this.restaurant.location.longitude, this.restaurant.location.latitude]);
+				var map = new ol.Map({
+			    target: 'map',
+			    layers: [
+			      new ol.layer.Tile({
+			        source: new ol.source.OSM()
+			      })
+			    ],
+			    view: new ol.View({
+			      center: coord,
+			      zoom: 17
+			    })
+			  });
+	
+			 var layer = new ol.layer.Vector({
+				source: new ol.source.Vector({
+					features: [
+				    	new ol.Feature({
+				        	geometry: new ol.geom.Point(coord)
+				        })
+				    ]
+				 })
+			 });
+			 map.addLayer(layer);
+		},
 		closeRestaurant: function() {
 			axios
 			.post('rest/restaurants/changeStatus', {
@@ -310,6 +338,9 @@ Vue.component("view-restaurant-manager", {
 				.get('rest/restaurants/getMyRestaurant')
 				.then(response => {
 					this.restaurant = response.data
+					this.$nextTick(function () {
+						this.createMap();
+					})
 					axios
 						.get('rest/items/getAllItems')
 						.then(response => {

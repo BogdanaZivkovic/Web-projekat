@@ -41,6 +41,9 @@ Vue.component("view-restaurant-customer", {
 					</div>
 					<p class="mb-1 lead">{{restaurant.type}}  </p>
 					<p class="mb-1"> {{restaurant.location.address.street}} {{restaurant.location.address.number}}, {{restaurant.location.address.city}} {{restaurant.location.address.zipCode}} </p>
+					<div class="container-for-map mb-1">
+							<div id="map" class="map"></div>
+					</div>
 					<span v-if="restaurant.status == 'Open'" class="badge bg-success mb-2"> &check; Open </span>
 					<span v-if="restaurant.status == 'Closed'" class="badge bg-danger mb-2"> &#10005; Closed </span>
 					<h5 class="border-bottom"> Items </h5>
@@ -167,6 +170,32 @@ Vue.component("view-restaurant-customer", {
 	</div>
 	`,
 	methods: {
+		createMap : function () {
+				var coord = ol.proj.fromLonLat([this.restaurant.location.longitude, this.restaurant.location.latitude]);
+				var map = new ol.Map({
+			    target: 'map',
+			    layers: [
+			      new ol.layer.Tile({
+			        source: new ol.source.OSM()
+			      })
+			    ],
+			    view: new ol.View({
+			      center: coord,
+			      zoom: 17
+			    })
+			  });
+	
+			 var layer = new ol.layer.Vector({
+				source: new ol.source.Vector({
+					features: [
+				    	new ol.Feature({
+				        	geometry: new ol.geom.Point(coord)
+				        })
+				    ]
+				 })
+			 });
+			 map.addLayer(layer);
+		},
 		editQuantity : function () {
 			axios
 			.post('rest/shoppingCart/editQuantity', {
@@ -264,6 +293,9 @@ Vue.component("view-restaurant-customer", {
 	},
 	mounted() {
 		this.restaurant = this.$route.params.data;
+		this.$nextTick(function () {
+			this.createMap();
+		})
 		axios
           .get('rest/items/getAllItems')
           .then(response => {
