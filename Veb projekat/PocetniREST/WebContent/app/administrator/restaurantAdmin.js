@@ -67,19 +67,19 @@ Vue.component("restaurant-admin", {
 						  </div>
 						  <div class="mb-3">
 						    <label for="cityInput" class="form-label"> City </label>
-						    <input id="cityInput" type="text" class="form-control" placeholder="City" required disabled>
+						    <input id="cityInput" type="text" class="form-control" placeholder="City" disabled>
 						  </div>
 						  <div class="mb-3">
 						    <label for="streetInput" class="form-label"> Street </label>
-						    <input id="streetInput" type="text" class="form-control" placeholder="Street" required disabled>
+						    <input id="streetInput" type="text" class="form-control" placeholder="Street" disabled>
 						  </div>
 						  <div class="mb-3">
 						    <label for="numberInput" class="form-label"> Number </label>
-						    <input id="numberInput" type="text" class="form-control" placeholder="Number" required disabled>
+						    <input id="numberInput" type="text" class="form-control" placeholder="Number" disabled>
 						  </div>
 						  <div class="mb-3">
 						    <label for="zipCodeInput" class="form-label"> Zip code </label>
-						    <input id="zipCodeInput" type="text" class="form-control" placeholder="ZIP code" required disabled>
+						    <input id="zipCodeInput" type="text" class="form-control" placeholder="ZIP code" disabled>
 						  </div>
 						<div class="container-for-map mb-3">
 							<label for="map" class="form-label"> Select location </label>
