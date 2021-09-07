@@ -96,7 +96,7 @@ Vue.component("users-admin", {
 		</div>
 		<div class="row justify-content-center mb-2">
 			<div class="col-lg-9 col-md-10 col-sm-12">
-				<table class="table-style">
+				<table class="table-style mb-5">
 				<colgroup>
 					    <col class="ten" />
 					    <col class="ten" />
