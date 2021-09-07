@@ -162,7 +162,24 @@ Vue.component("restaurant-admin", {
                 var coord = ol.proj.toLonLat(evt.coordinate);
 				console.log(coord);
                 getLocationInfo(coord);
-
+				
+				map.getLayers().forEach(layer => {
+				  if (layer.get('name') && layer.get('name') == 'pointMarker'){
+				      map.removeLayer(layer)
+				  }
+				});
+				
+				 var layer = new ol.layer.Vector({
+				     source: new ol.source.Vector({
+				         features: [
+				             new ol.Feature({
+				                 geometry: new ol.geom.Point(evt.coordinate)
+				             })
+				         ]
+				     })
+				 });
+				 layer.set('name', 'pointMarker')
+				 map.addLayer(layer);
               })
 			},
 			userModalOpening: function () {
