@@ -126,7 +126,7 @@ Vue.component("restaurants-admin", {
 		</div>
 		<div class="row justify-content-center">
 			<div class="col-lg-8 col-md-10 col-sm-12">
-				<ul class="list-group">
+				<ul class="list-unstyled list-group">
 					<li>
 						<a href="#" v-on:click="viewRestaurant(restaurant)" class="list-group-item list-group-item-action li-container" v-for ="restaurant in filteredRestaurants">			
 							<div class="container">

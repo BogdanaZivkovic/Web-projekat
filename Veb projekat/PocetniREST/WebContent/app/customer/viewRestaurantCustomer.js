@@ -21,7 +21,8 @@ Vue.component("view-restaurant-customer", {
 					logoPath: "",
 				},
 				count: 0
-			}
+			},
+			itemToAdd: {}
 		}
 	},
 	template:`
@@ -47,27 +48,23 @@ Vue.component("view-restaurant-customer", {
 					<span v-if="restaurant.status == 'Open'" class="badge bg-success mb-2"> &check; Open </span>
 					<span v-if="restaurant.status == 'Closed'" class="badge bg-danger mb-2"> &#10005; Closed </span>
 					<h5 class="border-bottom"> Items </h5>
-					<ul class="list-group mb-2">
-						<li class="list-group-item" v-for="i in items">
-							<div class="container">
-								<div class="row justify-content-between">
-									<div class="col-lg-10 col-md-9 col-sm-8 d-flex flex-column">
-										<p class="fw-bold mb-1"> {{i.item.name}} </p>
-										<small>{{i.item.quantity}}</small>
-										<small>{{i.item.description}} </small>
-										<p class="lead mb-1">{{i.item.price}} $</p>
-									</div>
-									<div class="col-lg-2 col-md-3 col-sm-4">
-										<img height="100" width="100" class="rounded float-end" v-bind:src="getLogoPath(i.item)">
-									</div>
-									<div class="row">
-										<div class="col-sm-12 text-end">
-											<input v-if="restaurant.status.match('Open')" type="number" v-model="i.count" placeHolder="Count" min="1">
-											<button class="btn btn-success" v-if="restaurant.status.match('Open')" @click="selectItem(i)"> Add </button>
+					<ul class="list-unstyled list-group mb-2">
+						<li>
+							<a href="#" v-on:click ="showAddItemModal(item)" class="list-group-item list-group-item-action" v-for="item in items">
+								<div class="container">
+									<div class="row justify-content-between">
+										<div class="col-lg-10 col-md-9 col-sm-8 d-flex flex-column">
+											<p class="fw-bold mb-1"> {{item.name}} </p>
+											<small>{{item.quantity}}</small>
+											<small>{{item.description}} </small>
+											<p class="lead mb-1">{{item.price}} $</p>
+										</div>
+										<div class="col-lg-2 col-md-3 col-sm-4">
+											<img height="100" width="100" class="rounded float-end" v-bind:src="getLogoPath(item)">
 										</div>
 									</div>
 								</div>
-							</div>
+							</a>
 						</li>
 					</ul>
 					<h5 class="border-bottom"> Comments </h5>
@@ -154,22 +151,60 @@ Vue.component("view-restaurant-customer", {
 					  <div class="modal-body">
 						<div class="d-flex justify-content-between align-items-center">
 							<p class="fw-bold mb-1 me-2"> {{editedScItem.item.name}} </p>
-							<input type="number" v-model="editedScItem.count" min="1">
-							<p class="mb-1"> {{editedScItem.count*editedScItem.item.price}}$ </p>
+							<div class="plusminus horiz">
+							  <button id="editItemQtyMinus"></button>
+							  <input type="number" id ="editItemQty" name="editProductQty" value="1" min="1" max="10">
+							  <button id="editItemQtyPlus"></button> 
+							</div>
 						</div>
 					  </div>
 					  <div class="modal-footer">
 					  	<button type="button" class="btn btn-outline-secondary" @click="closeEditModal" data-bs-toggle="modal" data-bs-target="#shoppingCart">Cancel</button>
-					  	<button type="button" @click="editQuantity" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#shoppingCart"> OK </button>
+					  	<button type="button" @click="editQuantity(editedScItem)" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#shoppingCart"> OK </button>
 					  </div>
 			    </div>
 			  </div>
 			</div>
-
+			
+			
+			<!-- Modal for adding an item -->
+			<div class="modal fade" id="addItem" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addItemLabel" aria-hidden="true">
+			  <div class="modal-dialog modal-dialog-centered">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="addItemLabel"> Add item </h5>
+			        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			      </div>
+					  <div class="modal-body">
+						<div class="d-flex justify-content-between align-items-center">
+							<p class="fw-bold mb-1 me-2"> {{itemToAdd.name}} </p>
+							<div class="plusminus horiz">
+							  <button></button>
+							  <input type="number" id ="addItemQty" name="productQty" value="1" min="1" max="10">
+							  <button></button> 
+							</div>
+						</div>
+					  </div>
+					  <div class="modal-footer">
+					  	<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"> Close </button>
+					  	<button type="button" @click="selectItem(itemToAdd)" class="btn btn-warning"> OK </button>
+					  </div>
+			    </div>
+			  </div>
+			</div>
 		
 	</div>
 	`,
 	methods: {
+		showAddItemModal : function (item) {
+			document.getElementById("addItemQty").value = 1;
+			// Create a new 'change' event
+			var event = new Event('change');
+			// Dispatch it.
+			document.getElementById("editItemQty").dispatchEvent(event);
+			this.itemToAdd = Object.assign({}, item);
+			$('#addItem').modal('toggle');
+		},
 		createMap : function () {
 				var coord = ol.proj.fromLonLat([this.restaurant.location.longitude, this.restaurant.location.latitude]);
 				var map = new ol.Map({
@@ -196,11 +231,12 @@ Vue.component("view-restaurant-customer", {
 			 });
 			 map.addLayer(layer);
 		},
-		editQuantity : function () {
+		editQuantity : function (editedScItem) {
+			var count = document.getElementById("editItemQty").value;
 			axios
 			.post('rest/shoppingCart/editQuantity', {
-				item: this.editedScItem.item,
-				"count":''+this.editedScItem.count
+				item: editedScItem.item,
+				"count":''+count
 			})
 			.then(response => {
 				this.getShoppingCart();
@@ -211,6 +247,13 @@ Vue.component("view-restaurant-customer", {
 			$('#editItem').modal('hide');
 		},
 		openEditModal: function(shoppingCartItem) {
+			document.getElementById("editItemQty").value = shoppingCartItem.count;
+			
+			// Create a new 'change' event
+			var event = new Event('change');
+			// Dispatch it.
+			document.getElementById("editItemQty").dispatchEvent(event);
+			
 			this.editedScItem = Object.assign({}, shoppingCartItem);
 			$('#shoppingCart').modal('hide');
 		},
@@ -255,15 +298,17 @@ Vue.component("view-restaurant-customer", {
 				toast("Your order has been delivered.");
 			});
 		},
-		selectItem : function (shoppingCartItem) {
+		selectItem : function (item) {
+			var count = document.getElementById("addItemQty").value;
 			axios
 			.post('rest/shoppingCart/add', {
-				item: shoppingCartItem.item,
-				"count":''+shoppingCartItem.count
+				item: item,
+				"count":''+count
 			})
 			.then(response => {
 				this.getShoppingCart();
-				toast('' + shoppingCartItem.item.name +" x "  + shoppingCartItem.count +" added to shopping cart.");
+				toast('' + item.name +" x "  + count +" added to shopping cart.");
+				$('#addItem').modal('hide');
 			});
 		},
 		getLogoPath: function (item) {
@@ -295,14 +340,14 @@ Vue.component("view-restaurant-customer", {
 		this.restaurant = this.$route.params.data;
 		this.$nextTick(function () {
 			this.createMap();
+			$('.plusminus').numberPicker();
 		})
 		axios
           .get('rest/items/getAllItems')
           .then(response => {
 			response.data.forEach(el => {
 				if (el.restaurantName == this.restaurant.name) {
-					let shoppingCartItem = {item:el, count:1}
-					this.items.push(shoppingCartItem);
+					this.items.push(el);
 				}
 			})
 		})
@@ -336,3 +381,44 @@ Vue.component("view-restaurant-customer", {
 				.then( response => (this.discount = response.data))
 	}
 });
+
+(function ($) {
+  $.fn.numberPicker = function() {
+    var dis = 'disabled';
+    return this.each(function() {
+      var picker = $(this),
+          p = picker.find('button:last-child'),
+          m = picker.find('button:first-child'),
+          input = picker.find('input'),                 
+          min = parseInt(input.attr('min'), 10),
+          max = parseInt(input.attr('max'), 10),
+          inputFunc = function(picker) {
+            var i = parseInt(input.val(), 10);
+            if ( (i <= min) || (!i) ) {
+              input.val(min);
+              p.prop(dis, false);
+              m.prop(dis, true);
+            } else if (i >= max) {
+              input.val(max);
+              p.prop(dis, true); 
+              m.prop(dis, false);
+            } else {
+              p.prop(dis, false);
+              m.prop(dis, false);
+            }
+          },
+          changeFunc = function(picker, qty) {
+            var q = parseInt(qty, 10),
+                i = parseInt(input.val(), 10);
+            if ((i < max && (q > 0)) || (i > min && !(q > 0))) {
+              input.val(i + q);
+              inputFunc(picker);
+            }
+          };
+      m.on('click', function(){changeFunc(picker,-1);});
+      p.on('click', function(){changeFunc(picker,1);});
+      input.on('change', function(){inputFunc(picker);});
+      inputFunc(picker); //init
+    });
+  };
+}(jQuery));
