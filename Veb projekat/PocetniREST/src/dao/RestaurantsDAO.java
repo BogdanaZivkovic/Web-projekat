@@ -78,7 +78,7 @@ public class RestaurantsDAO {
 
 
 	public void addRestaurant(RestaurantDTO dto) {
-		Location location = new Location("0", "0", new Address(dto.city, dto.street, dto.number, dto.zipCode));
+		Location location = new Location(dto.latitude, dto.longitude, new Address(dto.city, dto.street, dto.number, dto.zipCode));
 		Restaurant restaurant = new Restaurant(dto.name, dto.type, dto.status, location, dto.managerUsername, dto.logoPath);
 		restaurants.put(restaurant.getName(), restaurant);
 		saveRestaurants();

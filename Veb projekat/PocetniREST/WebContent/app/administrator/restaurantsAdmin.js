@@ -119,7 +119,8 @@ Vue.component("restaurants-admin", {
 		<div class="row justify-content-center mb-2">
 			<div class="col-lg-8 col-md-10 col-sm-12">
 				<div class="row float-end me-2">
-					<button class="btn btn-primary" @click="clearModal" data-bs-toggle="modal" data-bs-target="#restaurantModal"> + New restaurant </button>
+					<!-- button class="btn btn-primary" @click="clearModal" data-bs-toggle="modal" data-bs-target="#restaurantModal"> + New restaurant </button -->
+					<button class="btn btn-primary" @click="goToRestaurantCreation"> + New restaurant </button>
 				</div>
 			</div>
 		</div>
@@ -164,7 +165,7 @@ Vue.component("restaurants-admin", {
 	
 	
 	<!-- Modal -->
-	<div class="modal fade" id="restaurantModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="restaurantModalLabel" aria-hidden="true">
+	<!-- div class="modal fade" id="restaurantModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="restaurantModalLabel" aria-hidden="true">
 	  <div class="modal-dialog modal-dialog-centered">
 	    <div class="modal-content">
 	      <div class="modal-header">
@@ -218,7 +219,7 @@ Vue.component("restaurants-admin", {
                    				</option>
 							</select>
 							<p v-else> There are no available managers. <a href="#" v-on:click="userModalOpening" data-bs-toggle="modal" data-bs-target="#userModal"> Register new manager. </a> </p>
-						  </div>	
+						  </div>
 				      </div>
 				      <div class="modal-footer">
 				        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -227,10 +228,10 @@ Vue.component("restaurants-admin", {
 					</form>
 				    </div>
 				  </div>
-				</div>
+				</div -->
 
 				
-			<div class="modal fade" id="userModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="newUserLabel" aria-hidden="true">
+			<!-- div class="modal fade" id="userModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="newUserLabel" aria-hidden="true">
 			  <div class="modal-dialog modal-dialog-centered">
 			    <div class="modal-content">
 			      <div class="modal-header">
@@ -275,12 +276,15 @@ Vue.component("restaurants-admin", {
 				</form>
 				</div>
 			</div>
-		</div>
-				
+		</div -->
+		
 	</div>
 	`,
     methods: {
-		register : function (newUser) {
+		goToRestaurantCreation : function () {
+			router.push('/restaurantadmin');
+		},
+		/*register : function (newUser) {
 			event.preventDefault();
 			axios
 			.post('rest/users/registration', {
@@ -370,7 +374,7 @@ Vue.component("restaurants-admin", {
 			    	toast("Restaurant " + newRestaurant.name + " already exists.");
 			    }
 			});
-		},
+		},*/
 		matchesSearch: function (restaurant) {
 			if(!restaurant.name.toLowerCase().match(this.searchFields.name.toLowerCase()))
 				return false;

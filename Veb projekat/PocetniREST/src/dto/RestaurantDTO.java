@@ -13,4 +13,6 @@ public class RestaurantDTO {
 	public String number;
 	public String zipCode;
 	public String logoPath;
+	public String latitude;
+	public String longitude;
 }
