@@ -107,11 +107,6 @@ Vue.component("view-restaurant-manager", {
 						    <input v-model="newItem.price" id="priceInput" type="number" class="form-control" placeholder="Price" required>
 						  </div>
 						  <div class="mb-3">
-						    <label for="imageInput" class="form-label">Image</label>
-						    <input id="imageInput" type="file" class="form-control" onchange="encodeImageFileAsURLForChanging(this)" required>
-							<img hidden id="imgForChangeID"  src="" alt="Image of restaurant" width="11" height="11">
-						  </div>
-						  <div class="mb-3">
 					   		<label for="typeInput" class="form-label"> Type </label>
 					    	<select v-model="newItem.type" id="typeInput" class="form-select">
 								<option disabled value="">Please select one</option>
@@ -126,6 +121,11 @@ Vue.component("view-restaurant-manager", {
 						  <div class="mb-3">
 						    <label for="descriptionInput" class="form-label"> Description </label>
 						    <textarea v-model="newItem.description" id="descriptionInput" class="form-control"></textarea>
+						  </div>
+						  <div class="mb-3">
+						    <label for="imageInput" class="form-label">Image</label>
+						    <input id="imageInput" type="file" class="form-control" onchange="encodeImageFileAsURLForChanging(this)" required>
+							<img hidden id="imgForChangeID"  src="" alt="Image of restaurant" width="11" height="11">
 						  </div>
 				      </div>
 				      <div class="modal-footer">
@@ -149,33 +149,35 @@ Vue.component("view-restaurant-manager", {
 				  <form @submit="editItem(newItem)" method='post'>
 				      <div class="modal-body">
 						  <div class="mb-3">
-						    <label for="nameInput" class="form-label">Item name</label>
-						    <input v-model="newItem.name" id="nameInput" type="text" class="form-control" placeholder="Item name" required>
+						    <label for="editNameInput" class="form-label">Item name</label>
+						    <input v-model="newItem.name" id="editNameInput" type="text" class="form-control" placeholder="Item name" required>
 						  </div>
 						  <div class="mb-3">
-						    <label for="priceInput" class="form-label"> Price </label>
-						    <input v-model="newItem.price" id="priceInput" type="number" class="form-control" placeholder="Price" required>
+						    <label for="editPriceInput" class="form-label"> Price </label>
+						    <input v-model="newItem.price" id="editPriceInput" type="number" class="form-control" placeholder="Price" required>
 						  </div>
 						  <div class="mb-3">
-					   		<label for="typeInput" class="form-label"> Type </label>
-					    	<select v-model="newItem.type" id="typeInput" class="form-select">
+					   		<label for="editTypeInput" class="form-label"> Type </label>
+					    	<select v-model="newItem.type" id="editTypeInput" class="form-select">
 								<option disabled value="">Please select one</option>
 							    <option>FOOD</option>
 							    <option>DRINK</option>
 							</select>
 					  	  </div>
 						  <div class="mb-3">
-						    <label for="quantityInput" class="form-label"> Quantity </label>
-						    <input v-model="newItem.quantity" id="quantityInput" type="text" class="form-control" placeholder="Quantity">
+						    <label for="editQuantityInput" class="form-label"> Quantity </label>
+						    <input v-model="newItem.quantity" id="editQuantityInput" type="text" class="form-control" placeholder="Quantity">
 						  </div>
 						  <div class="mb-3">
-						    <label for="descriptionInput" class="form-label"> Description </label>
-						    <textarea v-model="newItem.description" id="descriptionInput" class="form-control"></textarea>
+						    <label for="editDescriptionInput" class="form-label"> Description </label>
+						    <textarea v-model="newItem.description" id="editDescriptionInput" class="form-control"></textarea>
+						  </div>
+						  <div class="container-for-image mb-3">
+							<img id="imgForChangeID1" alt="Image of restaurant" width="50" height="50">
 						  </div>
 				 		  <div class="mb-3">
-			  				 <label for="imageInput" class="form-label">Image</label>
-						     <input id="imageInput" type="file" class="form-control" onchange="encodeImageFileAsURLForChanging1(this)" required>
-							 <img hidden id="imgForChangeID1"  src="" alt="Image of restaurant" width="11" height="11">
+			  				 <label for="editImageInput" class="form-label">Change image</label>
+						     <input id="editImageInput" type="file" class="form-control" onchange="encodeImageFileAsURLForChanging1(this)">
 						  </div>
 				      </div>
 				      <div class="modal-footer">
@@ -311,6 +313,8 @@ Vue.component("view-restaurant-manager", {
 		},
 		setNewItem: function(item) {
 			this.newItem = Object.assign({}, item);
+			document.getElementById("imgForChangeID1").src = this.getLogoPath(item);
+			document.getElementById("editImageInput").value = '';
 		},
 		editItem: function(newItem) {
 			event.preventDefault();
