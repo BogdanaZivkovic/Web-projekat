@@ -8,4 +8,5 @@ public class ItemToEditDTO {
 	public String quantity;
 	public String restaurantName;
 	public String description;
+	public String logoPath;
 }

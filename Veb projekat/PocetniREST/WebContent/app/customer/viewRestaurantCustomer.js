@@ -295,7 +295,7 @@ Vue.component("view-restaurant-customer", {
 				$('#shoppingCart').modal('hide');
 				this.sc = [];
 				this.totalPrice = 0.0;
-				toast("Your order has been delivered.");
+				toast("Your items have been ordered.");
 			});
 		},
 		selectItem : function (item) {

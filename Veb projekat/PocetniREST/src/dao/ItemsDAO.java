@@ -98,6 +98,7 @@ public class ItemsDAO {
 		itemToEdit.setRestaurantName(editedItem.restaurantName);
 		itemToEdit.setQuantity(editedItem.quantity);
 		itemToEdit.setDescription(editedItem.description);
+		itemToEdit.setLogoPath(editedItem.logoPath);
 		saveItems();
 	}
 	
