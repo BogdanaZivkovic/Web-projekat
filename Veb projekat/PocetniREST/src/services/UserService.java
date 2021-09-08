@@ -88,7 +88,7 @@ public class UserService {
 				.entity(users)
 				.build();
 	}
-	
+		
 	@GET
 	@Path("/getAvailableManagers")
 	@Produces(MediaType.APPLICATION_JSON)

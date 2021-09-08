@@ -131,7 +131,44 @@ public class OrderService {
 				.entity(orders)
 				.build();
 	}
-
+		
+	@GET
+	@Path("/getMyCustomers")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getRestaurantCustomers() {
+		User user = (User) request.getSession().getAttribute("loggedUser");
+		RestaurantsDAO restaurants = getRestaurants();
+		Restaurant restaurant =  restaurants.getRestaurantByManager(user.getUserName());
+		
+		Collection<User> customers = new ArrayList<User>();
+		Collection<Order> orders = new ArrayList<Order>();
+		
+		for(String orderID : restaurant.getOrderIDs()) {
+			orders.add(getOrders().getOrder(orderID));
+		}
+		
+		for(Order order : orders) {	
+			
+			int found = 0;
+			
+			for( User c : customers) {
+				if(order.getUserName().equals(c.getUserName())) {
+					found=1;
+					break;
+				}
+			}
+				
+			if(found==0) {
+				customers.add(getUsers().getActiveUser(order.getUserName()));
+			}
+		}
+		
+		return Response
+				.status(Response.Status.ACCEPTED).entity("SUCCESS")
+				.entity(customers)
+				.build();
+	}
+	
 	@GET
 	@Path("/getWaiting")
 	@Produces(MediaType.APPLICATION_JSON)
