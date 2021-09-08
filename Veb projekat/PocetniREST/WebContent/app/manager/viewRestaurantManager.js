@@ -108,7 +108,7 @@ Vue.component("view-restaurant-manager", {
 						  </div>
 						  <div class="mb-3">
 					   		<label for="typeInput" class="form-label"> Type </label>
-					    	<select v-model="newItem.type" id="typeInput" class="form-select">
+					    	<select v-model="newItem.type" id="typeInput" class="form-select" required>
 								<option disabled value="">Please select one</option>
 							    <option>FOOD</option>
 							    <option>DRINK</option>
@@ -158,7 +158,7 @@ Vue.component("view-restaurant-manager", {
 						  </div>
 						  <div class="mb-3">
 					   		<label for="editTypeInput" class="form-label"> Type </label>
-					    	<select v-model="newItem.type" id="editTypeInput" class="form-select">
+					    	<select v-model="newItem.type" id="editTypeInput" class="form-select" required>
 								<option disabled value="">Please select one</option>
 							    <option>FOOD</option>
 							    <option>DRINK</option>
@@ -283,6 +283,7 @@ Vue.component("view-restaurant-manager", {
 				description: "",
 				logoPath: "",
 			};
+			document.getElementById("imageInput").value = '';
 		},
 		addItem : function(newItem) {
 			
