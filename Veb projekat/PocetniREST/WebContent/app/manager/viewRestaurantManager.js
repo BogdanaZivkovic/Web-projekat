@@ -173,7 +173,7 @@ Vue.component("view-restaurant-manager", {
 						    <textarea v-model="newItem.description" id="editDescriptionInput" class="form-control"></textarea>
 						  </div>
 						  <div class="container-for-image mb-3">
-							<img id="imgForChangeID1" alt="Image of restaurant" width="50" height="50">
+							<img id="imgForChangeID1" alt="Image of restaurant">
 						  </div>
 				 		  <div class="mb-3">
 			  				 <label for="editImageInput" class="form-label">Change image</label>

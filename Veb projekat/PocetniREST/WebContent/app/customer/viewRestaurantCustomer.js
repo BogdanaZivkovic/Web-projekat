@@ -48,9 +48,9 @@ Vue.component("view-restaurant-customer", {
 					<span v-if="restaurant.status == 'Open'" class="badge bg-success mb-2"> &check; Open </span>
 					<span v-if="restaurant.status == 'Closed'" class="badge bg-danger mb-2"> &#10005; Closed </span>
 					<h5 class="border-bottom"> Items </h5>
-					<ul class="list-unstyled list-group mb-2">
+					<ul class="list-unstyled list-group mb-2" v-if="restaurant.status == 'Open'">
 						<li>
-							<a href="#" v-on:click ="showAddItemModal(item)" class="list-group-item list-group-item-action" v-for="item in items">
+							<a href="#" v-on:click ="showAddItemModal(item)" data-bs-toggle="modal" data-bs-target="#addItem" class="list-group-item list-group-item-action" v-for="item in items">
 								<div class="container">
 									<div class="row justify-content-between">
 										<div class="col-lg-10 col-md-9 col-sm-8 d-flex flex-column">
@@ -65,6 +65,23 @@ Vue.component("view-restaurant-customer", {
 									</div>
 								</div>
 							</a>
+						</li>
+					</ul>
+					<ul class="list-unstyled list-group mb-2" v-else>
+						<li class="list-group-item" v-for="item in items">
+							<div class="container">
+								<div class="row justify-content-between">
+									<div class="col-lg-10 col-md-9 col-sm-8 d-flex flex-column">
+										<p class="fw-bold mb-1"> {{item.name}} </p>
+										<small>{{item.quantity}}</small>
+										<small>{{item.description}} </small>
+										<p class="lead mb-1">{{item.price}} $</p>
+									</div>
+									<div class="col-lg-2 col-md-3 col-sm-4">
+										<img height="100" width="100" class="rounded float-end" v-bind:src="getLogoPath(item)">
+									</div>
+								</div>
+							</div>
 						</li>
 					</ul>
 					<h5 class="border-bottom"> Comments </h5>
@@ -109,10 +126,13 @@ Vue.component("view-restaurant-customer", {
 				  <div class="modal-body">
 					<ul class="list-group">
 						<li class="list-group-item" v-for = "i in sc">
-							<div class="d-flex justify-content-between">
-								<div class="d-flex flex-row">
-									<p class="fw-bold mb-1 me-2"> {{i.item.name}} </p>
-									<p> x{{i.count}} </p>
+							<div class="d-flex justify-content-between align-items-center">
+								<div class="d-flex flex-row align-items-center">
+									<div class="container-for-image-sc me-3">
+									 <img v-bind:src="getLogoPath(i.item)">
+								    </div>
+									<p class="fw-bold me-2"> {{i.item.name}} </p>
+									<p> x {{i.count}} </p>
 								</div>
 								<p> {{i.count*i.item.price}}$ </p>
 							</div>
@@ -203,7 +223,6 @@ Vue.component("view-restaurant-customer", {
 			// Dispatch it.
 			document.getElementById("editItemQty").dispatchEvent(event);
 			this.itemToAdd = Object.assign({}, item);
-			$('#addItem').modal('toggle');
 		},
 		createMap : function () {
 				var coord = ol.proj.fromLonLat([this.restaurant.location.longitude, this.restaurant.location.latitude]);
@@ -265,6 +284,10 @@ Vue.component("view-restaurant-customer", {
 				axios
 				.get('rest/shoppingCart/getScTotal')
 				.then(response=>(this.totalPrice = response.data))
+				
+				axios
+				.get('rest/shoppingCart/getDiscount')
+				.then( response => (this.discount = response.data));
 		},
 		deleteItem: function (shoppingCartItem) {
 			axios
@@ -377,8 +400,8 @@ Vue.component("view-restaurant-customer", {
 				})						
 			})
 		axios
-				.get('rest/shoppingCart/getDiscount')
-				.then( response => (this.discount = response.data))
+			.get('rest/shoppingCart/getDiscount')
+			.then( response => (this.discount = response.data));
 	}
 });
 

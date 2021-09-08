@@ -182,6 +182,16 @@ th, .td-style {
 	height: 100%;
 }
 
+.container-for-image-sc {
+	display: flex;
+}
+
+.container-for-image-sc img {
+	width: 75px;
+	height: 100%;
+	border-radius: 10px;
+}
+
 @media only screen and (max-width: 678px) {
 		.bg{
 			background-size:300%;
