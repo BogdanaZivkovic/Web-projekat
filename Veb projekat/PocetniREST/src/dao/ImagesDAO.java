@@ -75,5 +75,5 @@ public class ImagesDAO {
 		images.put(newImage.getID(), newImage);
 		saveImages();
 		return newImage;
-	}	
+	}
 }

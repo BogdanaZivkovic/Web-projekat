@@ -172,6 +172,11 @@ Vue.component("view-restaurant-manager", {
 						    <label for="descriptionInput" class="form-label"> Description </label>
 						    <textarea v-model="newItem.description" id="descriptionInput" class="form-control"></textarea>
 						  </div>
+				 		  <div class="mb-3">
+			  				 <label for="imageInput" class="form-label">Image</label>
+						     <input id="imageInput" type="file" class="form-control" onchange="encodeImageFileAsURLForChanging1(this)" required>
+							 <img hidden id="imgForChangeID1"  src="" alt="Image of restaurant" width="11" height="11">
+						  </div>
 				      </div>
 				      <div class="modal-footer">
 				        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
@@ -310,6 +315,8 @@ Vue.component("view-restaurant-manager", {
 		editItem: function(newItem) {
 			event.preventDefault();
 			
+			newItem.logoPath = document.getElementById("imgForChangeID1").src;
+			
 			axios
 			.post('rest/items/editItem', {
 				"itemID":''+newItem.itemID,
@@ -318,7 +325,9 @@ Vue.component("view-restaurant-manager", {
 				"type":''+newItem.type, 
 				"quantity":''+newItem.quantity, 
 				"restaurantName":''+this.restaurant.name,
-				"description":''+newItem.description
+				"description":''+newItem.description,
+				"logoPath":''+newItem.logoPath
+				
 			})
 			.then(response => {
 				$('#editItem').modal('hide');
@@ -337,10 +346,7 @@ Vue.component("view-restaurant-manager", {
 			axios
 				.get('rest/restaurants/getMyRestaurant')
 				.then(response => {
-					this.restaurant = response.data
-					this.$nextTick(function () {
-						this.createMap();
-					})
+					this.restaurant = response.data;
 					axios
 						.get('rest/items/getAllItems')
 						.then(response => {
@@ -403,7 +409,36 @@ Vue.component("view-restaurant-manager", {
 		}
 	},
 	mounted() {
-		this.init();
+		axios
+				.get('rest/restaurants/getMyRestaurant')
+				.then(response => {
+					this.restaurant = response.data
+					this.$nextTick(function () {
+						this.createMap();
+					})
+					axios
+						.get('rest/items/getAllItems')
+						.then(response => {
+							response.data.forEach(el => {
+								if (el.restaurantName == this.restaurant.name) {
+									this.items.push(el);
+								}
+							})						
+						})
+					axios
+						.get('rest/comments/getComments')
+						.then(response => {
+							response.data.forEach(el => {
+								if (el.restaurantName == this.restaurant.name) {
+									this.comments.push(el);
+								}
+							})						
+						})
+				})
+				
+			axios
+				.get('rest/images/getImages')
+				.then(response => (this.images = response.data));
 	}
 });
 
@@ -418,6 +453,24 @@ function encodeImageFileAsURLForChanging(element) {
     reader.onloadend = function () {
         console.log("\n ENKODIRANJE SLIKE \n");
         document.getElementById('imgForChangeID')
+            .setAttribute(
+                'src', reader.result
+            );
+    }
+    reader.readAsDataURL(file);
+}
+
+/**
+ * ref: https://stackoverflow.com/questions/6150289/how-can-i-convert-an-image-into-base64-string-using-javascript
+ * @param {*} element1 
+ */
+
+function encodeImageFileAsURLForChanging1(element1) {
+    var file = element1.files[0];
+    var reader = new FileReader();
+    reader.onloadend = function () {
+        console.log("\n ENKODIRANJE SLIKE1 \n");
+        document.getElementById('imgForChangeID1')
             .setAttribute(
                 'src', reader.result
             );

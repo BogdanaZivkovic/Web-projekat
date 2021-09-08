@@ -80,6 +80,11 @@ public class ItemService {
 			return Response.status(Response.Status.BAD_REQUEST)
 					.entity("Your restaurant already has that item").build();
 		}
+		
+		ImagesDAO imagesDAO = getImages();
+		Image addedImage = imagesDAO.addNewImage(dto.logoPath);
+		dto.logoPath = Integer.toString(addedImage.getID());
+		
 		getItems().editItem(dto);
 		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS").build();
 	}

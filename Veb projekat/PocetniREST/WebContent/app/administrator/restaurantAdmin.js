@@ -202,7 +202,7 @@ Vue.component("restaurant-admin", {
 				"surname":''+newUser.surname, 
 				"gender":''+newUser.gender, 
 				"dateOfBirth":''+newUser.dateOfBirth, 
-				"role":''+newUser.role
+				"role":''+"MANAGER"
 			})
 			.then(response => {
 				$('#userModal').modal('hide');
