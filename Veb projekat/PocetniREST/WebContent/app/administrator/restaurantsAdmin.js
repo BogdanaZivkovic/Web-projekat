@@ -33,7 +33,8 @@ Vue.component("restaurants-admin", {
 				gender: "",
 				dateOfBirth: ""
 			},
-			managers: []
+			managers: [],
+			mapVisible: false
 		}
 	},
 	template: `
@@ -54,7 +55,10 @@ Vue.component("restaurants-admin", {
 								<div class="row ms-1">
 								<input class="input-style" style="width: 160px;" type="text" v-model="searchFields.name" placeholder="Restaurant name">
 								<input class="input-style" style="width: 160px;" type="text" v-model="searchFields.type" placeholder="Restaurant type">
-								<input class="input-style" style="width: 160px;" type="text" v-model="searchFields.location" placeholder="Restaurant location">
+									<div>
+										<input id="cityInput" class="input-style" style="width: 160px;" type="text" v-model="searchFields.location" placeholder="Restaurant location">
+										<a href="#" v-on:click="showMap()"><i class="bi bi-geo-alt-fill"></i></a>
+									</div>
 								</div>
 								<div class="row ms-1">
 								<input class="input-style" style="width: 130px;" type="number" min="0" max="5" v-model="searchFields.minRating" placeholder="Min rating">
@@ -112,7 +116,12 @@ Vue.component("restaurants-admin", {
 								</div>
 							</div>
 						</div>
-					</div>		
+					</div>
+					<div class="row">
+						<div class="container-for-map mb-3" v-if="mapVisible">
+							<div id="map" class="map"></div>
+						</div>
+					</div>			
 				</div>
 			</div>
 		</div>
@@ -284,6 +293,52 @@ Vue.component("restaurants-admin", {
 	</div>
 	`,
     methods: {
+		showMap : function () {
+				this.mapVisible = !this.mapVisible;
+				if (this.mapVisible) {
+					this.$nextTick(function () {
+						this.createMap();
+					})	
+				}
+			},
+			createMap : function () {
+				var map = new ol.Map({
+			    target: 'map',
+			    layers: [
+			      new ol.layer.Tile({
+			        source: new ol.source.OSM()
+			      })
+			    ],
+			    view: new ol.View({
+			      center: ol.proj.fromLonLat([20.447166861840312, 44.81481340170686]),
+			      zoom: 7
+			    })
+			  });
+	
+			  map.on('click', function (evt) {
+                var coord = ol.proj.toLonLat(evt.coordinate);
+				console.log(coord);
+                getSelectedCity(coord);
+				
+				map.getLayers().forEach(layer => {
+				  if (layer.get('name') && layer.get('name') == 'pointMarker'){
+				      map.removeLayer(layer)
+				  }
+				});
+				
+				 var layer = new ol.layer.Vector({
+				     source: new ol.source.Vector({
+				         features: [
+				             new ol.Feature({
+				                 geometry: new ol.geom.Point(evt.coordinate)
+				             })
+				         ]
+				     })
+				 });
+				 layer.set('name', 'pointMarker')
+				 map.addLayer(layer);
+              })
+			},
 		goToRestaurantCreation : function () {
 			router.push('/restaurantadmin');
 		},
@@ -478,6 +533,9 @@ Vue.component("restaurants-admin", {
 		}
 	},		
 	mounted () {
+		this.$nextTick(function () {
+			this.createMap();
+		})		
 		this.init();
 	},
 	computed: {
@@ -505,4 +563,26 @@ function encodeImageFileAsURLForChanging(element) {
             );
     }
     reader.readAsDataURL(file);
+}
+
+/**
+ * Get location info from coordinates 
+ * @param coords coords (x,y)
+ */
+function getSelectedCity(coords) {
+    fetch('http://nominatim.openstreetmap.org/reverse?format=json&lon=' + coords[0] + '&lat=' + coords[1])
+        .then(function (response) {
+            return response.json();
+        }).then(function (json) {
+
+            // CITY
+            console.log(json.address);
+			let el = document.getElementById("cityInput");
+            if (json.address.city) {
+                el.value = json.address.city;
+            } else if (json.address.city_district) {
+                el.value = json.address.city_district;
+            }
+			el.dispatchEvent(new Event('input'));
+        });
 }
