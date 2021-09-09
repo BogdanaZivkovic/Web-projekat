@@ -105,7 +105,7 @@ Vue.component("orders-deliverer", {
 										<small> {{orderWithRestaurant.restaurant.type}} </small>
 									</div>
 									<div class="col-lg-2 col-md-3 col-sm-4 mt-2 p-2 text-end">
-										<label v-if = "orderWithRestaurant.order.requests.includes(username)"> Request sent </label>
+										<small v-if = "orderWithRestaurant.order.requests.includes(username)"> Request sent </small>
 										<button class="btn btn-success" v-else @click="requestDelivery(orderWithRestaurant.order)"> REQUEST </button>
 									</div>
 								</div>

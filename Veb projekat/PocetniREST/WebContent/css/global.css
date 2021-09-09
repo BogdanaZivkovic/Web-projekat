@@ -192,6 +192,15 @@ th, .td-style {
 	border-radius: 10px;
 }
 
+.rating {
+   width: 180px;
+}
+
+.rating__star {
+   cursor: pointer;
+   color: #dabd18b2;
+}
+
 @media only screen and (max-width: 678px) {
 		.bg{
 			background-size:300%;

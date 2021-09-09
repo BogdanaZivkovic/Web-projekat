@@ -21,7 +21,7 @@ Vue.component("orders-customer", {
 				customerUsername: "",
 				restaurantName: "",
 				commentText: "",
-				rating: ""
+				rating: 0
 			}
 		}
 	},
@@ -126,7 +126,8 @@ Vue.component("orders-customer", {
 									</div>
 									<div class="col-lg-2 col-md-3 col-sm-4 mt-2 p-2 text-end">
 										<button class="btn btn-success" v-if="orderWithRestaurant.order.status == 'PROCESSING'" @click="cancelOrder(orderWithRestaurant.order)"> CANCEL </button>
-										<button class="btn btn-success" v-if="orderWithRestaurant.order.status == 'DELIVERED' && orderWithRestaurant.order.commented==false " @click="setViewedOrder(orderWithRestaurant.order)" data-bs-toggle="modal" data-bs-target="#exampleModal2"> Comment </button>	
+										<button class="btn btn-success" v-if="orderWithRestaurant.order.status == 'DELIVERED' && orderWithRestaurant.order.commented==false " @click="openCommentModal(orderWithRestaurant.order)" data-bs-toggle="modal" data-bs-target="#exampleModal2"> Comment </button>	
+										<small v-if = "orderWithRestaurant.order.commented==true"> Commented </small>
 									</div>
 								</div>
 								<div class="row justify-content-between">
@@ -199,8 +200,15 @@ Vue.component("orders-customer", {
 						<div class="row m-2">
 						<textarea style="font-size: 16px;" v-model="comment.commentText" rows="4" cols="50"></textarea>
 						</div>
-						<div class="row m-2">
-						<input type="number" style="width: 160px;" min="0" max="5" v-model="comment.rating" placeholder="Rating" required>
+						<div class="d-flex align-items-center">
+							<p class="m-2"> Rating: </p>
+							<div class="rating">
+								<i class="rating__star bi bi-star"></i>
+								<i class="rating__star bi bi-star"></i>
+								<i class="rating__star bi bi-star"></i>
+								<i class="rating__star bi bi-star"></i>
+								<i class="rating__star bi bi-star"></i>
+							</div>
 						</div>
 					</div>
 					<div class="modal-footer">
@@ -213,6 +221,28 @@ Vue.component("orders-customer", {
 	</div>
 	`,
 	methods: {
+		executeRating : function (stars) {
+			const starClassActive = "rating__star bi bi-star-fill";
+			const starClassInactive = "rating__star bi bi-star";
+			const starsLength = stars.length;
+			let i;
+			
+			stars.map((star) => {
+		      	star.onclick = () => {
+			         i = stars.indexOf(star);
+			
+			         if (star.className===starClassInactive) {
+						this.comment.rating = i+1;
+						console.log(this.comment.rating);      
+			            for (i; i >= 0; --i) stars[i].className = starClassActive;
+			         } else {
+						this.comment.rating = i;
+						console.log(this.comment.rating); 
+			            for (i; i < starsLength; ++i) stars[i].className = starClassInactive;
+			         }
+		      	};
+	   		});
+		},
 		deleteOrder: function (order) {
 			if (confirm('Are you sure?') == true) {
 				axios
@@ -253,8 +283,18 @@ Vue.component("orders-customer", {
 			return 100 - order.price/sum*100;
 			
 		},
-		setViewedOrder: function(order){
+		openCommentModal: function(order){
 			this.viewedOrder = Object.assign({}, order);
+			this.comment = {
+				customerUsername: "",
+				restaurantName: "",
+				commentText: "",
+				rating: 0
+			}
+			const stars = [...document.getElementsByClassName("rating__star")];
+			const starClassInactive = "rating__star bi bi-star";
+			const starsLength = stars.length;
+			for (let i=0; i < starsLength; i++) stars[i].className = starClassInactive;
 		},
 		setViewedItem: function(item){
 			this.viewedItem = Object.assign({}, item);
@@ -387,6 +427,10 @@ Vue.component("orders-customer", {
 		}
 	},
 	mounted () {
+		const ratingStars = [...document.getElementsByClassName("rating__star")];
+		this.$nextTick(function () {
+			this.executeRating(ratingStars);
+		})
 		this.init();
 	},
 	computed: {
