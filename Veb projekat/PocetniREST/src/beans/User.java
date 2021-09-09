@@ -13,7 +13,8 @@ public class User {
 	private String role;
 	private Boolean isDeleted;
 	private double points;
-	private String customerType;
+	//private String customerType;
+	private CustomerType customerType;
 	private Boolean isBlocked;
 	//orders for customer, approved deliveries for deliverer
 	private Collection<String> orderIDs;
@@ -33,7 +34,7 @@ public class User {
 		this.role = role;
 		isDeleted = false;
 		this.points = 0.0;
-		customerType = "";
+		customerType = new CustomerType("UNDEFINED", 0.0, 0);
 		isBlocked = false;
 		orderIDs = new ArrayList<String>();
 	}
@@ -111,11 +112,11 @@ public class User {
 		this.points = points;
 	}
 
-	public String getCustomerType() {
+	public CustomerType getCustomerType() {
 		return customerType;
 	}
 
-	public void setCustomerType(String customerType) {
+	public void setCustomerType(CustomerType customerType) {
 		this.customerType = customerType;
 	}
 

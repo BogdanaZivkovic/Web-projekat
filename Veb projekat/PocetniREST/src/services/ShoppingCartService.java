@@ -98,7 +98,10 @@ public class ShoppingCartService {
 		for(User user : getUsers().getValues()) {
 			if(user.getUserName().matches(getShoppingCart().getCustomerUsername())) {
 				
-				if(user.getCustomerType().matches("GOLD")) {
+				
+				totalPrice = totalPrice * (100.0 - user.getCustomerType().getDiscount()) /100;
+				
+				/*if(user.getCustomerType().matches("GOLD")) {
 					totalPrice = totalPrice*0.85;
 				}
 				
@@ -108,7 +111,7 @@ public class ShoppingCartService {
 				
 				else if(user.getCustomerType().matches("BRONZE")) {
 					totalPrice = totalPrice*0.95;
-				}	
+				}	*/
 			}
 		}
 		
@@ -126,7 +129,9 @@ public class ShoppingCartService {
 		for(User user : getUsers().getValues()) {
 			if(user.getUserName().matches(getShoppingCart().getCustomerUsername())) {
 				
-				if(user.getCustomerType().matches("GOLD")) {
+				ret = user.getCustomerType().getDiscount() + "%";
+				
+				/*if(user.getCustomerType().matches("GOLD")) {
 					ret = "15%";
 				}
 				
@@ -136,7 +141,7 @@ public class ShoppingCartService {
 				
 				else if(user.getCustomerType().matches("BRONZE")) {
 					ret = "5%";
-				}	
+				}	*/
 			}
 		}
 		

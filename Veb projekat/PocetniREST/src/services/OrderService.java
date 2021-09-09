@@ -14,6 +14,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import beans.CustomerType;
 import beans.Order;
 import beans.Restaurant;
 import beans.ShoppingCart;
@@ -46,7 +47,7 @@ public class OrderService {
 		double userPoints = user.getPoints();
 		double totalPrice = sc.getTotalPrice();
 		
-		if(user.getCustomerType().matches("GOLD")) {
+		/*if(user.getCustomerType().matches("GOLD")) {
 			sc.setTotalPrice(totalPrice*0.85);
 		}
 		
@@ -56,20 +57,22 @@ public class OrderService {
 		
 		else if(user.getCustomerType().matches("BRONZE")) {
 			sc.setTotalPrice(totalPrice*0.95);
-		}
+		}*/
+		
+		sc.setTotalPrice(totalPrice * (100.0 -  user.getCustomerType().getDiscount()) /100);
 		
 		double points = sc.getTotalPrice()/1000*133;
 		
 		user.setPoints(userPoints + points);
 		
 		if (user.getPoints() >= customerTypes.getCustomerType("GOLD").getPoints()) {
-			user.setCustomerType("GOLD");
+			user.setCustomerType(customerTypes.getCustomerType("GOLD"));
 		}
 		else if (user.getPoints() >= customerTypes.getCustomerType("SILVER").getPoints()) {
-			user.setCustomerType("SILVER");
+			user.setCustomerType(customerTypes.getCustomerType("SILVER"));
 		}
 		else if (user.getPoints() >= customerTypes.getCustomerType("BRONZE").getPoints()) {
-			user.setCustomerType("BRONZE");
+			user.setCustomerType(customerTypes.getCustomerType("BRONZE"));
 		}
 
 		String orderID = getOrders().createOrder(sc);
@@ -255,7 +258,24 @@ public class OrderService {
 		double userPoints = user.getPoints();
 		user.setPoints(userPoints - points);
 		
+		if(user.getPoints() < 0.0) {
+			user.setPoints(0.0);
+		}	
+		
 		if (user.getPoints() >= customerTypes.getCustomerType("GOLD").getPoints()) {
+			user.setCustomerType(customerTypes.getCustomerType("GOLD"));
+		}
+		else if (user.getPoints() >= customerTypes.getCustomerType("SILVER").getPoints()) {
+			user.setCustomerType(customerTypes.getCustomerType("SILVER"));
+		}
+		else if (user.getPoints() >= customerTypes.getCustomerType("BRONZE").getPoints()) {
+			user.setCustomerType(customerTypes.getCustomerType("BRONZE"));
+		}
+		else {
+			user.setCustomerType(new CustomerType("UNDEFINED", 0.0, 0));
+		}
+		
+		/*if (user.getPoints() >= customerTypes.getCustomerType("GOLD").getPoints()) {
 			user.setCustomerType("GOLD");
 		}
 		else if (user.getPoints() >= customerTypes.getCustomerType("SILVER").getPoints()) {
@@ -266,7 +286,7 @@ public class OrderService {
 		}
 		else {
 			user.setCustomerType("");
-		}
+		}*/
 		
 		getUsers().saveUsers();
 

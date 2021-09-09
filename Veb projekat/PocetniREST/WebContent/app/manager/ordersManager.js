@@ -97,6 +97,7 @@ Vue.component("orders-manager", {
 									<div class="col-lg-10 col-md-9 col-sm-8">
 										<h5> {{order.restaurantName}} </h5>
 										<p class="mb-1"> <i> {{order.status}} </i> </p>
+										<p class="mb-1" style="color: rgba(31, 54, 25)"> <b> {{order.userName}} </b> </p>
 										<p class="mb-1"> {{formatDate(order.dateAndTime)}} </p>
 									</div>
 									<div class="col-lg-2 col-md-3 col-sm-4 mt-2 p-2 text-end">
