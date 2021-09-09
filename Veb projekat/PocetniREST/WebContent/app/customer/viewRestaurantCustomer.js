@@ -22,7 +22,8 @@ Vue.component("view-restaurant-customer", {
 				},
 				count: 0
 			},
-			itemToAdd: {}
+			itemToAdd: {},
+			mapVisible: false
 		}
 	},
 	template:`
@@ -41,12 +42,15 @@ Vue.component("view-restaurant-customer", {
 						<label style="color:#ffc40c">&nbsp{{restaurant.averageRating.toFixed(2)}} </label>
 					</div>
 					<p class="mb-1 lead">{{restaurant.type}}  </p>
-					<p class="mb-1"> {{restaurant.location.address.street}} {{restaurant.location.address.number}}, {{restaurant.location.address.city}} {{restaurant.location.address.zipCode}} </p>
-					<div class="container-for-map mb-1">
-							<div id="map" class="map"></div>
-					</div>
 					<span v-if="restaurant.status == 'Open'" class="badge bg-success mb-2"> &check; Open </span>
 					<span v-if="restaurant.status == 'Closed'" class="badge bg-danger mb-2"> &#10005; Closed </span>
+					<div class="d-flex">
+						<p class="mb-1 me-2"> {{restaurant.location.address.street}} {{restaurant.location.address.number}}, {{restaurant.location.address.city}} {{restaurant.location.address.zipCode}} </p>
+						<a href="#" v-on:click="showMap()"><i class="bi bi-geo-alt-fill"></i></a>
+					</div>
+					<div class="container-for-map mb-1" v-if="mapVisible">
+							<div id="map" class="map"></div>
+					</div>
 					<h5 class="border-bottom"> Items </h5>
 					<ul class="list-unstyled list-group mb-2" v-if="restaurant.status == 'Open'">
 						<li>
@@ -173,7 +177,7 @@ Vue.component("view-restaurant-customer", {
 							<p class="fw-bold mb-1 me-2"> {{editedScItem.item.name}} </p>
 							<div class="plusminus horiz">
 							  <button id="editItemQtyMinus"></button>
-							  <input type="number" id ="editItemQty" name="editProductQty" value="1" min="1" max="10">
+							  <input type="number" id ="editItemQty" name="editProductQty" value="1" min="1" max="100">
 							  <button id="editItemQtyPlus"></button> 
 							</div>
 						</div>
@@ -200,7 +204,7 @@ Vue.component("view-restaurant-customer", {
 							<p class="fw-bold mb-1 me-2"> {{itemToAdd.name}} </p>
 							<div class="plusminus horiz">
 							  <button></button>
-							  <input type="number" id ="addItemQty" name="productQty" value="1" min="1" max="10">
+							  <input type="number" id ="addItemQty" name="productQty" value="1" min="1" max="100">
 							  <button></button> 
 							</div>
 						</div>
@@ -216,12 +220,20 @@ Vue.component("view-restaurant-customer", {
 	</div>
 	`,
 	methods: {
+		showMap : function () {
+			this.mapVisible = !this.mapVisible;
+			if (this.mapVisible) {
+				this.$nextTick(function () {
+					this.createMap();
+				})	
+			}
+		},
 		showAddItemModal : function (item) {
 			document.getElementById("addItemQty").value = 1;
 			// Create a new 'change' event
 			var event = new Event('change');
 			// Dispatch it.
-			document.getElementById("editItemQty").dispatchEvent(event);
+			document.getElementById("addItemQty").dispatchEvent(event);
 			this.itemToAdd = Object.assign({}, item);
 		},
 		createMap : function () {

@@ -4,7 +4,8 @@ Vue.component("view-restaurant", {
 			restaurant: {},
 			items: [],
 			images: [],
-			comments: []
+			comments: [],
+			mapVisible: false
 		}
 	},
 	template:`
@@ -22,12 +23,15 @@ Vue.component("view-restaurant", {
 						<label style="color:#ffc40c">&nbsp{{restaurant.averageRating.toFixed(2)}} </label>
 					</div>
 					<p class="mb-1 lead">{{restaurant.type}}  </p>
-					<p class="mb-1"> {{restaurant.location.address.street}} {{restaurant.location.address.number}}, {{restaurant.location.address.city}} {{restaurant.location.address.zipCode}} </p>
-					<div class="container-for-map mb-1">
-							<div id="map" class="map"></div>
-					</div>
 					<span v-if="restaurant.status == 'Open'" class="badge bg-success mb-2"> &check; Open </span>
 					<span v-if="restaurant.status == 'Closed'" class="badge bg-danger mb-2"> &#10005; Closed </span>
+					<div class="d-flex">
+						<p class="mb-1 me-2"> {{restaurant.location.address.street}} {{restaurant.location.address.number}}, {{restaurant.location.address.city}} {{restaurant.location.address.zipCode}} </p>
+						<a href="#" v-on:click="showMap()"><i class="bi bi-geo-alt-fill"></i></a>
+					</div>
+					<div class="container-for-map mb-1" v-if="mapVisible">
+							<div id="map" class="map"></div>
+					</div>
 					<h5 class="border-bottom"> Items </h5>
 					<ul class="list-group mb-2">
 						<li class="list-group-item" v-for="item in items">
@@ -64,6 +68,14 @@ Vue.component("view-restaurant", {
 		</div>
 	`,
 	methods: {
+		showMap : function () {
+			this.mapVisible = !this.mapVisible;
+			if (this.mapVisible) {
+				this.$nextTick(function () {
+					this.createMap();
+				})	
+			}
+		},
 		createMap : function () {
 				var coord = ol.proj.fromLonLat([this.restaurant.location.longitude, this.restaurant.location.latitude]);
 				var map = new ol.Map({

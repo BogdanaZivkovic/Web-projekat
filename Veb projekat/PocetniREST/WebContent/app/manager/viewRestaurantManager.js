@@ -13,7 +13,8 @@ Vue.component("view-restaurant-manager", {
 				quantity: "",
 				description: "",
 				logoPath: "",
-			}
+			},
+			mapVisible: false
 		}
 	},
 	template:`
@@ -32,13 +33,15 @@ Vue.component("view-restaurant-manager", {
 							<label style="color:#ffc40c">&nbsp{{restaurant.averageRating.toFixed(2)}} </label>
 						</div>
 						<p class="mb-1 lead">{{restaurant.type}}  </p>
-						<p class="mb-1"> {{restaurant.location.address.street}} {{restaurant.location.address.number}}, {{restaurant.location.address.city}} {{restaurant.location.address.zipCode}} </p>
-						<div class="container-for-map mb-1">
-							<div id="map" class="map"></div>
-						</div>
 						<button @click="closeRestaurant" class="btn btn-success btn-sm mb-2" v-if="restaurant.status == 'Open'"> &check; Open </button>
 						<button @click="openRestaurant" class="btn btn-danger btn-sm mb-2" v-if="restaurant.status == 'Closed'"> &#10005; Closed </button>
-						
+						<div class="d-flex">
+							<p class="mb-1 me-2"> {{restaurant.location.address.street}} {{restaurant.location.address.number}}, {{restaurant.location.address.city}} {{restaurant.location.address.zipCode}} </p>
+							<a href="#" v-on:click="showMap()"><i class="bi bi-geo-alt-fill"></i></a>
+						</div>
+						<div class="container-for-map mb-1" v-if="mapVisible">
+								<div id="map" class="map"></div>
+						</div>						
 						<div class="d-flex justify-content-between align-items-start border-bottom p-1 mb-2">
 							<h5> Items </h5>
 							<button class="btn btn-primary btn-sm" @click="clearNewItem" data-bs-toggle="modal" data-bs-target="#newItem"> &plus; New </button>
@@ -191,6 +194,14 @@ Vue.component("view-restaurant-manager", {
 	</div>
 	`,
 	methods: {
+		showMap : function () {
+			this.mapVisible = !this.mapVisible;
+			if (this.mapVisible) {
+				this.$nextTick(function () {
+					this.createMap();
+				})	
+			}
+		},
 		createMap : function () {
 				var coord = ol.proj.fromLonLat([this.restaurant.location.longitude, this.restaurant.location.latitude]);
 				var map = new ol.Map({
