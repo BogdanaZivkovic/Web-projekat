@@ -226,7 +226,7 @@ Vue.component("orders-customer", {
 					</div>
 					<div class="modal-footer">
 						<button class="btn btn-primary" @click="leaveComment(comment)"> Comment </button>
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Cancel </button>
+						<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"> Cancel </button>
 					</div>
 				</div>
 			</div>

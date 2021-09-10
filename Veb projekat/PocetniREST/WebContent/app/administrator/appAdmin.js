@@ -3,7 +3,7 @@ const UsersAdmin = {template:'<users-admin></users-admin>'}
 const RestaurantsAdmin = {template:'<restaurants-admin></restaurants-admin>'}
 const RestaurantAdmin = {template:'<restaurant-admin></restaurant-admin>'}
 const AddUserAdmin = {template:'<add-user-admin></add-user-admin>'}
-const ViewRestaurantAdmin = {template:'<view-restaurant></view-restaurant>'}
+const ViewRestaurantAdmin = {template:'<view-restaurant-admin></view-restaurant-admin>'}
 const SusUsers = {template:'<sus-users-admin></sus-users-admin>'}
 
 const router = new VueRouter({
