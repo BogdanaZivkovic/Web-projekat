@@ -8,7 +8,7 @@ Vue.component("login-app", {
 		}
 	},
 	template: `
-    <div class="container-fluid bg">
+    <div class="container-fluid bg-profile">
 	<div class="container">
         <div class="row justify-content-center">
 			<div class="col-12 col-sm-6 col-md-3">

@@ -24,27 +24,29 @@ Vue.component("all-restaurants-app", {
 				<div class="container">
 					<div class="row justify-content-between">
 						<div class="col-lg-10 col-md-10 col-sm-10">
-						<p>
-						<button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch">
-    					Search
-  						</button>
-						</p>
-						<div class="collapse" id="collapseSearch">
-							<div class="card card-colored">
-								<div class="row ms-1">
-								<input class="input-style" style="width: 160px;" type="text" v-model="searchFields.name" placeholder="Restaurant name">
-								<input class="input-style" style="width: 160px;" type="text" v-model="searchFields.type" placeholder="Restaurant type">
-									<div>
+							<p>
+							<button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch">
+	    					Search
+	  						</button>
+							</p>
+							<div class="collapse mb-2" id="collapseSearch">
+								<div class="card card-colored">
+									<div class="row ms-1">
+										<input class="input-style" style="width: 160px;" type="text" v-model="searchFields.name" placeholder="Restaurant name">
+										<input class="input-style" style="width: 160px;" type="text" v-model="searchFields.type" placeholder="Restaurant type">
+									</div>
+									<div class="row mb-1">
+										<div class="ms-1">
 										<input id="cityInput" class="input-style" style="width: 160px;" type="text" v-model="searchFields.location" placeholder="Restaurant location">
 										<a href="#" v-on:click="showMap()"><i class="bi bi-geo-alt-fill"></i></a>
+										</div>
+									</div>
+									<div class="row ms-1">
+										<input class="input-style" style="width: 130px;" type="number" min="0" max="5" v-model="searchFields.minRating" placeholder="Min rating">
+										<input class="input-style" style="width: 130px;" type="number" min="0" max="5" v-model="searchFields.maxRating" placeholder="Max rating">
 									</div>
 								</div>
-								<div class="row ms-1">
-								<input class="input-style" style="width: 130px;" type="number" min="0" max="5" v-model="searchFields.minRating" placeholder="Min rating">
-								<input class="input-style" style="width: 130px;" type="number" min="0" max="5" v-model="searchFields.maxRating" placeholder="Max rating">
-								</div>
 							</div>
-						</div>
 						</div>
 						<div class="col-lg-2 col-md-2 col-sm-2"> 		
 							<div class="dropdown">
@@ -72,7 +74,7 @@ Vue.component("all-restaurants-app", {
 							<div class="card card-colored">
 								<div class="row">
 							 		<div class="col-lg-6 col-md-6 col-sm-6">
-										<label> Restaurant type </label>
+										<label> Restaurant type: </label>
 										<select style="margin: 5px;" class="selectpicker select-nice"v-model="filters.type">
 											<option disabled value="">Please select one</option>
 											<option value="">All</option>
@@ -85,7 +87,7 @@ Vue.component("all-restaurants-app", {
 										</select>
 									</div>
 									<div class="col-lg-6 col-md-6 col-sm-6">
-									<label> Restaurant status </label>
+									<label> Restaurant status: </label>
 									<select style="margin: 5px;" class="selectpicker select-nice" v-model="filters.status">
 										<option disabled value="">Please select one</option>
 										<option value=""> All </option>
@@ -96,7 +98,7 @@ Vue.component("all-restaurants-app", {
 							</div>
 						</div>
 					</div>
-					<div class="row">
+					<div class="row m-4">
 						<div class="container-for-map mb-3" v-if="mapVisible">
 							<div id="map" class="map"></div>
 						</div>

@@ -5,6 +5,48 @@
 	min-height: 100vh; 
 }
 
+.bg-1{
+	background: url('../images/tacos.jpg') no-repeat fixed 100%;
+	background-size:cover;
+	min-height: 100vh; 
+}
+
+.bg-2{
+	background: url('../images/sandwich.jpg') no-repeat fixed 100%;
+	background-size:cover;
+	min-height: 100vh; 
+}
+
+.bg-3{
+	background: url('../images/salad.jpg') no-repeat fixed 100%;
+	background-size:cover;
+	min-height: 100vh; 
+}
+
+.bg-4{
+	background: url('../images/burger.jpg') no-repeat fixed 100%;
+	background-size:cover;
+	min-height: 100vh; 
+}
+
+.bg-5{
+	background: url('../images/sandwich2.jpg') no-repeat fixed 100%;
+	background-size:cover;
+	min-height: 100vh; 
+}
+
+.bg-6{
+	background: url('../images/sussy.jpg') no-repeat fixed 100%;
+	background-size:cover;
+	min-height: 100vh; 
+}
+
+.bg-7{
+	background: url('../images/register.jpg') no-repeat fixed 100%;
+	background-size:cover;
+	min-height: 100vh; 
+}
+
 .container-for-logo{
 	display:flex;
 	flex-direction:column;

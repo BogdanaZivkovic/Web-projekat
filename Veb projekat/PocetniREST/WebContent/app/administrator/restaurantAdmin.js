@@ -27,7 +27,7 @@ Vue.component("restaurant-admin", {
 	},
 	template: `
     <div>
-		<div class="container-fluid bg">
+		<div class="container-fluid bg-2">
 			<div class="row justify-content-center">
 				<div class="col-lg-6 col-md-8 col-sm-10">
         			<form @submit="createRestaurant(newRestaurant)" method='post' class="form-container">

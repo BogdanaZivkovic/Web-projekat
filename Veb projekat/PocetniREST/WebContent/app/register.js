@@ -12,7 +12,7 @@ Vue.component("register-app", {
 		}
 	},
 	template: `
-	<div class="container-fluid bg">
+	<div class="container-fluid bg-7">
         <div class="row justify-content-center">
 			<div class="col-12 col-sm-6 col-md-3">
 				<form class="form-container" @submit="register(newUser)" method='post'>

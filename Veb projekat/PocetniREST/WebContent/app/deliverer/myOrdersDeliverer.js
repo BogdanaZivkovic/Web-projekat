@@ -20,7 +20,7 @@ Vue.component("my-orders-deliverer", {
 	},
 	template:`
 	<div>
-		<div class="container-fluid bg">
+		<div class="container-fluid bg-4">
 			<div class="row justify-content-center" >
 				<div class="col-lg-6 col-md-6 col-sm-12 search-area ">
 					<div class="container">
@@ -72,32 +72,44 @@ Vue.component("my-orders-deliverer", {
 							<div class="collapse" id="collapseExample">
 								<div class="card card-colored">
 									<div class="row">
-								 		<div class="col-lg-6 col-md-6 col-sm-6">
-											<label> Restaurant type: </label>
-											<select style="margin: 5px;" class="selectpicker select-nice" v-model="filter.type">
-												<option disabled value="">Please select one</option>
-												<option value="">All</option>
-										   		<option>Chinese</option>
-										   		<option>Italian</option>
-												<option>Fast food</option>
-												<option>BBQ</option>
-												<option>Mexican</option>
-												<option>Gyros</option>
-											</select>
-										</div>
-										<div class="col-lg-6 col-md-6 col-sm-6">
-											<label> Order status: </label>
-											<select style="margin: 5px;" class="selectpicker select-nice" v-model="filter.status">
-												<option disabled value="">Please select one</option>
-												<option value="">All</option>
-												<option> PROCESSING </option>
-												<option> IN_PREPARATION </option>
-												<option> WAITING_FOR_DELIVERY </option>
-												<option> IN_TRANSPORT </option>
-												<option> DELIVERED </option>
-												<option> CANCELED </option>
-											</select>
-										</div>
+										<div class="col">
+											<table>
+												<tr>
+													<td style="padding: 10px">
+														<label> Restaurant type: </label>
+													</td>					
+													<td style="padding: 10px">
+														<select style="margin: 5px;" class="selectpicker select-nice" v-model="filter.type">
+															<option disabled value="">Please select one</option>
+															<option value="">All</option>
+														   	<option>Chinese</option>
+														   	<option>Italian</option>
+															<option>Fast food</option>
+															<option>BBQ</option>
+															<option>Mexican</option>
+															<option>Gyros</option>
+														</select>
+													</td>
+												</tr>	
+												<tr>
+													<td style="padding: 10px">
+														<label> Order status: </label>
+													</td>
+													<td style="padding: 10px">
+														<select style="margin: 5px;" class="selectpicker select-nice" v-model="filter.status">
+															<option disabled value="">Please select one</option>
+															<option value="">All</option>
+															<option> PROCESSING </option>
+															<option> IN_PREPARATION </option>
+															<option> WAITING_FOR_DELIVERY </option>
+															<option> IN_TRANSPORT </option>
+															<option> DELIVERED </option>
+															<option> CANCELED </option>
+														</select>
+													</td>
+												</tr>
+											</table>
+										</div>					
 									</div>
 								</div>
 							</div>

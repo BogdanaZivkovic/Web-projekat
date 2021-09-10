@@ -7,6 +7,9 @@ Vue.component("restaurant-customers", {
 				userName: ''
 			},
 			users: [],
+			filters: {
+				customerType:''
+			},
 			newUser: {
 				userName: "",
 				password: "",
@@ -20,7 +23,7 @@ Vue.component("restaurant-customers", {
 	},
 	template: `
 	<div>
-		<div class="container-fluid bg">
+		<div class="container-fluid bg-5">
 			<div class="row justify-content-center" >
 				<div class="col-lg-6 col-md-6 col-sm-12 search-area ">
 					<div class="container">
@@ -57,6 +60,30 @@ Vue.component("restaurant-customers", {
 								</div>
 							</div>
 						</div>
+						<div class="row">
+								<p>
+								<button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+		    					Filters
+		  						</button>
+								</p>
+							<div class="collapse" id="collapseExample">
+								<div class="card card-colored">
+									<div class="row ms-1">
+										<div class="col">
+											<label> Customer type: </label>
+											<select style="margin: 5px;" class="selectpicker select-nice" v-model="filters.customerType">
+											    <option disabled value="">Please select one</option>
+												<option value="">All</option>
+											    <option>BRONZE</option>
+												<option>SILVER</option>
+												<option>GOLD</option>
+												<option>UNDEFINED</option>			
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>	
 					</div>	
 				</div>
 			</div>
@@ -107,6 +134,8 @@ Vue.component("restaurant-customers", {
 			if(!user.surname.toLowerCase().match(this.searchFields.surname.toLowerCase()))
 				return false;
 			if(!user.userName.toLowerCase().match(this.searchFields.userName.toLowerCase()))
+				return false;
+			if(!user.customerType.typeName.toLowerCase().match(this.filters.customerType.toLowerCase()))
 				return false;
 			return true;
 		},

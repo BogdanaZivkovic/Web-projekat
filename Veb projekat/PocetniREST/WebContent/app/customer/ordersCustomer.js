@@ -27,7 +27,7 @@ Vue.component("orders-customer", {
 	},
 	template:`
 	<div>
-		<div class="container-fluid bg">
+		<div class="container-fluid bg-1">
 			<div class="row justify-content-center" >
 				<div class="col-lg-6 col-md-6 col-sm-12 search-area ">
 					<div class="container">
@@ -82,11 +82,10 @@ Vue.component("orders-customer", {
 								 		<div class="col">
 											<table>
 												<tr>
-													<td>
+													<td style="padding: 10px">
 														<label> Restaurant type: </label>
-													</td>
-													
-													<td>
+													</td>					
+													<td style="padding: 10px">
 														<select class="selectpicker select-nice" v-model="filter.type">
 															<option disabled value="">Please select one</option>
 															<option value="">All</option>
@@ -101,10 +100,10 @@ Vue.component("orders-customer", {
 												</tr>
 												
 												<tr>
-													<td>
+													<td style="padding: 10px">
 														<label> Order status: </label>
 													</td>
-													<td>
+													<td style="padding: 10px">
 														<select class="selectpicker select-nice" v-model="filter.status">
 															<option disabled value="">Please select one</option>
 															<option value="">All</option>

@@ -19,7 +19,7 @@ Vue.component("orders-manager", {
 	},
 	template:`
 	<div>
-		<div class="container-fluid bg">
+		<div class="container-fluid bg-1">
 			<div class="row justify-content-center" >
 				<div class="col-lg-6 col-md-6 col-sm-12 search-area ">
 					<div class="container">

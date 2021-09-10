@@ -6,7 +6,7 @@ Vue.component("edit-user", {
 	},
 	template:`
     <div>
-		<div class="container-fluid bg-profile">
+		<div class="container-fluid bg-3">
 			<div class="row justify-content-center">
 				<div class="col-12 col-sm-6 col-md-3">
 					<form @submit="updateUser(user)" class="form-container" method='post'>

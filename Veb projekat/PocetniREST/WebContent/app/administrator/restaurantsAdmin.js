@@ -40,86 +40,89 @@ Vue.component("restaurants-admin", {
 	template: `
 	<div>
 	<div class="container-fluid bg">
-	<div class="row justify-content-center" >
-			<div class="col-lg-6 col-md-6 col-sm-12 search-area ">
-				<div class="container">
-					<div class="row justify-content-between">
-						<div class="col-lg-10 col-md-10 col-sm-10">
-						<p>
-						<button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch">
-    					Search
-  						</button>
-						</p>
-						<div class="collapse" id="collapseSearch">
-							<div class="card card-colored">
-								<div class="row ms-1">
-								<input class="input-style" style="width: 160px;" type="text" v-model="searchFields.name" placeholder="Restaurant name">
-								<input class="input-style" style="width: 160px;" type="text" v-model="searchFields.type" placeholder="Restaurant type">
-									<div>
-										<input id="cityInput" class="input-style" style="width: 160px;" type="text" v-model="searchFields.location" placeholder="Restaurant location">
-										<a href="#" v-on:click="showMap()"><i class="bi bi-geo-alt-fill"></i></a>
+		<div class="row justify-content-center" >
+				<div class="col-lg-6 col-md-6 col-sm-12 search-area ">
+					<div class="container">
+						<div class="row justify-content-between">
+							<div class="col-lg-10 col-md-10 col-sm-10">
+							<p>
+							<button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch">
+	    					Search
+	  						</button>
+							</p>
+								<div class="collapse mb-2" id="collapseSearch">
+									<div class="card card-colored">
+										<div class="row ms-1">
+											<input class="input-style" style="width: 160px;" type="text" v-model="searchFields.name" placeholder="Restaurant name">
+											<input class="input-style" style="width: 160px;" type="text" v-model="searchFields.type" placeholder="Restaurant type">
+										</div>
+										<div class="row mb-1">
+											<div class="ms-1">
+											<input id="cityInput" class="input-style" style="width: 160px;" type="text" v-model="searchFields.location" placeholder="Restaurant location">
+											<a href="#" v-on:click="showMap()"><i class="bi bi-geo-alt-fill"></i></a>
+											</div>
+										</div>
+										<div class="row ms-1">
+											<input class="input-style" style="width: 130px;" type="number" min="0" max="5" v-model="searchFields.minRating" placeholder="Min rating">
+											<input class="input-style" style="width: 130px;" type="number" min="0" max="5" v-model="searchFields.maxRating" placeholder="Max rating">
+										</div>
 									</div>
 								</div>
-								<div class="row ms-1">
-								<input class="input-style" style="width: 130px;" type="number" min="0" max="5" v-model="searchFields.minRating" placeholder="Min rating">
-								<input class="input-style" style="width: 130px;" type="number" min="0" max="5" v-model="searchFields.maxRating" placeholder="Max rating">
+							</div>
+							<div class="col-lg-2 col-md-2 col-sm-2"> 		
+								<div class="dropdown">
+									<button class="btn dropdown-toggle float-right" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+									    Sort
+									</button>
+									<ul class="dropdown-menu dropdown-list" >
+									    <li><a class="dropdown-item" href="#" v-on:click="sortNameAsc">Name ascending</a></li>
+									    <li><a class="dropdown-item" href="#" v-on:click="sortNameDesc">Name descending </a></li>
+									    <li><a class="dropdown-item" href="#" v-on:click="sortLocationAsc">Location ascending</a></li>
+					 					<li><a class="dropdown-item" href="#" v-on:click="sortLocationDesc">Location descending</a></li>
+									 	<li><a class="dropdown-item" href="#" v-on:click="sortRatingAsc">Rating ascending</a></li>
+					 					<li><a class="dropdown-item" href="#" v-on:click="sortRatingDesc">Rating descending</a></li>
+									</ul>
 								</div>
 							</div>
 						</div>
-						</div>
-						<div class="col-lg-2 col-md-2 col-sm-2"> 		
-							<div class="dropdown">
-								<button class="btn dropdown-toggle float-right" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-								    Sort
-								</button>
-								<ul class="dropdown-menu dropdown-list" >
-								    <li><a class="dropdown-item" href="#" v-on:click="sortNameAsc">Name ascending</a></li>
-								    <li><a class="dropdown-item" href="#" v-on:click="sortNameDesc">Name descending </a></li>
-								    <li><a class="dropdown-item" href="#" v-on:click="sortLocationAsc">Location ascending</a></li>
-				 					<li><a class="dropdown-item" href="#" v-on:click="sortLocationDesc">Location descending</a></li>
-								 	<li><a class="dropdown-item" href="#" v-on:click="sortRatingAsc">Rating ascending</a></li>
-				 					<li><a class="dropdown-item" href="#" v-on:click="sortRatingDesc">Rating descending</a></li>
-								</ul>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<p>
-						<button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-    					Filters
-  						</button>
-						</p>
-						<div class="collapse" id="collapseExample">
-								<div class="card card-colored">
-									<div class="row">
-							 		<div class="col-lg-6 col-md-6 col-sm-6">
-										<label> Restaurant type </label>
-										<select style="margin: 5px;" class="selectpicker select-nice"v-model="filters.type">
+						<div class="row">
+							<p>
+							<button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+	    					Filters
+	  						</button>
+							</p>
+							<div class="collapse" id="collapseExample">
+									<div class="card card-colored">
+										<div class="row">
+								 		<div class="col-lg-6 col-md-6 col-sm-6">
+											<label> Restaurant type: </label>
+											<select style="margin: 5px;" class="selectpicker select-nice"v-model="filters.type">
+												<option disabled value="">Please select one</option>
+												<option value="">All</option>
+												<option>Chinese</option>
+												<option>Italian</option>
+												<option>Fast food</option>
+												<option>BBQ</option>
+												<option>Mexican</option>
+												<option>Gyros</option>
+											</select>
+										</div>
+										<div class="col-lg-6 col-md-6 col-sm-6">
+										<label> Restaurant status: </label>
+										<select style="margin: 5px;" class="selectpicker select-nice" v-model="filters.status">
 											<option disabled value="">Please select one</option>
-											<option value="">All</option>
-											<option>Chinese</option>
-											<option>Italian</option>
-											<option>Fast food</option>
-											<option>BBQ</option>
-											<option>Mexican</option>
-											<option>Gyros</option>
+											<option value=""> All </option>
+											<option> Open </option>
 										</select>
 									</div>
-									<div class="col-lg-6 col-md-6 col-sm-6">
-									<label> Restaurant status </label>
-									<select style="margin: 5px;" class="selectpicker select-nice" v-model="filters.status">
-										<option disabled value="">Please select one</option>
-										<option value=""> All </option>
-										<option> Open </option>
-									</select>
-								</div>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="row">
+					<div class="row m-4">
 						<div class="container-for-map mb-3" v-if="mapVisible">
-							<div id="map" class="map"></div>
+							<div id="map" class="map">
+							</div>
 						</div>
 					</div>			
 				</div>

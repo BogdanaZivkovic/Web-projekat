@@ -28,7 +28,7 @@ Vue.component("view-restaurant-customer", {
 	},
 	template:`
 	<div>
-		<div class="container-fluid bg">
+		<div class="container-fluid bg-2">
 			<div class="row justify-content-center">
 				<div class="col-lg-8 col-md-10 col-sm-12 container-neutral">
 					<div class="d-flex mb-2">
