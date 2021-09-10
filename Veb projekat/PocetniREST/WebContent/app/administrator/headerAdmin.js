@@ -29,7 +29,7 @@ Vue.component("header-admin", {
 					<router-link class="nav-link" to="/restaurantsadmin" exact> Restaurants </router-link>
 				</li>
 				<li>
-					<router-link class="nav-link" to="/sususers" exact> Sussy users </router-link>
+					<router-link class="nav-link" to="/sususers" exact> Suspicious users </router-link>
 				</li>
 				<li>
 					<a href="#" class="nav-link" v-on:click="logout"> Log out </a>

@@ -99,12 +99,8 @@ Vue.component("my-orders-deliverer", {
 														<select style="margin: 5px;" class="selectpicker select-nice" v-model="filter.status">
 															<option disabled value="">Please select one</option>
 															<option value="">All</option>
-															<option> PROCESSING </option>
-															<option> IN_PREPARATION </option>
-															<option> WAITING_FOR_DELIVERY </option>
 															<option> IN_TRANSPORT </option>
 															<option> DELIVERED </option>
-															<option> CANCELED </option>
 														</select>
 													</td>
 												</tr>
