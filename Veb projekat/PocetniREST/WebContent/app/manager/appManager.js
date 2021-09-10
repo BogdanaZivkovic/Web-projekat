@@ -5,6 +5,7 @@ const AddItemManager = {template:'<add-item-manager></add-item-manager>'}
 const EditItemManager = {template:'<edit-item-manager></edit-item-manager>'}
 const ViewRestaurantManager = {template:'<view-restaurant></view-restaurant>'}
 const OrdersManager = {template:'<orders-manager></orders-manager>'}
+const RestaurantCustomers = {template:'<restaurant-customers></restaurant-customers>'}
 
 const router = new VueRouter({
 	mode: 'hash',
@@ -16,7 +17,8 @@ const router = new VueRouter({
 		{path: '/additem', name:'addItem', component: AddItemManager},
 		{path: '/edititem', name:'editItem', component: EditItemManager},
 		{path: '/restaurant', name:'viewRestaurant', component: ViewRestaurantManager},
-		{path: '/orders', component: OrdersManager}
+		{path: '/orders', component: OrdersManager},
+		{path: '/restaurantCustomers', component: RestaurantCustomers}
 	]
 });
 

@@ -7,7 +7,8 @@ Vue.component("users-admin", {
 				userName: ''
 			},
 			filters: {
-				role:''
+				role:'',
+				customerType:''
 			},
 			users: [],
 			newUser: {
@@ -56,6 +57,8 @@ Vue.component("users-admin", {
 					 					<li><a class="dropdown-item" href="#" v-on:click="sortSurnameDesc">Surname descending</a></li>
 									 	<li><a class="dropdown-item" href="#" v-on:click="sortUserNameAsc">Username ascending</a></li>
 					 					<li><a class="dropdown-item" href="#" v-on:click="sortUserNameDesc">Username descending</a></li>
+										<li><a class="dropdown-item" href="#" v-on:click="sortPointsAsc">Points ascending</a></li>
+					 					<li><a class="dropdown-item" href="#" v-on:click="sortPointsDesc">Points descending</a></li>
 									</ul>
 								</div>
 							</div>
@@ -69,7 +72,7 @@ Vue.component("users-admin", {
 						<div class="collapse" id="collapseExample">
 							<div class="card card-colored">
 								<div class="row ms-1">
-									<div class="col">
+									<div class="col-lg-6 col-md-6 col-sm-6">
 										<label> User role: </label>
 										<select style="margin: 5px;" class="selectpicker select-nice" v-model="filters.role">
 										    <option disabled value="">Please select one</option>
@@ -78,6 +81,17 @@ Vue.component("users-admin", {
 											<option>MANAGER</option>
 											<option>DELIVERER</option>
 											<option>ADMINISTRATOR</option>			
+										</select>
+									</div>
+									<div class="col-lg-6 col-md-6 col-sm-6">
+										<label> Customer type: </label>
+										<select style="margin: 5px;" class="selectpicker select-nice" v-model="filters.customerType">
+										    <option disabled value="">Please select one</option>
+											<option value="">All</option>
+										    <option>BRONZE</option>
+											<option>SILVER</option>
+											<option>GOLD</option>
+											<option>UNDEFINED</option>			
 										</select>
 									</div>
 								</div>
@@ -248,6 +262,8 @@ Vue.component("users-admin", {
 				return false;
 			if(!user.role.toLowerCase().match(this.filters.role.toLowerCase()))
 				return false;
+			if(!user.customerType.typeName.toLowerCase().match(this.filters.customerType.toLowerCase()))
+				return false;
 			return true;
 		},
 		sortNameAsc: function () {
@@ -267,6 +283,12 @@ Vue.component("users-admin", {
 		},
 		sortUserNameDesc: function () {
 			this.users.sort((a, b) => {return this.alphaNumCriterium(b.userName, a.userName)});
+		},
+		sortPointsAsc: function () {
+			this.users.sort((a, b) => {return a.points - b.points});
+		},
+		sortPointsDesc: function () {
+			this.users.sort((a, b) => {return b.points - a.points});
 		},
 		alphaNumCriterium: function (a,b) {
       		var reA = /[^a-zA-Z]/g;

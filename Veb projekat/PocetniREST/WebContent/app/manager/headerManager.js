@@ -32,6 +32,9 @@ Vue.component("header-manager", {
 					<router-link class="nav-link" to="/orders" exact> Orders </router-link>
 				</li>
 				<li>
+					<router-link class="nav-link" to="/restaurantCustomers" exact> My customers </router-link>
+				</li>
+				<li>
 					<a href="#" class="nav-link" v-on:click="logout"> Log out </a>
 				</li>
 			</ul>
