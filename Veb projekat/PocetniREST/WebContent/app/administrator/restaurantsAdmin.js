@@ -143,12 +143,12 @@ Vue.component("restaurants-admin", {
 						<a href="#" v-on:click="viewRestaurant(restaurant)" class="list-group-item list-group-item-action li-container" v-for ="restaurant in filteredRestaurants">			
 							<div class="container">
 								<div class="row justify-content-between">
-									<div class="col-lg-2 col-md-4 col-sm-4"> 
+									<div class="col-lg-3 col-md-4 col-sm-5"> 
 										<div class="circular">
 											<img v-bind:src="getLogoPath(restaurant)"> 
 										</div>
 									</div>
-									<div class="col-lg-9 col-md-7 col-sm-7"> 
+									<div class="col-lg-8 col-md-7 col-sm-6"> 
 										<div class="d-flex w-100 justify-content-between">
 											<h4 class="mb-1"> {{restaurant.name}} </h4>
 										</div>
@@ -163,7 +163,7 @@ Vue.component("restaurants-admin", {
 											<span v-if="restaurant.status == 'Closed'" class="badge bg-danger mb-2"> &#10005; Closed </span>
 										</div>
 									</div>
-									<div class="col-lg-1 col-md-1 col-sm-1 mt-3"> 
+									<div class="col-1 mt-3"> 
 										<button class="btn btn-outline-danger" @click="deleteRestaurant(restaurant)"> 
 											<i class="bi bi-trash"></i>
 										</button>
