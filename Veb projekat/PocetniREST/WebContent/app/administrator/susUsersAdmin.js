@@ -18,15 +18,15 @@ Vue.component("sus-users-admin", {
 	},
 	template: `
 	<div class="container-fluid bg-6">
-					<div class="row justify-content-center" >
-				<div class="col-lg-6 col-md-6 col-sm-12 search-area ">
-					<div class="container">
-						<div class="row justify-content-between">
-							<div class="col-lg-10 col-md-10 col-sm-10">
+		<div class="row justify-content-center" >
+			<div class="col-lg-6 col-md-6 col-sm-12 search-area ">
+				<div class="container">
+					<div class="row justify-content-between">
+						<div class="col-lg-10 col-md-10 col-sm-10">
 							<p>
-							<button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch">
-	    					Search
-	  						</button>
+								<button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch">
+		    					Search
+		  						</button>
 							</p>
 							<div class="collapse" id="collapseSearch">
 								<div class="card card-colored">
@@ -37,29 +37,29 @@ Vue.component("sus-users-admin", {
 									</div>
 								</div>
 							</div>
-							</div>
-							<div class="col-lg-2 col-md-2 col-sm-2"> 		
-								<div class="dropdown">
-									<button class="btn dropdown-toggle float-right" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-									    Sort
+						</div>
+						<div class="col-lg-2 col-md-2 col-sm-2"> 		
+							<div class="dropdown">
+								<button class="btn dropdown-toggle float-right" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+									Sort
 									</button>
-									<ul class="dropdown-menu dropdown-list" >
-									    <li><a class="dropdown-item" href="#" v-on:click="sortNameAsc">Name ascending</a></li>
-									    <li><a class="dropdown-item" href="#" v-on:click="sortNameDesc">Name descending </a></li>
-									    <li><a class="dropdown-item" href="#" v-on:click="sortSurnameAsc">Surname ascending</a></li>
-					 					<li><a class="dropdown-item" href="#" v-on:click="sortSurnameDesc">Surname descending</a></li>
-									 	<li><a class="dropdown-item" href="#" v-on:click="sortUserNameAsc">Username ascending</a></li>
-					 					<li><a class="dropdown-item" href="#" v-on:click="sortUserNameDesc">Username descending</a></li>
-									</ul>
-								</div>
+								<ul class="dropdown-menu dropdown-list" >
+									<li><a class="dropdown-item" href="#" v-on:click="sortNameAsc">Name ascending</a></li>
+									<li><a class="dropdown-item" href="#" v-on:click="sortNameDesc">Name descending </a></li>
+									<li><a class="dropdown-item" href="#" v-on:click="sortSurnameAsc">Surname ascending</a></li>
+					 				<li><a class="dropdown-item" href="#" v-on:click="sortSurnameDesc">Surname descending</a></li>
+									<li><a class="dropdown-item" href="#" v-on:click="sortUserNameAsc">Username ascending</a></li>
+					 				<li><a class="dropdown-item" href="#" v-on:click="sortUserNameDesc">Username descending</a></li>
+								</ul>
 							</div>
 						</div>
-						<div class="row">
-							<p>
-							<button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-	    					Filters
-	  						</button>
-							</p>
+					</div>
+					<div class="row">
+						<p>
+						<button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+	    				Filters
+	  					</button>
+						</p>
 						<div class="collapse" id="collapseExample">
 							<div class="card card-colored">
 								<div class="row ms-1">
@@ -91,21 +91,22 @@ Vue.component("sus-users-admin", {
 					</div>	
 				</div>
 			</div>
-			<div class="row justify-content-center mb-2">
+		</div>
+		<div class="row justify-content-center mb-2">
 			<div class="col-lg-9 col-md-10 col-sm-12">
 				<table class="table-style mb-5">
 					<colgroup>
-					    <col class="ten" />
-					    <col class="ten" />
-					    <col class="ten" />
-					    <col class="ten" />
 						<col class="ten" />
-					    <col class="fifteen" />
-					    <col class="ten" />
-					    <col class="ten" />
+						<col class="ten" />
+						<col class="ten" />
+						<col class="ten" />
+						<col class="ten" />
+						<col class="fifteen" />
+						<col class="ten" />
+						<col class="ten" />
 						<col class="five" />
-					    <col class="ten" />
-					  </colgroup>
+						<col class="ten" />
+						</colgroup>
 					<tr>
 						<th> Usermame </th>
 						<th> Password </th>
@@ -128,7 +129,7 @@ Vue.component("sus-users-admin", {
 						<td class="td-style"> {{ user.role }} </td>
 						<td class="td-style"> {{ user.isBlocked }} </td>
 						<td class="td-style" v-if = "!user.role.match('ADMINISTRATOR')"> 
-							<button class="btn btn-outline-danger" @click="deleteUser(user)"> 
+						<button class="btn btn-outline-danger" @click="deleteUser(user)"> 
 								<i class="bi bi-trash"></i>
 							</button> 
 						</td>
@@ -139,7 +140,7 @@ Vue.component("sus-users-admin", {
 					</tr>
 				</table>
 			</div>
-		</div>
+		</div>	
 	</div>
 	`,
 	methods: {
